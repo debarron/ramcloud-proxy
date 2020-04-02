@@ -90,6 +90,12 @@ int main(int argc, char **argv){
   int totalMultiKey = multiKeyData->entries->size();
   cout << "Pulling (multiKey) from 'insertTest' retrieved " << totalMultiKey << " keys took " << eTime << " secs\n";
 
+  vector<string> allKeys = rc.enumerateKeysFromTable(insertTest);
+  cout << "Listing all keys from 'insertTest'\n";
+  for(uint32_t i = 0; i < allKeys.size(); i++)
+    cout << "has key: " << allKeys[i] << "\n";
+  
+
   rc.dropTable("insertTest");
   rc.dropTable("Table1");
   rc.dropTable("Table2");
