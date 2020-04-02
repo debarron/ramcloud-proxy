@@ -1,7 +1,7 @@
 
 GIT_ADD="git add --all"
 GIT_COMMIT="git commit -m 'Automatic commit by debarron'"
-GIT_PUSH="git push origin dev"
+GIT_PUSH="git push origin master"
 
 SRC = ./src
 LIB = ./lib
