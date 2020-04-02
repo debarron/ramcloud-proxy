@@ -269,12 +269,13 @@ vector<string> RCProxy::enumerateKeysFromTable(RCTable *table){
     dataLength = 0;
 
     enumerator->nextKeyAndData(&keyLength, &key, &dataLength, &data);
-    cout << "inside the loop\n";
     
     isValid = (key != NULL);
     if(isValid){
       char *keyStr = new char[keyLength + 1];
-      strcpy(keyStr, (char *)key);
+      memcpy(keyStr, (char *)key, keyLength);
+      keyStr[keyLength] = '\0';
+
       keys.push_back(string(keyStr));
       cout << " READ key " << keyStr << "\n";
     }
