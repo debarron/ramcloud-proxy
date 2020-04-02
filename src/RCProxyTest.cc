@@ -96,6 +96,7 @@ int main(int argc, char **argv){
     cout << "has key: " << allKeys[i] << "\n";
   
 
+  cout << "Dropping the tables\n";
   rc.dropTable("insertTest");
   rc.dropTable("Table1");
   rc.dropTable("Table2");

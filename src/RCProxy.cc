@@ -273,8 +273,9 @@ vector<string> RCProxy::enumerateKeysFromTable(RCTable *table){
     
     isValid = (key != NULL);
     if(isValid){
-      string keyStr = string((const char *)key);
-      keys.push_back(keyStr);
+      char *keyStr = new char[keyLength + 1];
+      strcpy(keyStr, (char *)key);
+      keys.push_back(string(keyStr));
       cout << " READ key " << keyStr << "\n";
     }
   }
