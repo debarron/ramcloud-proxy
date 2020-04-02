@@ -18,6 +18,7 @@
 #include "ClientException.h"
 #include "MultiRead.h"
 #include "Tub.h"
+#include "TableEnumerator.h"
 
 #include <ctime>
 #include <sys/types.h>
@@ -54,6 +55,7 @@ class RCProxy{
     RCRelation* pull(RCTable *, vector<string>&);
     void push(RCRelation*);
     void dropTable(const char *tableName);
+    vector<string> enumerateKeysFromTable(RCTable*);
 };
 
 #endif

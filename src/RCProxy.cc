@@ -256,3 +256,36 @@ void RCProxy::dropTable(const char *tableName){
   this->client->dropTable(tableName);
 }
 
+
+vector<string> RCProxy::enumerateKeysFromTable(RCTable *table){
+  vector<string> keys;
+
+  TableEnumerator *enumerator;
+  uint32_t keyLength, dataLength;
+  const void *key, *data;
+
+  enumerator = new TableEnumerator(*this->client, table->tableId, true);
+  while(enumerator->hasNext()){
+    key = NULL;
+    data = NULL;
+    keyLength = 0;
+    dataLength = 0;
+
+    enumerator->nextKeyAndData(&keyLength, &key, &dataLength, &data);
+    string keyStr = string((const char *)key);
+    keys.push_back(keyStr);
+  }
+
+  return keys;
+}
+
+
+ 
+
+
+
+
+
+
+
+

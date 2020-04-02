@@ -1,16 +1,3 @@
-LOCAL_LIB = ./lib
-LOCAL_BIN = ./bin
-LOCAL_SRC= ./src
-
-RC_DIR = /users/dl544/RAMCloud
-SOURCE_DIR=./src
-BIN_DIR=./bin
-
-INCLUDE_FLAGS = -I${RC_DIR}/src -I${RC_DIR}/obj.master -I${LOCAL_SRC}
-LIB_FLAGS = -L${RC_DIR}/obj.master -L${RC_DIR}/install/include/ramcloud -L${LOCAL_LIB}
-LIBS = -lramcloud
-FLAGS = -std=c++0x -Wall -Wextra -O3 ${INCLUDE_FLAGS} ${LIB_FLAGS} ${LIBS}
-FUSE_FLAGS = gcc -Wall cuse.c `pkg-config fuse3 --cflags --libs`
 
 GIT_ADD="git add --all"
 GIT_COMMIT="git commit -m 'Automatic commit by debarron'"
@@ -19,7 +6,7 @@ GIT_PUSH="git push origin dev"
 SRC = ./src
 LIB = ./lib
 BIN = ./bin
-RC_HOME = /users/dl544/RAMCloud
+RC_HOME = ${RAMCLOUD_HOME}
 
 CC = g++
 CC_FLAGS = -Wall -std=c++0x -Wextra -O3
