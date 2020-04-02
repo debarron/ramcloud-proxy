@@ -96,8 +96,6 @@ Tub<ObjectBuffer> *buffers){
 
     info[I_BYTES] = info[I_BYTES] + dataLength;
     entries->push_back(RCEntry(key, data, dataLength));
-    
-    cout << "Retrieved from multi-keys\n";
   }
 
   return entries;
@@ -136,7 +134,6 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   _cleanInfo();
   entries = new vector<RCEntry>();
   for(uint32_t i = 0; i < keysLength; i++){
-    cout << "Enter the for\n";
     if(!_isMultiReadRequestOK(requests[i])) continue;
     else if(_isObjectBufferNULL(&buffers[i])) continue;
 
@@ -147,7 +144,6 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
 
     info[I_BYTES] = info[I_BYTES] + dataLength;
     entries->push_back(RCEntry(key, data, dataLength));
-    cout << "Read somethig\n"; 
   }
 
   return new RCRelation(table, entries);
@@ -261,19 +257,26 @@ vector<string> RCProxy::enumerateKeysFromTable(RCTable *table){
   vector<string> keys;
 
   TableEnumerator *enumerator;
+  bool isValid = true;
   uint32_t keyLength, dataLength;
   const void *key, *data;
 
   enumerator = new TableEnumerator(*this->client, table->tableId, true);
-  while(enumerator->hasNext()){
+  while(enumerator->hasNext() && isValid){
     key = NULL;
     data = NULL;
     keyLength = 0;
     dataLength = 0;
 
     enumerator->nextKeyAndData(&keyLength, &key, &dataLength, &data);
-    string keyStr = string((const char *)key);
-    keys.push_back(keyStr);
+    cout << "inside the loop\n";
+    
+    isValid = (key != NULL);
+    if(isValid){
+      string keyStr = string((const char *)key);
+      keys.push_back(keyStr);
+      cout << " READ key " << keyStr << "\n";
+    }
   }
 
   return keys;
