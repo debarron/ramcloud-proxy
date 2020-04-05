@@ -135,7 +135,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
 
   // Perform mutiread
   start = clock();
-  this->client->multiRead(requests, keysLength);
+  this->client->multiRead(&requests[0], keysLength);
   _log(start);
 
   cout << "Requests were made\n";
@@ -152,13 +152,6 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
 
     ObjectBuffer *result = buffers[i].get();
     uint32_t nk = result->getNumKeys();
-    cout << "\n\nPrint content keys: " << nk <<"\n";
-    for(uint32_t j = 0; j< nk; j++){
-      uint32_t vlen;
-      const char *key = reinterpret_cast<const char *>(result->getKey(j));
-      const char *data = reinterpret_cast<const char *>(result->getValue(&vlen));
-      cout << "Found K: " << key << " V: " << *((uint32_t*)data) <<"\n";
-    }
 
     string key = reinterpret_cast<const char *>(result->getKey(0));
     const char *data = reinterpret_cast<const char *>(result->getValue(&dataLength));
