@@ -122,7 +122,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   MultiReadObject **requests;
 
   buffers = new Tub<ObjectBuffer>[keysLength];
-  requests = new (MultiReadObject*)[keysLength];
+  requests = new MultiReadObject*[keysLength];
   /*
   Tub<ObjectBuffer> buffers[keysLength];
   MultiReadObject *requests[keysLength];
@@ -154,7 +154,6 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
     //else if(_isObjectBufferNULL(&buffers[i])) continue;
 
     ObjectBuffer *result = buffers[i].get();
-    uint32_t nk = result->getNumKeys();
 
     string key = reinterpret_cast<const char *>(result->getKey(0));
     const char *data = reinterpret_cast<const char *>(result->getValue(&dataLength));
