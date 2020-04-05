@@ -18,19 +18,19 @@ void testSinglePushSinglePull(RCProxy &client){
  
   valueIn = 69;
   dataTest = client.createTable("numTesting", 5);
-  number.push_back(RCEntry("test", (char *)&value, sizeof(uint32_t)));
+  number.push_back(RCEntry("test", (char *)&valueIn, sizeof(uint32_t)));
 
   RCRelation dataInput (dataTest, &number);
-  client.push(dataInput);
+  client.push(&dataInput);
   timePush = client.elapsedSecsLog;
 
   numKey.push_back("test");
   dataOut = client.pull(dataTest, numKey);
   timePull = client.elapsedSecsLog;
 
-  valueOut = *((uint32_t *)(*dataOut->entries)[0].data);
+  valueOut = *((uint32_t *)(*dataOut->entries)[0].bytes);
 
-  cout << ">> ramcloud-proxy SINGLE PUSH - SINGLE PULL EXPERIMENT\N";
+  cout << ">> ramcloud-proxy SINGLE PUSH - SINGLE PULL EXPERIMENT\n"
     << "TABLE, VALUE_IN, VALUE_OUT, EQUAL, TIME_PUSH, TIME_PULL\n"
     << "numTesting, " 
     << valueIn << ", "
@@ -55,10 +55,10 @@ void testingMultiPushSinglePull(RCProxy &client){
   for(uint32_t i = 0; i < 5; i++){
     string key = "key" + to_string(i);
     numbers.push_back(RCEntry(key, (char *)&valuesIn[i], sizeof(uint32_t)));
-    keys.push_back(key);
+    numKeys.push_back(key);
   }
   RCRelation dataInput (dataTest, &numbers);
-  client.push(dataInput);
+  client.push(&dataInput);
   timePush = client.elapsedSecsLog;
 
   cout << ">> ramcloud-proxy MULTI PUSH - SINGLE PULL EXPERIMENT\n";
@@ -71,7 +71,7 @@ void testingMultiPushSinglePull(RCProxy &client){
     pullKey.push_back(numKeys[i]);
 
     dataOut = client.pull(dataTest, pullKey);
-    valueOut = *((uint32_t *)(*dataOut->entries)[0].data);
+    valueOut = *((uint32_t *)(*dataOut->entries)[0].bytes);
     timePull = client.elapsedSecsLog;
 
     cout << "numbersTesting, " 
@@ -96,10 +96,10 @@ void testingMultiPushMultiPull(RCProxy &client){
   for(uint32_t i = 0; i < 5; i++){
     string key = "key" + to_string(i);
     numbers.push_back(RCEntry(key, (char *)&valuesIn[i], sizeof(uint32_t)));
-    keys.push_back(key);
+    numKeys.push_back(key);
   }
   RCRelation dataInput (dataTest, &numbers);
-  client.push(dataInput);
+  client.push(&dataInput);
   timePush = client.elapsedSecsLog;
 
   cout << ">> ramcloud-proxy MULTI PUSH - MULTI PULL EXPERIMENT\n"
@@ -108,9 +108,12 @@ void testingMultiPushMultiPull(RCProxy &client){
 
 
   dataOut = client.pull(dataTest, numKeys);
+  vector<RCEntry> &entries = dataOut->entries;
   timePull = client.elapsedSecsLog;
-  for(uint32_t i = 0; i < 5; i++)
-    valuesOut[i] = *((uint32_t *)(*dataOut->entries)[i].data);
+  for(uint32_t i = 0; i < 5; i++){
+    valuesOut[i] = *((uint32_t *)entries[i].bytes);
+    cout << "READ K " << entries[i].key << " V " << entries[i].bytes << " L " << entries[i].bytesLength << "\n"
+  }
 
   cout << "TABLE, #VALUES_FETCHED, TIME_PULL\n"
     << "numbersTestingM, " 
@@ -144,9 +147,9 @@ int main(int argc, char **argv){
   eTime += rc.elapsedSecsLog;
   cout << "Avg time to create table: " << (eTime/3.0)  << " secs.\n\n";
 
-  testSinglePushSinglePull(&client);
-  testingMultiPushSinglePull(&client);
-  testingMultiPushMultiPull(&client);
+  testSinglePushSinglePull(rc);
+  testingMultiPushSinglePull(rc);
+  testingMultiPushMultiPull(rc);
 
   return 0;
 }

@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ class RCEntry {
     string key;
     char *bytes;
     uint32_t bytesLength;
-    RCEntry(string, char*, uint32_t);
+    RCEntry(string, const char*, uint32_t);
 //    ~RCEntry();
 };
 

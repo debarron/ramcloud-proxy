@@ -1,8 +1,9 @@
 #include "RCEntry.h"
 
-RCEntry::RCEntry(string key, char* bytes, uint32_t bytesLength){
+RCEntry::RCEntry(string key, const char* bytes, uint32_t bytesLength){
   this->key = key;
-  this->bytes = bytes;
+  this->bytes = new char[bytesLength];
+  memcpy(this->bytes, bytes, bytesLength);
   this->bytesLength = bytesLength;
 }
 

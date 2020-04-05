@@ -43,6 +43,7 @@ class RCProxy{
     void _singlePush(RCRelation*);
     void _multiPush(RCRelation*); 
     void _setMultiWriteRequest(void*, RCTable*, RCEntry&);
+    void _setMultiReadRequest(void*, RCTable*, string, Tub<ObjectBuffer>*);
 
   public:
     double elapsedSecsLog;
