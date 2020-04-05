@@ -37,7 +37,7 @@ class RCProxy{
     bool _isMultiReadRequestOK(MultiReadObject*);
     bool _isObjectBufferNULL(Tub<ObjectBuffer>*);
     void _cleanInfo();
-    vector<RCEntry>* _getMultipleEntries(MultiReadObject**, Tub<ObjectBuffer>*);
+    void _readEntries(MultiReadObject**, Tub<ObjectBuffer>*,uint32_t,vector<RCEntry>&);
     RCRelation* _multiPull(RCTable*, vector<string>&);
     RCRelation* _singlePull(RCTable*, vector<string>&);
     void _singlePush(RCRelation*);

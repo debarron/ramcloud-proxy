@@ -98,15 +98,13 @@ vector<RCEntry> &entries){
     info[I_BYTES] = info[I_BYTES] + dataLength;
     entries.push_back(RCEntry(key, data, dataLength));
   }
-
-  return entries;
 }
 
 void RCProxy::_setMultiReadRequest(void *requestPointer, RCTable *table, string key, Tub<ObjectBuffer> *buffer){
-  new(requestPointer) MultiReadbject(
+  new(requestPointer) MultiReadObject(
       table->tableId,
-      entry.key.data(),
-      entry.key.length(),
+      key.data(),
+      key.length(),
       buffer
   );
 }
@@ -124,7 +122,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   for (uint32_t i = 0; i < keysLength; i++){
     string key = keys[i];
     requests[i] = &requestedObjects[i];
-    _setMultiReadRequest(request[i], table, key, &buffers[i]);
+    _setMultiReadRequest(requests[i], table, key, &buffers[i]);
   }
 
   // Perform mutiread
@@ -137,7 +135,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   ObjectBuffer *result;
  
   _cleanInfo();
-  _readEntries(requests, &buffers, keyLength, *entries);
+  _readEntries(&requests[0], &buffers[0], keyLength, *entries);
   /*
   entries = new vector<RCEntry>();
   for(uint32_t i = 0; i < keysLength; i++){

@@ -108,11 +108,11 @@ void testingMultiPushMultiPull(RCProxy &client){
 
 
   dataOut = client.pull(dataTest, numKeys);
-  vector<RCEntry> &entries = dataOut->entries;
+  vector<RCEntry> &entries = *dataOut->entries;
   timePull = client.elapsedSecsLog;
   for(uint32_t i = 0; i < 5; i++){
     valuesOut[i] = *((uint32_t *)entries[i].bytes);
-    cout << "READ K " << entries[i].key << " V " << entries[i].bytes << " L " << entries[i].bytesLength << "\n"
+    cout << "READ K " << entries[i].key << " V " << entries[i].bytes << " L " << entries[i].bytesLength << "\n";
   }
 
   cout << "TABLE, #VALUES_FETCHED, TIME_PULL\n"
