@@ -159,7 +159,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
 
 
     int keyLength = result->getKeyLength(0);
-    cout << "GOT k: " key << "\n";
+    cout << "GOT k: " << key << "\n";
 
     info[I_BYTES] = info[I_BYTES] + dataLength;
     entries->push_back(RCEntry(key, dataKept, dataLength));
