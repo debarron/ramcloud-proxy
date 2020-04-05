@@ -152,7 +152,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
 
     ObjectBuffer *result = buffers[i].get();
 
-    string key = reinterpret_cast<const char *>(result->getKey(0));
+    string key = string(reinterpret_cast<const char *>(result->getKey(0)));
     const char *data = reinterpret_cast<const char *>(result->getValue(&dataLength));
     char *dataKept = new char[dataLength];
     memcpy(dataKept, data, dataLength);
