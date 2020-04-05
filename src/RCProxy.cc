@@ -112,7 +112,7 @@ void RCProxy::_setMultiReadRequest(void *requestPointer, RCTable *table, string 
 
 RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   clock_t start;
-  int keysLength = keys.size();
+  uint32_t keysLength = keys.size();
   vector<RCEntry> *entries;
 
   //Prepare multiread
@@ -124,18 +124,20 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
     requests[i] = &requestedObjects[i];
     _setMultiReadRequest(requests[i], table, key, &buffers[i]);
   }
+  cout << "Requests were generated\n";
 
   // Perform mutiread
   start = clock();
   this->client->multiRead(requests, keysLength);
   _log(start);
 
+  cout << "Requests were made\n"
 
-  uint32_t dataLength, keyLength;
+  uint32_t dataLength;
   ObjectBuffer *result;
  
   _cleanInfo();
-  _readEntries(&requests[0], &buffers[0], keyLength, *entries);
+  _readEntries(&requests[0], &buffers[0], keysLength, *entries);
   /*
   entries = new vector<RCEntry>();
   for(uint32_t i = 0; i < keysLength; i++){
