@@ -122,7 +122,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   MultiReadObject **requests;
 
   buffers = new Tub<ObjectBuffer>[keysLength];
-  requests = new (*MultiReadObject)[keysLength];
+  requests = new (MultiReadObject*)[keysLength];
   /*
   Tub<ObjectBuffer> buffers[keysLength];
   MultiReadObject *requests[keysLength];
