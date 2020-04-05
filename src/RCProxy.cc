@@ -116,20 +116,29 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   vector<RCEntry> *entries;
 
   //Prepare multiread
+  //
+  
+  Tub<ObjectBuffer> *buffers;
+  MultiReadObject **requests;
+
+  buffes = new Tub<ObjectBuffer>[keysLength];
+  requests = new *MultiReadObject[keysLength];
+  /*
   Tub<ObjectBuffer> buffers[keysLength];
   MultiReadObject *requests[keysLength];
   MultiReadObject requestedObjects[keysLength];
+  */
   for (uint32_t i = 0; i < keysLength; i++){
+
     string key = keys[i];
     //_setMultiReadRequest(requests[i], table, key, &buffers[i]);
-    requestedObjects[i] = MultiReadObject(table->tableId, key.data(), key.length(), &buffers[i]);
-    requests[i] = &requestedObjects[i];
+    requests[i] = new MultiReadObject(table->tableId, key.data(), key.length(), &buffers[i]);
   }
   cout << "Requests were generated\n";
 
   // Perform mutiread
   start = clock();
-  this->client->multiRead(&requests[0], keysLength);
+  this->client->multiRead(requests, keysLength);
   _log(start);
 
   cout << "Requests were made\n";
