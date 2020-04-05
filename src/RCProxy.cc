@@ -121,8 +121,14 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   MultiReadObject requestedObjects[keysLength];
   for (uint32_t i = 0; i < keysLength; i++){
     string key = keys[i];
+    //_setMultiReadRequest(requests[i], table, key, &buffers[i]);
+    requestedObjects[i] = MultiReadObject(
+      table->tableId,
+      key.data(),
+      key.length(),
+      buffer
+    );
     requests[i] = &requestedObjects[i];
-    _setMultiReadRequest(requests[i], table, key, &buffers[i]);
   }
   cout << "Requests were generated\n";
 
@@ -137,21 +143,29 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
  
   _cleanInfo();
   entries = new vector<RCEntry>();
-  _readEntries(&requests[0], &buffers[0], keysLength, *entries);
-  /*
-  entries = new vector<RCEntry>();
+  //_readEntries(&requests[0], &buffers[0], keysLength, *entries);
+  
   for(uint32_t i = 0; i < keysLength; i++){
     if(!_isMultiReadRequestOK(requests[i])) continue;
     else if(_isObjectBufferNULL(&buffers[i])) continue;
 
-    result = buffers[i].get();
+    ObjectBuffer *result = buffers[i].get();
+    uint32_t nk = result->getNumKeys();
+    cout << "\n\nPrint content keys: " << nk <<"\n";
+    for(uint32_t j = 0; j< nk; j++){
+      uint32_t vlen;
+      const char *key = reinterpret_cast<const char *>(result->getKey(j));
+      const char *data = reinterpret_cast<const char *>(result->getValue(&vlen));
+      cout << "Found K: " << key << " V: " << *((uint32_t*)data) <<"\n";
+    }
+
     string key = reinterpret_cast<const char *>(result->getKey(0));
     const char *data = reinterpret_cast<const char *>(result->getValue(&dataLength));
     keyLength = result->getKeyLength(0);
 
     info[I_BYTES] = info[I_BYTES] + dataLength;
     entries->push_back(RCEntry(key, data, dataLength));
-  }*/
+  }
 
   return new RCRelation(table, entries);
 }
