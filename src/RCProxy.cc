@@ -161,7 +161,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
 
     string key = reinterpret_cast<const char *>(result->getKey(0));
     const char *data = reinterpret_cast<const char *>(result->getValue(&dataLength));
-    keyLength = result->getKeyLength(0);
+    int keyLength = result->getKeyLength(0);
 
     info[I_BYTES] = info[I_BYTES] + dataLength;
     entries->push_back(RCEntry(key, data, dataLength));
