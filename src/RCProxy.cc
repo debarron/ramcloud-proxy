@@ -131,7 +131,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   this->client->multiRead(requests, keysLength);
   _log(start);
 
-  cout << "Requests were made\n"
+  cout << "Requests were made\n";
 
   uint32_t dataLength;
   ObjectBuffer *result;
