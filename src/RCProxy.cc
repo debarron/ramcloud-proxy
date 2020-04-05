@@ -122,14 +122,8 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   for (uint32_t i = 0; i < keysLength; i++){
     string key = keys[i];
     //_setMultiReadRequest(requests[i], table, key, &buffers[i]);
-    requestedObjects[i] = MultiReadObject(
-      table->tableId,
-      key.data(),
-      key.length(),
-      &buffers[i]
-    );
+    requestedObjects[i] = MultiReadObject(table->tableId, key.data(), key.length(), &buffers[i]);
     requests[i] = &requestedObjects[i];
-    cout << "Adding k: " << key << "\n";
   }
   cout << "Requests were generated\n";
 
@@ -147,8 +141,8 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   //_readEntries(&requests[0], &buffers[0], keysLength, *entries);
   
   for(uint32_t i = 0; i < keysLength; i++){
-    if(!_isMultiReadRequestOK(requests[i])) continue;
-    else if(_isObjectBufferNULL(&buffers[i])) continue;
+    //if(!_isMultiReadRequestOK(requests[i])) continue;
+    //else if(_isObjectBufferNULL(&buffers[i])) continue;
 
     ObjectBuffer *result = buffers[i].get();
     uint32_t nk = result->getNumKeys();
