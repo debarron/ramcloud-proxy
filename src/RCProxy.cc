@@ -126,7 +126,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
       table->tableId,
       key.data(),
       key.length(),
-      buffers[i];
+      buffers[i]
     );
     requests[i] = &requestedObjects[i];
   }
