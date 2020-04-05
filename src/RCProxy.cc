@@ -129,6 +129,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
       &buffers[i]
     );
     requests[i] = &requestedObjects[i];
+    cout << "Adding k: " << key << "\n";
   }
   cout << "Requests were generated\n";
 
