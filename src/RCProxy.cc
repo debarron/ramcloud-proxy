@@ -112,54 +112,34 @@ void RCProxy::_setMultiReadRequest(void *requestPointer, RCTable *table, string 
 
 RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   clock_t start;
-  uint32_t keysLength = keys.size();
+  uint32_t keysCount = keys.size();
   vector<RCEntry> *entries;
-
   
-  Tub<ObjectBuffer> *buffers;
-  MultiReadObject **requests;
-
-  buffers = new Tub<ObjectBuffer>[keysLength];
-  requests = new MultiReadObject*[keysLength];
-  /*
-  Tub<ObjectBuffer> buffers[keysLength];
-  MultiReadObject *requests[keysLength];
-  MultiReadObject requestedObjects[keysLength];
-  */
-  for (uint32_t i = 0; i < keysLength; i++){
-    string key = keys[i];
-    requests[i] = new MultiReadObject(table->tableId, key.data(), key.length(), &buffers[i]);
-    //_setMultiReadRequest(requests[i], table, key, &buffers[i]);
+  Tub<ObjectBuffer> buffers[keysCount];
+  MultiReadObject *requests[keysCount];
+  MultiReadObject requestedObjects[keysCount];
+  for (uint32_t i = 0; i < keysCount; i++){
+    const char *key = keys[i].data();
+    requestedObjects[i] = MultiReadObject(table->tableId, key, keys[i].length(), &buffers[i]);
+    requests[i] = &requestedObjects[i];
   }
-  cout << "Requests were generated\n";
 
-  // Perform mutiread
   start = clock();
-  this->client->multiRead(requests, keysLength);
+  this->client->multiRead(requests, keysCount);
   _log(start);
-
-  cout << "Requests were made\n";
-
-  uint32_t dataLength;
  
   _cleanInfo();
   entries = new vector<RCEntry>();
-  //_readEntries(&requests[0], &buffers[0], keysLength, *entries);
-  
-  for(uint32_t i = 0; i < keysLength; i++){
+  for(uint32_t i = 0; i < keysCount; i++){
     //if(!_isMultiReadRequestOK(requests[i])) continue;
     //else if(_isObjectBufferNULL(&buffers[i])) continue;
 
     ObjectBuffer *result = buffers[i].get();
+    uint32_t dataLength;
 
-    string key = string(reinterpret_cast<const char *>(result->getKey(0)));
     const char *data = reinterpret_cast<const char *>(result->getValue(&dataLength));
     char *dataKept = new char[dataLength];
     memcpy(dataKept, data, dataLength);
-
-
-    int keyLength = result->getKeyLength(0);
-    cout << "GOT k: " << key << "\n";
 
     info[I_BYTES] = info[I_BYTES] + dataLength;
     entries->push_back(RCEntry(key, dataKept, dataLength));
