@@ -7,13 +7,19 @@
 
 using namespace std;
 
+
+/** RCEntry
+ * When constructed, this class' constructor 
+ * copies the content from the const char pointer
+ * and allocate memory to copy the content
+*/ 
 class RCEntry {
   public:
     string key;
     char *bytes;
     uint32_t bytesLength;
     RCEntry(string, const char*, uint32_t);
-//    ~RCEntry();
+    ~RCEntry();
 };
 
 #endif

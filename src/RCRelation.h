@@ -14,7 +14,7 @@ class RCRelation{
     vector<RCEntry> *entries;
     RCRelation(RCTable*, vector<RCEntry>*);
     void cleanEntries();
-//    ~RCRelation();
+    ~RCRelation();
 };
 
 #endif

@@ -5,8 +5,5 @@ RCTable::RCTable(char* tableName, uint64_t tableId){
   this->tableId = tableId;
 }
 
-/*
 RCTable::~RCTable(){
-  delete []tableName;
 }
-*/

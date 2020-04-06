@@ -26,13 +26,13 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <iostream>
 
 using namespace std;
 using namespace RAMCloud;
 
 class RCProxy{
   private:
-    uint32_t info[INFO_LENGTH];
     void _log(clock_t);
     bool _isMultiReadRequestOK(MultiReadObject*);
     bool _isObjectBufferNULL(Tub<ObjectBuffer>*);
@@ -46,11 +46,12 @@ class RCProxy{
     void _setMultiReadRequest(void*, RCTable*, string, Tub<ObjectBuffer>*);
 
   public:
+    uint32_t info[INFO_LENGTH];
     double elapsedSecsLog;
     RamCloud *client;
     CommandLineOptions options;
     RCProxy(char *, char *);
-    //~RCProxy();
+    ~RCProxy();
     RCTable* getTable(char *);
     RCTable* createTable(char *, int);
     uint32_t* getInfoPtr();

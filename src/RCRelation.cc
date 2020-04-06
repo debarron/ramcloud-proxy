@@ -7,12 +7,12 @@ RCRelation::RCRelation(RCTable* table, vector<RCEntry> *entries){
   this->entries = entries;
 }
 
-/*
 RCRelation::~RCRelation(){
-  delete table;
   entries->clear();
+
+  delete table;
+  delete entries;
 }
-*/
 
 void RCRelation::cleanEntries(){
   if(this->entries->size() > 0)
