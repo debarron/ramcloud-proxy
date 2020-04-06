@@ -1,4 +1,3 @@
-
 GIT_ADD="git add --all"
 GIT_COMMIT="git commit -m 'Automatic commit by debarron'"
 GIT_PUSH="git push origin master"
@@ -21,6 +20,9 @@ BUILD_FLAGS = ${RAMCLOUD_FLAGS} -I${SRC} -L${LIB}
 OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
 APP_CC = ${CC} ${CC_FLAGS} -I${SRC} ${RAMCLOUD_FLAGS} -g -c
 
+build_dirs:
+	mkdir ${LIB} && mkdir ${BIN}
+
 push: 
 	@echo ">> ramcloud-multiwrite, Saving project on github"
 	eval ${GIT_ADD}
@@ -29,9 +31,9 @@ push:
 
 clean: 
 	@echo ">> ramcloud-multiwrite, Cleaning ./lib"
-	@rm ${LIB}/* || echo "Nothing to remove"
+	@rm ${LIB}/* 2< /dev/null || echo "Nothing to remove"
 	@echo ">> ramcloud-multiwrite, Cleaning ./bin"
-	@rm ${BIN}/* || echo "Nothing to remove"
+	@rm ${BIN}/* 2< /dev/null || echo "Nothing to remove"
 
 ${LIB}/RCEntry.o: 
 	@echo ">> ramcloud-multiwrite, Building RCEntry.o"
@@ -55,7 +57,7 @@ ${LIB}/RCProxyTest.o:
 
 RC_CORE: ${LIB}/RCEntry.o ${LIB}/RCTable.o ${LIB}/RCRelation.o ${LIB}/RCProxy.o ${LIB}/RCProxyTest.o
 
-RCProxyTest: RC_CORE
+RCProxyTest: build_dirs RC_CORE
 	${CC} ${RC_CORE_OBJS} -o ${BIN}/RCProxyTest ${BUILD_FLAGS}
 
 all: RC_CORE RCProxyTest
