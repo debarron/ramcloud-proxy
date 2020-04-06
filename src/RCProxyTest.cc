@@ -17,7 +17,7 @@ void testSinglePushSinglePull(RCProxy &client){
   double timePush, timePull;
  
   valueIn = 69;
-  dataTest = client.createTable("numTesting", 5);
+  dataTest = client.createTable("numTesting", 10);
   number.push_back(RCEntry("test", (char *)&valueIn, sizeof(uint32_t)));
 
   RCRelation dataInput (dataTest, &number);
@@ -51,7 +51,7 @@ void testingMultiPushSinglePull(RCProxy &client){
   uint32_t valuesIn[5] = {1, 2, 3, 4, 5};
   uint32_t valueOut;
  
-  dataTest = client.createTable("numbersTesting", 5);
+  dataTest = client.createTable("numbersTesting", 10);
   for(uint32_t i = 0; i < 5; i++){
     string key = "key" + to_string(i);
     numbers.push_back(RCEntry(key, (char *)&valuesIn[i], sizeof(uint32_t)));
@@ -92,7 +92,7 @@ void testingMultiPushMultiPull(RCProxy &client){
   uint32_t valuesIn[5] = {1, 2, 3, 4, 5};
   uint32_t valuesOut[5];
  
-  dataTest = client.createTable("numbersTestingM", 5);
+  dataTest = client.createTable("numbersTestingM", 10);
   for(uint32_t i = 0; i < 5; i++){
     string key = "key" + to_string(i);
     numbers.push_back(RCEntry(key, (char *)&valuesIn[i], sizeof(uint32_t)));
@@ -108,11 +108,11 @@ void testingMultiPushMultiPull(RCProxy &client){
 
 
   dataOut = client.pull(dataTest, numKeys);
-  vector<RCEntry> &entries = dataOut->entries;
+  vector<RCEntry> &entries = *dataOut->entries;
   timePull = client.elapsedSecsLog;
   for(uint32_t i = 0; i < 5; i++){
     valuesOut[i] = *((uint32_t *)entries[i].bytes);
-    cout << "READ K " << entries[i].key << " V " << entries[i].bytes << " L " << entries[i].bytesLength << "\n"
+    cout << "READ K " << entries[i].key << " V " << entries[i].bytes << " L " << entries[i].bytesLength << "\n";
   }
 
   cout << "TABLE, #VALUES_FETCHED, TIME_PULL\n"
