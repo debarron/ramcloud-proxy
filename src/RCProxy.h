@@ -59,7 +59,7 @@ class RCProxy{
     RCRelation* pull(RCTable *, vector<string>&);
     void push(RCRelation*);
     void dropTable(const char *tableName);
-    vector<string> listKeys(RCTable*);
+    vector<string>* listKeys(RCTable*);
 };
 
 #endif
