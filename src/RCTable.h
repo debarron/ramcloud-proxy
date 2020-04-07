@@ -2,6 +2,9 @@
 #define RCTABLE_H
 
 #include <cstdint>
+#include <iostream>
+
+using namespace std;
 
 class RCTable{
   public:
