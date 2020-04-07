@@ -8,6 +8,7 @@ RCEntry::RCEntry(string key, const char* bytes, uint32_t bytesLength){
 }
 
 RCEntry::~RCEntry(){
+  cout << "From RCEntry "<< this->key <<"\n";
   delete bytes;
 }
 

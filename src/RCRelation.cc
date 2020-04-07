@@ -8,6 +8,7 @@ RCRelation::RCRelation(RCTable* table, vector<RCEntry> *entries){
 }
 
 RCRelation::~RCRelation(){
+  cout << "From Entries with "<< this->entries->size() << " keys\n";
   entries->clear();
   delete entries;
 }
