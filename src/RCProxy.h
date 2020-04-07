@@ -34,16 +34,17 @@ using namespace RAMCloud;
 class RCProxy{
   private:
     void _log(clock_t);
+    void _cleanInfo();
     bool _isMultiReadRequestOK(MultiReadObject*);
     bool _isObjectBufferNULL(Tub<ObjectBuffer>*);
-    void _cleanInfo();
+    void _deletePointer(void*);
+    void _singlePush(RCRelation*);
+    void _setMultiWriteRequest(void*, RCTable*, RCEntry&);
+    void _multiPush(RCRelation*); 
+    RCRelation* _singlePull(RCTable*, vector<string>&);
+    void _setMultiReadRequest(void*, RCTable*, string, Tub<ObjectBuffer>*);
     void _readEntries(MultiReadObject**, Tub<ObjectBuffer>*,uint32_t,vector<RCEntry>&);
     RCRelation* _multiPull(RCTable*, vector<string>&);
-    RCRelation* _singlePull(RCTable*, vector<string>&);
-    void _singlePush(RCRelation*);
-    void _multiPush(RCRelation*); 
-    void _setMultiWriteRequest(void*, RCTable*, RCEntry&);
-    void _setMultiReadRequest(void*, RCTable*, string, Tub<ObjectBuffer>*);
 
   public:
     uint32_t info[INFO_LENGTH];
@@ -58,7 +59,7 @@ class RCProxy{
     RCRelation* pull(RCTable *, vector<string>&);
     void push(RCRelation*);
     void dropTable(const char *tableName);
-    vector<string> enumerateKeysFromTable(RCTable*);
+    vector<string> listKeys(RCTable*);
 };
 
 #endif

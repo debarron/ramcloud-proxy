@@ -82,7 +82,6 @@ void testingMultiPushSinglePull(RCProxy &client){
   }
 }
 
-
 void testingMultiPushMultiPull(RCProxy &client){
   vector<RCEntry> numbers;
   vector<string> numKeys;
@@ -128,6 +127,17 @@ void testingMultiPushMultiPull(RCProxy &client){
 }
 
 
+void testingListKeys(RCProxy &client){
+  vector<string> keys;
+  RCTable *dataTest;
+ 
+  dataTest = client.getTable("numbersTestingM");
+  keys = client.listKeys(dataTest);
+
+  for(uint32_t i = 0; i < keys.size(); i++)
+    cout << "Keys [" << i <<"] = '" << keys[i] << "'\n";
+}
+
 
 
 int main(int argc, char **argv){
@@ -150,6 +160,7 @@ int main(int argc, char **argv){
   testSinglePushSinglePull(rc);
   testingMultiPushSinglePull(rc);
   testingMultiPushMultiPull(rc);
+  testingListKeys(rc);
 
   return 0;
 }
