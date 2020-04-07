@@ -8,10 +8,10 @@ RCEntry::RCEntry(string key, const char* bytes, uint32_t bytesLength){
 }
 
 RCEntry::~RCEntry(){
-  cout << "From RCEntry "<< this->key <<"\n";
-  if (bytes == NULL)
-    cout << "bytes are null\n";
-  else
-    delete bytes;
+//  cout << "From RCEntry "<< this->key <<"\n";
+//  if (bytes == NULL)
+//    cout << "bytes are null\n";
+//  else
+//    delete bytes;
 }
 

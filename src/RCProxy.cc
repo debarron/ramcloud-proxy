@@ -234,7 +234,7 @@ RCProxy::RCProxy(char *serviceLocator, char *clusterName){
 }
 
 RCProxy::~RCProxy(){
-  delete client;
+//  delete client;
 }
 
 RCTable* RCProxy::getTable(char *tableName){
