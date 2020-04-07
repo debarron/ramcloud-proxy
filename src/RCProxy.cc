@@ -196,8 +196,8 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   _readEntries(requests, buffers, keysCount, *entries);
   RCRelation *result = new RCRelation(table, entries);
 
-  for(uint32_t i = 0; i < keysCount; i++)
-    _deletePointer(requests[i]);
+  //for(uint32_t i = 0; i < keysCount; i++)
+  //  _deletePointer(requests[i]);
 
   return result;
   /*ObjectBuffer *result;
@@ -282,14 +282,15 @@ void RCProxy::dropTable(const char *tableName){
   this->client->dropTable(tableName);
 }
 
-vector<string> RCProxy::listKeys(RCTable *table){
-  vector<string> keys;
+vector<string> *RCProxy::listKeys(RCTable *table){
+  vector<string> *keys;
 
   bool isValid;
   uint32_t bufferLength, keyLength;
   const void *buffer;
 
   TableEnumerator enumerator (*this->client, table->tableId, true);
+  keys = new vector<string>();
   while(enumerator.hasNext() && isValid){
     keyLength = bufferLength = 0;
     enumerator.next(&bufferLength, &buffer);
@@ -297,7 +298,7 @@ vector<string> RCProxy::listKeys(RCTable *table){
 
     keyLength = enumObject.getKeyLength();
     string key = string(reinterpret_cast<const char *>(enumObject.getKey()), keyLength);
-    keys.push_back(key);
+    keys->push_back(key);
   }
 
   return keys;

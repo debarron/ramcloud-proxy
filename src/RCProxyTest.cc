@@ -129,14 +129,14 @@ void testingMultiPushMultiPull(RCProxy &client){
 
 
 void testingListKeys(RCProxy &client){
-  vector<string> keys;
+  vector<string> *keys;
   RCTable *dataTest;
  
   dataTest = client.getTable("numbersTestingM");
   keys = client.listKeys(dataTest);
 
   for(uint32_t i = 0; i < keys.size(); i++)
-    cout << "Keys [" << i <<"] = '" << keys[i] << "'\n";
+    cout << "Keys [" << i <<"] = '" << (*keys)[i] << "'\n";
 }
 
 
