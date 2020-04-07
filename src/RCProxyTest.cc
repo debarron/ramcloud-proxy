@@ -135,7 +135,7 @@ void testingListKeys(RCProxy &client){
   dataTest = client.getTable("numbersTestingM");
   keys = client.listKeys(dataTest);
 
-  for(uint32_t i = 0; i < keys.size(); i++)
+  for(uint32_t i = 0; i < keys->size(); i++)
     cout << "Keys [" << i <<"] = '" << (*keys)[i] << "'\n";
 }
 
