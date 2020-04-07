@@ -284,14 +284,12 @@ void RCProxy::dropTable(const char *tableName){
 
 vector<string> *RCProxy::listKeys(RCTable *table){
   vector<string> *keys;
-
-  bool isValid;
   uint32_t bufferLength, keyLength;
   const void *buffer;
 
   TableEnumerator enumerator (*this->client, table->tableId, true);
   keys = new vector<string>();
-  while(enumerator.hasNext() && isValid){
+  while(enumerator.hasNext()){
     keyLength = bufferLength = 0;
     enumerator.next(&bufferLength, &buffer);
     Object enumObject (buffer, bufferLength);
