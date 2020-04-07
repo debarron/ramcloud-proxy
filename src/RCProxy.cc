@@ -107,9 +107,7 @@ void RCProxy::_multiPush(RCRelation *input){
 
 RCRelation* RCProxy::_singlePull(RCTable *table, vector<string> &keys){
   clock_t start;
-  uint32_t dataLength;
   Buffer buffer;
-  char *data;
   vector<RCEntry> *entry;
 
   _cleanInfo();
@@ -118,13 +116,16 @@ RCRelation* RCProxy::_singlePull(RCTable *table, vector<string> &keys){
   _log(start);
 
   Buffer::Iterator reader(&buffer);
-  data = (char *)reader.getData();
-  dataLength = reinterpret_cast<uint32_t>(reader.getLength());
+  const char *data = reinterpret_cast<const char *>(reader.getData());
+  uint32_t dataLength = reinterpret_cast<uint32_t>(reader.getLength());
 
-  if(data == NULL) info[I_NULLS]++;
+  if(data == NULL) {
+    info[I_NULLS]++;
+    return NULL;
+  }
+
   entry = new vector<RCEntry>();
   entry->push_back(RCEntry(keys[0], data, dataLength));
-
   return new RCRelation(table, entry);
 }
 

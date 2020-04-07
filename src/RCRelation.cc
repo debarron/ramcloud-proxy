@@ -9,8 +9,6 @@ RCRelation::RCRelation(RCTable* table, vector<RCEntry> *entries){
 
 RCRelation::~RCRelation(){
   entries->clear();
-
-  delete table;
   delete entries;
 }
 

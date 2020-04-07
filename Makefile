@@ -21,7 +21,7 @@ OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
 APP_CC = ${CC} ${CC_FLAGS} -I${SRC} ${RAMCLOUD_FLAGS} -g -c
 
 build_dirs:
-	mkdir ${LIB} && mkdir ${BIN}
+	mkdir ${LIB} ; mkdir ${BIN}
 
 push: 
 	@echo ">> ramcloud-multiwrite, Saving project on github"
@@ -57,10 +57,10 @@ ${LIB}/RCProxyTest.o:
 
 RC_CORE: ${LIB}/RCEntry.o ${LIB}/RCTable.o ${LIB}/RCRelation.o ${LIB}/RCProxy.o ${LIB}/RCProxyTest.o
 
-RCProxyTest: build_dirs RC_CORE
+RCProxyTest: RC_CORE
 	${CC} ${RC_CORE_OBJS} -o ${BIN}/RCProxyTest ${BUILD_FLAGS}
 
-all: RC_CORE RCProxyTest
+all: build_dirs RC_CORE RCProxyTest
 
 
 
