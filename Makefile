@@ -60,7 +60,7 @@ RC_CORE: ${LIB}/RCEntry.o ${LIB}/RCTable.o ${LIB}/RCRelation.o ${LIB}/RCProxy.o 
 RCProxyTest: RC_CORE
 	${CC} ${RC_CORE_OBJS} -o ${BIN}/RCProxyTest ${BUILD_FLAGS}
 
-all: build_dirs RC_CORE RCProxyTest
+all: RC_CORE RCProxyTest
 
 
 
