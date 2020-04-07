@@ -179,7 +179,7 @@ RCRelation* RCProxy::_multiPull(RCTable *table, vector<string> &keys){
   MultiReadObject *requests[keysCount];
   MultiReadObject requestedObjects[keysCount];
   for (uint32_t i = 0; i < keysCount; i++){
-    _setMultiReadRequest(&requestedObjects[i], table, keys[i], &buffer[i]);
+    _setMultiReadRequest(&requestedObjects[i], table, keys[i], &buffers[i]);
     requests[i] = &requestedObjects[i];
 
     //const char *key = keys[i].data();
