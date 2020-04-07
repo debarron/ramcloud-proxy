@@ -42,7 +42,7 @@ class RCProxy{
     void _setMultiWriteRequest(void*, RCTable*, RCEntry&);
     void _multiPush(RCRelation*); 
     RCRelation* _singlePull(RCTable*, vector<string>&);
-    void _setMultiReadRequest(void*, RCTable*, string, Tub<ObjectBuffer>*);
+    void _setMultiReadRequest(void*, RCTable*, string&, Tub<ObjectBuffer>*);
     void _readEntries(MultiReadObject**, Tub<ObjectBuffer>*,uint32_t,vector<RCEntry>&);
     RCRelation* _multiPull(RCTable*, vector<string>&);
 
