@@ -6,5 +6,4 @@ RCTable::RCTable(char* tableName, uint64_t tableId){
 }
 
 RCTable::~RCTable(){
-  cout << "From RCTable "<< this->tableName << "\n";
 }

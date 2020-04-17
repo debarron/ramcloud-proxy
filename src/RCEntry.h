@@ -17,9 +17,9 @@ using namespace std;
 class RCEntry {
   public:
     string key;
-    char *bytes;
+    char *bytes = NULL;
     uint32_t bytesLength;
-    RCEntry(string, const char*, uint32_t);
+    RCEntry(string&, const char*, uint32_t&);
     ~RCEntry();
 };
 

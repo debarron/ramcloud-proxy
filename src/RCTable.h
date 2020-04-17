@@ -10,7 +10,7 @@ class RCTable{
   public:
     uint64_t tableId;
     char* tableName;
-    RCTable(char*, uint64_t);
+    RCTable(const char*, uint64_t);
     ~RCTable();
 };
 
