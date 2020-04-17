@@ -3,15 +3,15 @@
 
 #include <cstdint>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 class RCTable{
   public:
     uint64_t tableId;
-    char* tableName;
-    RCTable(const char*, uint64_t);
-    ~RCTable();
+    string tableName;
+    RCTable(string&, uint64_t&);
 };
 
 #endif

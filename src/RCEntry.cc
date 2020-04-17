@@ -8,7 +8,6 @@ RCEntry::RCEntry(string &key, const char* bytes, uint32_t &bytesLength){
 }
 
 RCEntry::~RCEntry(){
-  if (bytes != NULL)
-    delete []bytes;
+  delete []bytes;
 }
 
