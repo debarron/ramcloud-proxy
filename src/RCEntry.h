@@ -10,15 +10,16 @@ using namespace std;
 
 
 /** RCEntry
- * When constructed, this class' constructor 
- * copies the content from the const char pointer
- * and allocate memory to copy the content
+ * Data passed as argument in the constructor gets
+ * copied to another data space, allocated at that
+ * time. 
 */ 
 class RCEntry {
   public:
     string key;
     char *bytes = NULL;
     uint32_t bytesLength;
+
     RCEntry(string&, const char*, uint32_t&);
     ~RCEntry();
 };
