@@ -252,7 +252,7 @@ RCTable* RCProxy::getTable(char *tableName){
 
   _log(start);
   string tableName_(tableName);
-  return new RCTable(tableName, tableId);
+  return new RCTable(tableName_, tableId);
 }
 
 RCTable* RCProxy::createTable(char *tableName, int serverSpan){
