@@ -25,7 +25,7 @@ RC_CORE_OBJS = `find ${LIB} | grep RC --colour=never | xargs`
 
 build_dirs:
 	mkdir ${LIB} || echo "${LIB} already exists"
- 	mkdir ${BIN} || echo "${BIN} already exists"
+	mkdir ${BIN} || echo "${BIN} arelady exists"
 
 push: 
 	@echo ">> ramcloud-multiwrite, Saving project on github"
