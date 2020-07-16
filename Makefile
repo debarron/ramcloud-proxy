@@ -24,7 +24,8 @@ RC_PROXY_TESTS = RCProxyTest
 RC_CORE_OBJS = `find ${LIB} | grep RC --colour=never | xargs`
 
 build_dirs:
-	mkdir ${LIB} ; mkdir ${BIN}
+	mkdir ${LIB} || echo "${LIB} already exists"
+ 	mkdir ${BIN} || echo "${BIN} already exists"
 
 push: 
 	@echo ">> ramcloud-multiwrite, Saving project on github"
