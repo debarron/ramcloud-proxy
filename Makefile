@@ -23,8 +23,12 @@ RC_PROXY_TESTS = RCProxyTest
 
 RC_CORE_OBJS = `find ${LIB} | grep RC --colour=never | xargs`
 
-all: $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
+all: create-dirs $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
 .PHONY: all
+
+create-dirs:
+	[ -d ${LIB} ] || mkdir ${LIB}
+	[ -d ${BIN} ] || mkdir ${BIN}
 
 push: 
 	@echo ">> ramcloud-multiwrite, Saving project on github"
