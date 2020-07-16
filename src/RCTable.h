@@ -11,7 +11,7 @@ class RCTable{
   public:
     uint64_t tableId;
     string tableName;
-    RCTable(string&, uint64_t&);
+    RCTable(string, uint64_t);
 };
 
 #endif

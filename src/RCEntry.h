@@ -20,7 +20,7 @@ class RCEntry {
     char *bytes = NULL;
     uint32_t bytesLength;
 
-    RCEntry(string&, const char*, uint32_t&);
+    RCEntry(string, const char*, uint32_t);
     ~RCEntry();
 };
 
