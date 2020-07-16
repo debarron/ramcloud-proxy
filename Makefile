@@ -40,8 +40,8 @@ clean:
 	@rm ${BIN}/* 2< /dev/null || echo "Nothing to remove"
 
 
-all: $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
-.PHONY: build_dirs all
+all: build_dirs $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
+.PHONY: all
 
 $(RC_PROXY_OBJS): 
 	@echo ">> ramcloud-proxy Building $@.o"
