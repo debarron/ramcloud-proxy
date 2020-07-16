@@ -18,17 +18,10 @@ OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
 APP_CC = ${CC} ${CC_FLAGS} -I${SRC} ${RAMCLOUD_FLAGS} -g -c
 
 RC_PROXY_OBJS = RCEntry RCTable RCRelation
-RC_PROXY_APPS = RCProxy RCProxyTest
+RC_PROXY_LIB = RCProxy
+RC_PROXY_TESTS = RCProxyTest
 
 RC_CORE_OBJS = `find ${LIB} | grep RC --colour=never | xargs`
-
-all: $(RC_PROXY_OBJS) $(RC_PROXY_APPS) $(RC_TESTS)
-.PHONY: all
-
-#RC_CORE: ${LIB}/RCEntry.o ${LIB}/RCTable.o ${LIB}/RCRelation.o ${LIB}/RCProxy.o ${LIB}/RCProxyTest.o
-
-RC_CORE: RCEntry RCTable RCRelation RCProxy
-RC_TEST: RCProxyTest
 
 build_dirs:
 	mkdir ${LIB} ; mkdir ${BIN}
@@ -45,17 +38,19 @@ clean:
 	@echo ">> ramcloud-multiwrite, Cleaning ./bin"
 	@rm ${BIN}/* 2< /dev/null || echo "Nothing to remove"
 
+
+all: $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
+.PHONY: build_dirs all
+
 $(RC_PROXY_OBJS): 
 	@echo ">> ramcloud-proxy Building $@.o"
 	${OBJ_CC} ${SRC}/$@.cc -o ${LIB}/$@.o
 
-$(RC_PROXY_APPS): 
+$(RC_PROXY_LIB): $(RC_PROXY_OBJS)
 	@echo ">> ramcloud-proxy Building $@"
 	${APP_CC} ${SRC}/$@.cc -o ${LIB}/$@.o
 
-#${LIB}/%.o: 
-#	@echo ">> ramcloud-multiwrite, Building $@.o"
-#	${OBJ_CC} ${SRC}/$@.cc -o ${LIB}/$@.o 
+$(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
+	@echo ">> ramcloud-proxy Building $@"
+	${APP_CC} ${SRC}/$@.cc -o ${BIN}/$@
 
-#RCProxyTest: RC_CORE
-#	${CC} ${RC_CORE_OBJS} -o ${BIN}/RCProxyTest ${BUILD_FLAGS}
