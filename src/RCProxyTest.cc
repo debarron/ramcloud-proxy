@@ -95,7 +95,7 @@ void testingMultiPushMultiPull(RCProxy &client){
   for(uint32_t i = 0; i < 5; i++){
     string key = "key" + to_string(i);
     const char *theKey = key.data();
-    string theKey_ = string(theKey)
+    string theKey_ = string(theKey);
     numbers.push_back(RCEntry(theKey_, (char *)&valuesIn[i], sizeof(uint32_t)));
     numKeys.push_back(theKey_);
   }
