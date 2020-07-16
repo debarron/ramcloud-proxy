@@ -164,7 +164,8 @@ vector<RCEntry> &entries){
     const char *key = reinterpret_cast<const char *>(result->getKey(0));
     const char *data = reinterpret_cast<const char *>(result->getValue(&dataLength));
 
-    entries.push_back(RCEntry(string(key), data, dataLength));
+    string key_(key);
+    entries.push_back(RCEntry(key_, data, dataLength));
     info[I_BYTES] += dataLength;
   }
 }
@@ -250,6 +251,7 @@ RCTable* RCProxy::getTable(char *tableName){
   }
 
   _log(start);
+  string tableName_(tableName);
   return new RCTable(tableName, tableId);
 }
 
