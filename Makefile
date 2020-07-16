@@ -23,6 +23,9 @@ RC_PROXY_TESTS = RCProxyTest
 
 RC_CORE_OBJS = `find ${LIB} | grep RC --colour=never | xargs`
 
+all: $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
+.PHONY: all
+
 push: 
 	@echo ">> ramcloud-multiwrite, Saving project on github"
 	eval ${GIT_ADD}
@@ -35,9 +38,6 @@ clean:
 	@echo ">> ramcloud-multiwrite, Cleaning ./bin"
 	@rm ${BIN}/* 2< /dev/null || echo "Nothing to remove"
 
-
-all: $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
-.PHONY: all
 
 $(RC_PROXY_OBJS): 
 	@echo ">> ramcloud-proxy Building $@.o"
