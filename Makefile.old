@@ -20,10 +20,7 @@ BUILD_FLAGS = ${RAMCLOUD_FLAGS} -I${SRC} -L${LIB}
 OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
 APP_CC = ${CC} ${CC_FLAGS} -I${SRC} ${RAMCLOUD_FLAGS} -g -c
 
-all: RC_CORE RCProxyTest
-.PHONY: all
-
-RC_CORE: ${LIB}/RCEntry.o ${LIB}/RCTable.o ${LIB}/RCRelation.o ${LIB}/RCProxy.o ${LIB}/RCProxyTest.o
+all: RC
 
 build_dirs:
 	mkdir ${LIB} ; mkdir ${BIN}
@@ -40,13 +37,32 @@ clean:
 	@echo ">> ramcloud-multiwrite, Cleaning ./bin"
 	@rm ${BIN}/* 2< /dev/null || echo "Nothing to remove"
 
-${LIB}/%.o: 
-	@echo ">> ramcloud-multiwrite, Building $@.o"
-	${OBJ_CC} ${SRC}/$@.cc -o ${LIB}/$@.o 
+${LIB}/RCEntry.o: 
+	@echo ">> ramcloud-multiwrite, Building RCEntry.o"
+	${OBJ_CC} ${SRC}/RCEntry.cc -o ${LIB}/RCEntry.o 
+
+${LIB}/RCTable.o: 
+	@echo ">> ramcloud-multiwrite, Building RCTable.o"
+	${OBJ_CC} ${SRC}/RCTable.cc -o ${LIB}/RCTable.o 
+
+${LIB}/RCRelation.o: 
+	@echo ">> ramcloud-multiwrite, Building RCRelation.o"
+	${OBJ_CC} ${SRC}/RCRelation.cc -o ${LIB}/RCRelation.o 
+
+${LIB}/RCProxy.o:  
+	@echo ">> ramcloud-multiwrite, Building RCProxy.o"
+	${APP_CC} ${SRC}/RCProxy.cc -o ${LIB}/RCProxy.o
+
+${LIB}/RCProxyTest.o: 
+	@echo ">> ramcloud-multiwrite, Building RCProxyTest.o"
+	${APP_CC} ${SRC}/RCProxyTest.cc -o ${LIB}/RCProxyTest.o
+
+RC_CORE: ${LIB}/RCEntry.o ${LIB}/RCTable.o ${LIB}/RCRelation.o ${LIB}/RCProxy.o ${LIB}/RCProxyTest.o
 
 RCProxyTest: RC_CORE
 	${CC} ${RC_CORE_OBJS} -o ${BIN}/RCProxyTest ${BUILD_FLAGS}
 
+all: RC_CORE RCProxyTest
 
 
 
