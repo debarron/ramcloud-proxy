@@ -132,7 +132,7 @@ RCRelation* RCProxy::_singlePull(RCTable *table, vector<string> &keys){
 void RCProxy::_setMultiReadRequest(
 void *requestPointer, 
 RCTable *table, 
-string &key,
+string key,
 Tub<ObjectBuffer> *buffer){
 
   const char *keyValue = key.data();
