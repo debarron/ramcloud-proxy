@@ -1,11 +1,16 @@
 #ifndef RCRELATION_H
 #define RCRELATION_H
 
-#include <cstdint>
 #include <vector>
 #include <iostream>
 #include "RCTable.h"
 #include "RCEntry.h"
+
+#ifdef __cplusplus
+#include <cstdint>
+#else
+#include <stdint.h>
+#endif
 
 using namespace std;
 

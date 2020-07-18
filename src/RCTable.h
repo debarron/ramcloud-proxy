@@ -1,9 +1,14 @@
 #ifndef RCTABLE_H
 #define RCTABLE_H
 
-#include <cstdint>
 #include <iostream>
 #include <string>
+
+#ifdef __cplusplus
+#include <cstdint>
+#else
+#include <stdint.h>
+#endif
 
 using namespace std;
 

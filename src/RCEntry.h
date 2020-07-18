@@ -1,10 +1,15 @@
 #ifndef RCENTRY_H
 #define RCENTRY_H
 
-#include <cstdint>
 #include <string>
 #include <cstring>
 #include <iostream>
+
+#ifdef __cplusplus
+#include <cstdint>
+#else
+#include <stdint.h>
+#endif
 
 using namespace std;
 
