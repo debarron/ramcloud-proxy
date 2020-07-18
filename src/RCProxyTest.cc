@@ -1,8 +1,13 @@
 #include "RCProxy.h"
-#include <string>
 #include <iostream>
-#include <cstring>
 #include <vector>
+
+#ifdef __cplusplus
+#include <string>
+#include <cstring>
+#else
+#include <string.h>
+#endif
 
 using namespace std;
 

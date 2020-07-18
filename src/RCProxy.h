@@ -24,9 +24,14 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include <vector>
+#include <iostream>
+
+#ifdef __cplusplus
 #include <string>
 #include <cstring>
-#include <iostream>
+#else
+#include <string.h>
+#endif
 
 using namespace std;
 using namespace RAMCloud;
