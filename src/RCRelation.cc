@@ -1,5 +1,11 @@
 #include "RCRelation.h"
 
+#include <vector>
+#include <iostream>
+#include "RCTable.h"
+#include "RCEntry.h"
+#include <cstdint>
+
 using namespace std;
 
 RCRelation::RCRelation(RCTable* table, vector<RCEntry> *entries){

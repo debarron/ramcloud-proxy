@@ -7,32 +7,6 @@
 #define I_BYTES     3
 #define INFO_LENGTH 4
 
-#include "RCEntry.h"
-#include "RCTable.h"
-#include "RCRelation.h"
-
-#include "RamCloud.h"
-#include "Buffer.h"
-#include "Object.h"
-#include "ObjectBuffer.h"
-#include "ClientException.h"
-#include "MultiRead.h"
-#include "Tub.h"
-#include "TableEnumerator.h"
-
-#include <ctime>
-#include <sys/types.h>
-#include <stdio.h>
-#include <vector>
-#include <iostream>
-
-#ifdef __cplusplus
-#include <string>
-#include <cstring>
-#else
-#include <string.h>
-#endif
-
 using namespace std;
 using namespace RAMCloud;
 
