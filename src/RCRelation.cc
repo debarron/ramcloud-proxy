@@ -1,10 +1,11 @@
 #include "RCRelation.h"
 
+#include <cstdint>
 #include <vector>
 #include <iostream>
+
 #include "RCTable.h"
 #include "RCEntry.h"
-#include <cstdint>
 
 using namespace std;
 

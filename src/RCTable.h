@@ -1,6 +1,9 @@
 #ifndef RCTABLE_H
 #define RCTABLE_H
 
+#include <string>
+#include <cstdint>
+
 using namespace std;
 
 class RCTable{

@@ -1,6 +1,9 @@
 #ifndef RCENTRY_H
 #define RCENTRY_H
 
+#include <string>
+#include <cstdint>
+
 using namespace std;
 
 /** RCEntry

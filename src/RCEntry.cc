@@ -5,6 +5,8 @@
 #include <string>
 #include <string.h>
 
+using namespace std;
+
 RCEntry::RCEntry(string key, const char* bytes, uint32_t bytesLength){
   this->key = key;
   this->bytesLength = bytesLength;
