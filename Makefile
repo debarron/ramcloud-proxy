@@ -15,7 +15,7 @@ RAMCLOUD_LIB = -L${RC_HOME}/obj.master -L${RC_HOME}/install/lib -lramcloud
 RAMCLOUD_FLAGS = ${RAMCLOUD_INCLUDE} ${RAMCLOUD_LIB}
 
 OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
-APP_CC = ${CC} ${CC_FLAGS} -I${SRC} ${RAMCLOUD_FLAGS} -g
+APP_CC = ${CC} ${CC_FLAGS} -I${SRC} -I${LIB} ${RAMCLOUD_FLAGS} -g
 
 RC_PROXY_OBJS_FILE = $(shell find ${LIB} | grep '\.o' --colour=never | xargs)
 RC_PROXY_OBJS = RCEntry RCTable RCRelation
@@ -52,8 +52,8 @@ $(RC_PROXY_LIB): $(RC_PROXY_OBJS)
 
 $(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
 	@echo ">> ramcloud-proxy Building $@"
-	${APP_CC} -I -I${LIB} ${SRC}/$@.cc -c -o ${LIB}/$@.o
-	${APP_CC} ${RC_PROXY_OBJS_FILE} ${LIB}/$@.o -o ${BIN}/$@
+	${APP_CC} -I${LIB} ${SRC}/$@.cc -c -o ${LIB}/$@.o
+	${APP_CC} -o ${BIN}/$@ ${LIB}/$@.o ${RC_PROXY_OBJS_FILE} 
 
 #
 #g++ -w -std=c++11 -c -o lib/C_RCProxy_test.o ./src/C_RCProxy_test.c -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./lib -I./src -Imodules/ramcloud-proxy/src -Imodules/ramcloud-proxy/lib
