@@ -13,6 +13,8 @@ using namespace std;
 
 #define CLUSTER_NAME "_rctest_"
 
+int server_span;
+
 void testSinglePushSinglePull(RCProxy &client){
   vector<RCEntry> number;
   vector<string> numKey;
@@ -22,7 +24,7 @@ void testSinglePushSinglePull(RCProxy &client){
   double timePush, timePull;
  
   valueIn = 69;
-  dataTest = client.createTable("numTesting", 10);
+  dataTest = client.createTable("numTesting", server_span);
   number.push_back(RCEntry("test", (char *)&valueIn, sizeof(uint32_t)));
 
   RCRelation dataInput (dataTest, &number);
@@ -56,7 +58,7 @@ void testingMultiPushSinglePull(RCProxy &client){
   uint32_t valuesIn[5] = {1, 2, 3, 4, 5};
   uint32_t valueOut;
  
-  dataTest = client.createTable("numbersTesting", 10);
+  dataTest = client.createTable("numbersTesting", server_span);
   for(uint32_t i = 0; i < 5; i++){
     string key = "key" + to_string(i);
     numbers.push_back(RCEntry(key, (char *)&valuesIn[i], sizeof(uint32_t)));
@@ -96,7 +98,7 @@ void testingMultiPushMultiPull(RCProxy &client){
   uint32_t valuesIn[5] = {1, 2, 3, 4, 5};
   uint32_t valuesOut[5];
  
-  dataTest = client.createTable("numbersTestingM", 10);
+  dataTest = client.createTable("numbersTestingM", server_span);
   for(uint32_t i = 0; i < 5; i++){
     string key = "key" + to_string(i);
     const char *theKey = key.data();
@@ -152,6 +154,7 @@ int main(int argc, char **argv){
   double eTime;
 
   serviceLocator = argv[1];
+  server_span = atoi(argv[2]);
 
   eTime = 0.0;
   RCProxy rc(serviceLocator, CLUSTER_NAME);
