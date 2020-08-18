@@ -10,8 +10,8 @@ RC_HOME = ${RAMCLOUD_HOME}
 CC = g++
 CC_FLAGS = -Wall -std=c++11 -Wextra -O3
 
-RAMCLOUD_INCLUDE = -I${RC_HOME}/src -I${RC_HOME}/obj.master
-RAMCLOUD_LIB = -L${RC_HOME}/obj.master -L${RC_HOME}/install/include/ramcloud -lramcloud
+RAMCLOUD_INCLUDE = -I${RC_HOME}/src -I${RC_HOME}/obj.master -I${RC_HOME}/install/include/ramcloud 
+RAMCLOUD_LIB = -L${RC_HOME}/obj.master -L${RC_HOME}/install/lib -lramcloud
 RAMCLOUD_FLAGS = ${RAMCLOUD_INCLUDE} ${RAMCLOUD_LIB}
 
 OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
@@ -52,7 +52,7 @@ $(RC_PROXY_LIB): $(RC_PROXY_OBJS)
 
 $(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
 	@echo ">> ramcloud-proxy Building $@"
-	${APP_CC} ${SRC}/$@.cc -c -o ${LIB}/$@.o
+	${APP_CC} -I -I${LIB} ${SRC}/$@.cc -c -o ${LIB}/$@.o
 	${APP_CC} ${RC_PROXY_OBJS_FILE} ${LIB}/$@.o -o ${BIN}/$@
 
 #
