@@ -47,7 +47,7 @@ $(RC_PROXY_OBJS):
 
 $(RC_PROXY_LIB): $(RC_PROXY_OBJS)
 	@echo ">> ramcloud-proxy Building $@"
-	${APP_CC} ${SRC}/$@.cc -o ${LIB}/$@.o
+	${APP_CC} ${SRC}/$@.cc -c -o ${LIB}/$@.o
 
 $(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
 	@echo ">> ramcloud-proxy Building $@"
