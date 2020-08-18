@@ -13,7 +13,6 @@ CC_FLAGS = -Wall -std=c++0x -Wextra -O3
 RAMCLOUD_INCLUDE = -I${RC_HOME}/src -I${RC_HOME}/obj.master
 RAMCLOUD_LIB = -L${RC_HOME}/obj.master -L${RC_HOME}/install/include/ramcloud -lramcloud
 RAMCLOUD_FLAGS = ${RAMCLOUD_INCLUDE} ${RAMCLOUD_LIB}
-BUILD_FLAGS = ${RAMCLOUD_FLAGS} -I${SRC} -L${LIB}
 OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
 APP_CC = ${CC} ${CC_FLAGS} -I${SRC} ${RAMCLOUD_FLAGS} -g -c
 
@@ -21,7 +20,6 @@ RC_PROXY_OBJS = RCEntry RCTable RCRelation
 RC_PROXY_LIB = RCProxy
 RC_PROXY_TESTS = RCProxyTest
 
-RC_CORE_OBJS = `find ${LIB} | grep RC --colour=never | xargs`
 
 all: create-dirs $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
 .PHONY: all
