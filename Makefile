@@ -53,7 +53,7 @@ $(RC_PROXY_LIB): $(RC_PROXY_OBJS)
 $(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
 	@echo ">> ramcloud-proxy Building $@"
 	${APP_CC} -I${LIB} ${SRC}/$@.cc -c -o ${LIB}/$@.o
-	${APP_CC} -o ${BIN}/$@ ${LIB}/$@.o ${RC_PROXY_OBJS_FILE} 
+	${CC} ${CC_FLAGS} -o ${BIN}/$@ ${LIB}/$@.o ${RC_PROXY_OBJS_FILE} ${RAMCLOUD_FLAGS} -I${SRC} -I${LIB}
 
 #
 #g++ -w -std=c++11 -c -o lib/C_RCProxy_test.o ./src/C_RCProxy_test.c -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./lib -I./src -Imodules/ramcloud-proxy/src -Imodules/ramcloud-proxy/lib
