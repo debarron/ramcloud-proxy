@@ -52,8 +52,10 @@ void test_single_write_multi_read(RCWrapper &wrapper){
   for (int i = 1; i < 5; i++){
     string new_key = key + to_string(i);
     string new_value = value + to_string(i);
+    char *new_value_cstr = (char *)malloc(sizeof(char) * new_value.length());
+    strcpy(new_value_cstr, new_value.c_str());
 
-    Entry new_entry = make_tuple(new_key, new_value.data(), new_value.length());
+    Entry new_entry = make_tuple(new_key, new_value_cstr, new_value.length());
     keys.push_back(new_entry);
     wrapper.write(table_id, new_key, new_value.data(), new_value.length());
   }
