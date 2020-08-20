@@ -15,6 +15,7 @@
 #include "RamCloud.h"
 #include "ClientException.h"
 #include "Buffer.h"
+#include "ObjectBuffer.h"
 #include "MultiRead.h"
 #include "Tub.h"
 
@@ -96,7 +97,7 @@ Entry RCWrapper::read(uint64_t table_id, string key){
 }
 
 void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data, 
-    MultiReadObject *memory_block, Tub<Buffer> *request_buffer, MultiReadObject **request_pointer){
+    MultiReadObject *memory_block, Tub<ObjectBuffer> *request_buffer, MultiReadObject **request_pointer){
   for(vector<Entry>::iterator it = data.begin(); it != data.end(); ++it){
     string key = get<0>(*it);
     const char *key_value = key.data();
@@ -115,7 +116,7 @@ Relation *RCWrapper::read(Relation &data){
 
   MultiReadObject request[total_entries];
   MultiReadObject *request_pointer[total_entries];
-  Tub<Buffer> request_buffer[total_entries];
+  Tub<ObjectBuffer> request_buffer[total_entries];
   int request_index = 0;
   
   for(RelationIterator it = data.begin(); it != data.end(); ++it){
