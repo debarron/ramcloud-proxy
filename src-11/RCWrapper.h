@@ -39,7 +39,7 @@ class RCWrapper{
     double elapsed_time();
     uint64_t create_table(string, int);
     uint64_t get_table_id(string);
-    void write(uint64_t, string, char*, uint32_t);
+    void write(uint64_t, string, const char*, uint32_t);
     Entry read(uint64_t, string);
     /*int write(Relation&, int);
     Relation *read(Relation&);*/

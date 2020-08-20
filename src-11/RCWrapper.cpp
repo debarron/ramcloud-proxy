@@ -68,7 +68,7 @@ uint64_t RCWrapper::get_table_id(string table_name){
 // TABLE OPERATIONS
 // ****************************
 
-void RCWrapper::write(uint64_t table_id, string entry_key, char *entry_value, uint32_t entry_value_length){
+void RCWrapper::write(uint64_t table_id, string entry_key, const char *entry_value, uint32_t entry_value_length){
   uint64_t version;
 
   this->_client->write(
