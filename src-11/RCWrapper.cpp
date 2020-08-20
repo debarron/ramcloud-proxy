@@ -93,6 +93,36 @@ Entry RCWrapper::read(uint64_t table_id, string key){
   return result;
 }
 
+void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data, 
+    MultiReadObject *memory_block, Tub<Buffer> *request_buffer, MultiReadObject **request_pointer){
+  for(vector<Entry>::iterator it = data.begin(); it != data.end(); ++it){
+    string key = get<0>(data);
+    const char *key_value = key.data();
+    uint32_t key_length = key.length();
+
+    new((void*)memory_block) MultiReadObject(table_id, key_value, key_length, request_buffer++);
+    *request_pointer = memory_block;
+    memory_block++;
+    request_pointer++;
+  }
+}
+
+Relation *RCWrapper::read(Relation &data){
+  int total_entries = _count_entries(data);
+
+  MultiReadObject request[total_entries];
+  MultiReadObject *request_pointer[total_entries];
+  Tub<Buffer> request_buffers[total_entries];
+  int request_index = 0;
+  
+  for(RelationIterator it = data.begin(); it != data.end(); ++it){
+    _multi_read_request((*it).first, (*it).second, &request[request_index], request_buffers[request_index], &request_pointer[request_index]);
+    request_index += ((*it).second).size();
+  }
+
+  this->_client->multiRead(request, total_entries);
+}
+
 /*
 int RCWrapper::_write_relation_from(Relation &data, int start_index, int end_index){
   // Generate the MultiWriteObject from data

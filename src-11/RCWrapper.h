@@ -41,7 +41,7 @@ class RCWrapper{
     uint64_t get_table_id(string);
     void write(uint64_t, string, const char*, uint32_t);
     Entry read(uint64_t, string);
+    Relation *read(Relation&);
     /*int write(Relation&, int);
-    Relation *read(Relation&);*/
 };
 #endif
