@@ -83,7 +83,7 @@ Entry RCWrapper::read(uint64_t table_id, string key){
   Buffer buffer;
   Entry result;
 
-  this->_client(table_id, key.c_str(), key.length(), &buffer);
+  this->_client->read(table_id, key.c_str(), key.length(), &buffer);
 
   Buffer::Iterator buffer_reader(&buffer);
   const char *const_data = reinterpret_cast<const char*>(buffer_reader.getData());
