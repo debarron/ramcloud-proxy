@@ -15,6 +15,8 @@
 #include "RamCloud.h"
 #include "ClientException.h"
 #include "Buffer.h"
+#include "MultiRead.h"
+#include "Tub.h"
 
 #include "RCWrapper.h"
 
@@ -100,10 +102,11 @@ void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data,
     const char *key_value = key.data();
     uint32_t key_length = key.length();
 
-    new((void*)memory_block) MultiReadObject(table_id, key_value, key_length, request_buffer++);
+    new((void*)memory_block) MultiReadObject(table_id, key_value, key_length, request_buffer);
     *request_pointer = memory_block;
     memory_block++;
     request_pointer++;
+    request_buffer++;
   }
 }
 
