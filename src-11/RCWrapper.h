@@ -42,6 +42,6 @@ class RCWrapper{
     void write(uint64_t, string, const char*, uint32_t);
     Entry read(uint64_t, string);
     Relation *read(Relation&);
-    /*int write(Relation&, int);
+    //int write(Relation&, int);
 };
 #endif
