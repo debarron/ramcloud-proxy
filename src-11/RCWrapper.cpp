@@ -20,12 +20,9 @@ using namespace std;
 using namespace RAMCloud;
 using namespace RCWrapper;
 
-void RCWrapper::_time_start(){_start = chrono::steady_clock::now();}
-void RCWrapper::_time_end(){_end = chrono::steady_clock::now();}
-double RCWrapper::elapsed_time(){ 
-  chrono::duration<double std::milli> elapsed = _end - _start;
-  return elapsed.count();
-}
+void RCWrapper::_time_start(){_start = clock();}
+void RCWrapper::_time_end(){_end = clock();}
+double RCWrapper::elapsed_time(){ return (double)(_end - start)/CLOCKS_PER_SEC;}
 int RCWrapper::_count_entries(Relation &data){
   int total_entries = 0;
 
