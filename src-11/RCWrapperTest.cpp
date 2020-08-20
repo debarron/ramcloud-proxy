@@ -53,7 +53,7 @@ void test_single_write_multi_read(RCWrapper &wrapper){
     string new_key = key + to_string(i);
     string new_value = value + to_string(i);
 
-    Entry new_entry = make_tuple(new_key, new_value, new_value.length());
+    Entry new_entry = make_tuple(new_key, new_value.data(), new_value.length());
     keys.push_back(new_entry);
     wrapper.write(table_id, new_key, new_value.data(), new_value.length());
   }
