@@ -40,10 +40,10 @@ namespace RCWrapper{
       double elapsed_time();
       uint64_t create_table(string, int);
       uint64_t get_table_id(string);
-      int write(Relation&, int);
+      /*int write(Relation&, int);
       int write(uint64_t, string, char*, uint32_t);
       Relation *read(Relation&);
-      Relation *read(uint64_t, string);
+      Relation *read(uint64_t, string);*/
   }
 }
 

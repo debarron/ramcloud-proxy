@@ -35,8 +35,8 @@ int RCWrapper::_count_entries(Relation &data){
 
 int RCWrapper::RCWrapper(string service_locator, string cluster_name){
   if(client == NULL){
-    this->options.coordinatorLocator = service_locator;
-    this->options.clusterName = cluster_name;
+    this->options.coordinatorLocator = service_locator.c_str();
+    this->options.clusterName = cluster_name.c_str();
     this->client = new RamCloud(&this->options);
   }
 }
@@ -68,7 +68,7 @@ uint64_t RCWrapper::get_table_id(string table_name){
 // TABLE OPERATIONS
 // ****************************
 
-
+/*
 // ****************************
 // WRITE OPERATIONS
 // ****************************
@@ -128,5 +128,5 @@ int RCWrapper::write(RCWrapper::Relation &data, int steps = 1){
     }
 }
 
-
+*/
 
