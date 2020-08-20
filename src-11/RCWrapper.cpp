@@ -14,6 +14,7 @@
 #include "RamCloud.h"
 #include "ClientException.h"
 
+
 #include "RCWrapper.h"
 
 using namespace std;
@@ -48,7 +49,7 @@ int RCWrapper::close(){
 // TABLE OPERATIONS
 // ****************************
 uint64_t RCWrapper::create_table(string table_name, int server_span){
-  return this->_client->creeateTable(table_name, server_span);
+  return this->_client->createTable(table_name.c_str(), server_span);
 }
 
 uint64_t RCWrapper::get_table_id(string table_name){
@@ -56,7 +57,7 @@ uint64_t RCWrapper::get_table_id(string table_name){
 
   try{
     table_id = this->_client->getTableId(table_name.c_str());
-  }catch(TableDoesntExistsException &e){
+  }catch(TableDoesntExistException &e){
     table_id = -1;
   }
 
