@@ -14,7 +14,7 @@
 #include <cstdint>
 #include <ctime>
 
-#include "RAMCloud.h"
+#include "RamCloud.h"
 
 using namespace std;
 using namespace RAMCloud;

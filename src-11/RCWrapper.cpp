@@ -11,7 +11,7 @@
 #include <cstdint>
 #include <ctime>
 
-#include "RAMCloud.h"
+#include "RamCloud.h"
 #include "ClientException.h"
 
 #include "RCWrapper.h"
