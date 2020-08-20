@@ -12,7 +12,7 @@
 #include <vector>
 #include <map>
 #include <cstdint>
-#include <ctime>
+#include <chrono>
 
 #include "RamCloud.h"
 
@@ -28,8 +28,8 @@ namespace RCWrapper{
     private:
       RamCloud *_client = NULL;
       CommandLineOptions _options;
-      clock_t _start, _end;
-      double _elapsed_time();
+      auto _start;
+      auto _end;
       void _time_start();
       void _time_end();
       int _count_entries(Relation&);
@@ -44,7 +44,7 @@ namespace RCWrapper{
       int write(uint64_t, string, char*, uint32_t);
       Relation *read(Relation&);
       Relation *read(uint64_t, string);*/
-  }
+  };
 }
 
 #endif

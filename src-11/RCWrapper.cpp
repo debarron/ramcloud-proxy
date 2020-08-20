@@ -9,7 +9,7 @@
 #include <vector>
 #include <map>
 #include <cstdint>
-#include <ctime>
+#include <chrono>
 
 #include "RamCloud.h"
 #include "ClientException.h"
@@ -20,10 +20,12 @@ using namespace std;
 using namespace RAMCloud;
 using namespace RCWrapper;
 
-void RCWrapper::_time_start(){_start = clock();}
-void RCWrapper::_time_end(){_end = clock();}
-double RCWrapper::_elapsed_time(){ double(_end - _start)/CLOOCKS_PER_SEC;}
-double RCWrapper::elapsed_time(){ return _elapsed_time();}
+void RCWrapper::_time_start(){_start = chrono::steady_clock::now();}
+void RCWrapper::_time_end(){_end = chrono::steady_clock::now();}
+double RCWrapper::elapsed_time(){ 
+  chrono::duration<double std::milli> elapsed = _end - _start;
+  return elapsed.count();
+}
 int RCWrapper::_count_entries(Relation &data){
   int total_entries = 0;
 
