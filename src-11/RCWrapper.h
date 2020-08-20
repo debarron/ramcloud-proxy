@@ -19,15 +19,11 @@
 using namespace std;
 using namespace RAMCloud;
 
-namespace RCWrapper{
-  typedef tuple<string, char*, uint32_t> Entry;
-  typedef map<uint64_t, vector<Entry>> Relation;
-  typedef map<uint64_t, vector<Entry>>::iterator RelationIterator;
+typedef tuple<string, char*, uint32_t> Entry;
+typedef map<uint64_t, vector<Entry>> Relation;
+typedef map<uint64_t, vector<Entry>>::iterator RelationIterator;
 
-  class RCWrapper;
-}
-
-class RCWrapper::RCWrapper{
+class RCWrapper{
   private:
     RamCloud *_client = NULL;
     CommandLineOptions _options;
@@ -35,7 +31,7 @@ class RCWrapper::RCWrapper{
     clock_t _end;
     void _time_start();
     void _time_end();
-    int _count_entries(RCWrapper::Relation&);
+    int _count_entries(Relation&);
 
   public:
     RCWrapper(string, string);

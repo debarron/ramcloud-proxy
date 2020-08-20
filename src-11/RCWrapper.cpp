@@ -18,7 +18,6 @@
 
 using namespace std;
 using namespace RAMCloud;
-using namespace RCWrapper;
 
 void RCWrapper::_time_start(){_start = clock();}
 void RCWrapper::_time_end(){_end = clock();}
