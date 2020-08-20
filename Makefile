@@ -56,17 +56,40 @@ $(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
 	${CC} ${CC_FLAGS} -o ${BIN}/$@ ${LIB}/$@.o ${RC_PROXY_OBJS_FILE} ${RAMCLOUD_FLAGS} -I${SRC} -I${LIB}
 
 RCWrapper.o:
-	g++ -w -std=c++11 -c -o src-11/RCWrapper.o ./src-11/RCWrapper.cpp -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./src-11/
+	g++ -w -std=c++11 -c -o src-11/RCWrapper.o ./src-11/RCWrapper.cpp \
+		-I/users/dl544/RAMCloud/src \
+		-I/users/dl544/RAMCloud/obj.master \
+		-I/users/dl544/RAMCloud/install/include/ramcloud \
+		-I/users/dl544/RAMCloud/install/lib/ramcloud \
+		-I./src-11 \
+		-L/users/dl544/RAMCloud/obj.master \
+		-L/users/dl544/RAMCloud/install/include/ramcloud \
+		-L/users/dl544/RAMCloud/install/lib/ramcloud \
+		-lramcloud
 
 RCWrapperTest.o: RCWrapper.o
-	g++ -w -std=c++11 -c -o ./src-11/RCWrapperTest.o ./src-11/RCWrapperTest.cpp -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./src-11/
+	g++ -w -std=c++11 -c -o ./src-11/RCWrapperTest.o ./src-11/RCWrapperTest.cpp \
+		-I/users/dl544/RAMCloud/src \
+		-I/users/dl544/RAMCloud/obj.master \
+		-I/users/dl544/RAMCloud/install/include/ramcloud \
+		-I/users/dl544/RAMCloud/install/lib/ramcloud \
+		-I./src-11 \
+		-L/users/dl544/RAMCloud/obj.master \
+		-L/users/dl544/RAMCloud/install/include/ramcloud \
+		-L/users/dl544/RAMCloud/install/lib/ramcloud \
+		-lramcloud
 
 RCWrapperTest: RCWrapperTest.o RCWrapper.o
-	g++ -w -std=c++11 -o ./src-11/RCWrapperTest ./src-11/RCWrapperTest.o ./src-11/RCWrapper.o -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./src-11/
-
-
-
-
+	g++ -w -std=c++11 -o ./src-11/RCWrapperTest ./src-11/RCWrapperTest.o ./src-11/RCWrapper.o \
+		-I/users/dl544/RAMCloud/src \
+		-I/users/dl544/RAMCloud/obj.master \
+		-I/users/dl544/RAMCloud/install/include/ramcloud \
+		-I/users/dl544/RAMCloud/install/lib/ramcloud \
+		-I./src-11 \
+		-L/users/dl544/RAMCloud/obj.master \
+		-L/users/dl544/RAMCloud/install/include/ramcloud \
+		-L/users/dl544/RAMCloud/install/lib/ramcloud \
+		-lramcloud
 
 
 #g++ -w -std=c++11 -c -o lib/C_RCProxy_test.o ./src/C_RCProxy_test.c -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./lib -I./src -Imodules/ramcloud-proxy/src -Imodules/ramcloud-proxy/lib
