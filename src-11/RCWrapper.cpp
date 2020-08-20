@@ -10,11 +10,11 @@
 #include <map>
 #include <cstdint>
 #include <chrono>
-
+#include <string.h>
 
 #include "RamCloud.h"
 #include "ClientException.h"
-
+#include "Buffer.h"
 
 #include "RCWrapper.h"
 
@@ -77,8 +77,6 @@ void RCWrapper::write(uint64_t table_id, string entry_key, const char *entry_val
       NULL, &version, false);
 }
 
-//TODO add Buffer.h
-//TODO include string.h
 Entry RCWrapper::read(uint64_t table_id, string key){
   Buffer buffer;
   Entry result;
