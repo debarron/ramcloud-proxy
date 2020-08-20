@@ -4,7 +4,6 @@
 
 using namespace std;
 using namespace RAMCloud;
-using namespace RCWrapper;
 
 int main(int argc, char **argv){
   RCWrapper wrapper("tcp:host=10.10.1.1,port=1110", "main");
