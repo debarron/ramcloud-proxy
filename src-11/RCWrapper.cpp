@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <chrono>
 
+
 #include "RamCloud.h"
 #include "ClientException.h"
 
@@ -67,11 +68,10 @@ uint64_t RCWrapper::get_table_id(string table_name){
 // TABLE OPERATIONS
 // ****************************
 
-/*
 // ****************************
 // WRITE OPERATIONS
 // ****************************
-int RCWrapper::write(uint64_t table_id, string entry_key, char *entry_value, uint32_t entry_value_length){
+void RCWrapper::write(uint64_t table_id, string entry_key, char *entry_value, uint32_t entry_value_length){
   uint64_t version;
 
   this->client->write(
@@ -80,6 +80,25 @@ int RCWrapper::write(uint64_t table_id, string entry_key, char *entry_value, uin
       NULL, &version, false);
 }
 
+//TODO add Buffer.h
+//TODO include string.h
+Entry RCWrapper::read(uint64_t table_id, string key){
+  Buffer buffer;
+  Entry result;
+
+  this->_client(table_id, key.c_str(), key.length(), &buffer);
+
+  Buffer::Iterator buffer_reader(&buffer);
+  const char *const_data = reinterpret_cast<const char*>(buffer_reader.getData());
+  uint32_t data_length = reinterpret_cast<uint32_t>(buffer_reader.getLength());
+  char *data = (char *) malloc(sizeof(char) * data_length);
+  memcpy(data, const_data, data_length);
+
+  result = make_pair(key, data, data_length);
+  return result;
+}
+
+/*
 int RCWrapper::_write_relation_from(Relation &data, int start_index, int end_index){
   // Generate the MultiWriteObject from data
   // Write with multiWrite
