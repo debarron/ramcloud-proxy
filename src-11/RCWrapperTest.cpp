@@ -10,7 +10,8 @@ int main(int argc, char **argv){
 
   uint64_t table_id = wrapper.create_table("test1", 2);
   uint64_t table_id_test = wrapper.get_table_id("test1");
+  string test_result = (table_id == table_id_test) ? "PASSED" : "FAILED";
   cout << "## TABLE TEST\n"
     << "table_id = " << table_id << " table_id_test = " << table_id_test << endl
-    << "TEST " << (table_id == table_id_test) ? "PASSED" : "FAILED" << endl << endl;
+    << "TEST " << test_result << endl << endl;
 }
