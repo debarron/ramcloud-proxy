@@ -15,6 +15,8 @@
 #include <ctime>
 
 #include "RamCloud.h"
+#include "Tub.h"
+#include "ObjectBuffer.h"
 
 using namespace std;
 using namespace RAMCloud;
@@ -32,7 +34,7 @@ class RCWrapper{
     void _time_start();
     void _time_end();
     int _count_entries(Relation&);
-    void _multi_read_request(uint64_t, vector<Entry>&, MultiReadObject*, Tub<Buffer>*, MultiReadObject**);
+    void _multi_read_request(uint64_t, vector<Entry>&, MultiReadObject*, Tub<ObjectBuffer>*, MultiReadObject**);
 
   public:
     RCWrapper(string, string);
