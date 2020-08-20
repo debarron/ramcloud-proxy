@@ -21,7 +21,7 @@ using namespace RAMCloud;
 
 void RCWrapper::_time_start(){_start = clock();}
 void RCWrapper::_time_end(){_end = clock();}
-double RCWrapper::elapsed_time(){ return (double)(_end - start)/CLOCKS_PER_SEC;}
+double RCWrapper::elapsed_time(){ return (double)(_end - _start)/CLOCKS_PER_SEC;}
 int RCWrapper::_count_entries(Relation &data){
   int total_entries = 0;
 
