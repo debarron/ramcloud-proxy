@@ -91,7 +91,7 @@ Entry RCWrapper::read(uint64_t table_id, string key){
   char *data = (char *) malloc(sizeof(char) * data_length);
   memcpy(data, const_data, data_length);
 
-  result = make_pair(key, data, data_length);
+  result = make_tuple(key, data, data_length);
   return result;
 }
 
