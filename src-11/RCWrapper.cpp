@@ -120,7 +120,7 @@ Relation *RCWrapper::read(Relation &data){
     request_index += ((*it).second).size();
   }
 
-  this->_client->multiRead(request, total_entries);
+  this->_client->multiRead(request_pointer, total_entries);
 }
 
 /*
