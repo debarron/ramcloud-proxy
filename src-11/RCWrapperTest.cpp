@@ -17,7 +17,7 @@ void test_table(RCWrapper &wrapper){
 }
 
 void test_single_write_single_read(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_single_write", 2);
+  uint64_t table_id = wrapper.create_table("test_single_write_1", 2);
 
   cout << "## SINGLE READ TEST ";
   string key = "test_key";
@@ -34,7 +34,8 @@ void test_single_write_single_read(RCWrapper &wrapper){
   tie(ignore, value_read, value_length) = wrapper.read(table_id, key);
   bool same_value = strcmp(value.data(), value_read) == 0;
   bool same_value_length = value.length() == value_length;
-  cout << " SAME VALUE: " << same_value << " SAME LENGTH: " << same_value_length << endl;
+  cout << " SAME VALUE: [" << value << "," << value_read << "] " << same_value << endl
+    << " SAME LENGTH: [" << value.length() << "," << value_length << "] " << same_value_length << endl;
 
 }
 
