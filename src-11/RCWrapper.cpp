@@ -31,11 +31,11 @@ int RCWrapper::_count_entries(Relation &data){
   return total_entries;
 }
 
-int RCWrapper::RCWrapper(string service_locator, string cluster_name){
-  if(client == NULL){
-    this->options.coordinatorLocator = service_locator.c_str();
-    this->options.clusterName = cluster_name.c_str();
-    this->client = new RamCloud(&this->options);
+RCWrapper::RCWrapper(string service_locator, string cluster_name){
+  if(this->_client == NULL){
+    this->_options.coordinatorLocator = service_locator.c_str();
+    this->_options.clusterName = cluster_name.c_str();
+    this->_client = new RamCloud(&this->_options);
   }
 }
 
@@ -48,14 +48,14 @@ int RCWrapper::close(){
 // TABLE OPERATIONS
 // ****************************
 uint64_t RCWrapper::create_table(string table_name, int server_span){
-  return client->creeateTable(table_name, server_span);
+  return this->_client->creeateTable(table_name, server_span);
 }
 
 uint64_t RCWrapper::get_table_id(string table_name){
   uint64_t table_id;
 
   try{
-    table_id = client->creeateTable(table_name, server_span);
+    table_id = this->_client->getTableId(table_name.c_str());
   }catch(TableDoesntExistsException &e){
     table_id = -1;
   }
