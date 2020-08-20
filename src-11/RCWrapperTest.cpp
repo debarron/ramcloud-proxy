@@ -23,7 +23,7 @@ void test_single_write_single_read(RCWrapper &wrapper){
   string key = "test_key";
   string value = "This is a message from C11";
 
-  wrapper.write(table_id, key, value.c_str(), value.length());
+  wrapper.write(table_id, key, value.data(), value.length());
   cout << " PASSED\n";
 
 
@@ -32,7 +32,7 @@ void test_single_write_single_read(RCWrapper &wrapper){
   int value_length;
 
   tie(ignore, value_read, value_length) = wrapper.read(table_id, key);
-  bool same_value = strcmp(value.c_str(), value_read) == 0;
+  bool same_value = strcmp(value.data(), value_read) == 0;
   bool same_value_length = value.length() == value_length;
   cout << " SAME VALUE: " << same_value << " SAME LENGTH: " << same_value_length << endl;
 
