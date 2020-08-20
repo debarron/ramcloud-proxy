@@ -43,8 +43,8 @@ void test_single_write_single_read(RCWrapper &wrapper){
 int main(int argc, char **argv){
   RCWrapper wrapper("tcp:host=10.10.1.1,port=1110", "main");
 
-  test_table(&wrapper);
-  test_single_push(&wrapper);
+  test_table(wrapper);
+  test_single_write_single_read(wrapper);
 
   return 0;
 }
