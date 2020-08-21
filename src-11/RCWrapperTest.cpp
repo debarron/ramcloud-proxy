@@ -74,8 +74,24 @@ bool _compare_vectors_keys(vector<Entry> v1, vector<Entry> v2){
   return equal(keys1.begin(), keys1.end(), keys2.begin(), string_compare);
 }
 
+void do_single_read_and_print(RCWrapper &wrapper, uint64_t table_id, string key){
+  char *value_read;
+  char *value_print;
+  int value_length;
+  string value_read_str;
+
+  tie(ignore, value_read, value_length) = wrapper.read(table_id, key);
+  value_print = (char *) malloc(sizeof(char) * value_length + 1);
+  memcpy(value_print, value_read, value_length);
+  value_print[value_length] = '\0';
+
+  cout << "## SINGLE READ " <<
+    " table_id: " << table_id << " key: " << key <<
+    " value: " << value_print << endl;
+}
+
 void test_single_write_multi_read(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_single_write_multi_read_11", 2);
+  uint64_t table_id = wrapper.create_table("test_single_write_multi_read_14", 2);
 
   cout << "## WRITE TEST ";
   string key = "test_key";
@@ -86,7 +102,7 @@ void test_single_write_multi_read(RCWrapper &wrapper){
     string new_key = key + to_string(i);
     string new_value = value + to_string(i);
     char *new_value_cstr = (char *)malloc(sizeof(char) * new_value.length());
-    strcpy(new_value_cstr, new_value.c_str());
+    memcpy(new_value_cstr, new_value.data(), new_value.length());
 
     Entry new_entry = make_tuple(new_key, new_value_cstr, new_value.length());
     keys.push_back(new_entry);
@@ -94,7 +110,13 @@ void test_single_write_multi_read(RCWrapper &wrapper){
   }
   cout << " PASSED\n";
 
+  cout << "## TEST SINGLE READ\n";
+  do_single_read_and_print(table_id, "test_key1");
+  do_single_read_and_print(table_id, "test_key2");
+  do_single_read_and_print(table_id, "test_key3");
+  do_single_read_and_print(table_id, "test_key4");
 
+/*
   cout << "## MULTI READ TEST \n";
   char *value_read;
   int value_length;
@@ -117,7 +139,7 @@ void test_single_write_multi_read(RCWrapper &wrapper){
     same_vector_keys = same_vector_keys && _compare_vectors_keys(entries, entries_from_ramcloud);
   }
   cout << "\t >> SAME KEYS IN BOTH VECTORS " << same_vector_keys << endl;
-
+*/
 }
 
 
