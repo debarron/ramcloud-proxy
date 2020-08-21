@@ -115,7 +115,7 @@ void RCWrapper::write(uint64_t table_id, string entry_key, const char *entry_val
       NULL, &version, false);
 }
 
-int RCWrapper::write(Relation &data, int steps = 1){
+int RCWrapper::write(RCWrapper::Relation &data, int steps = 1){
   int total_entries = _count_entries(data);
   int step_size = total_entries / steps;
   int data_start_index = data_end_index = 0;
@@ -127,47 +127,12 @@ int RCWrapper::write(Relation &data, int steps = 1){
     MultiOpEntry *arr = _slice_relation_from(data, data_start_index, data_end_index -1);
     int arr_length = data_end_index - data_start_index;
 
-    data_write_count += _multiwrite_arr(arr, arr_length);
+    data_write_count += _write_multiop_arr(arr, arr_length);
     data_start_index = data_end_index;
     delete[] arr;
   }
-
-  return data_write_count;
 }
 
-int RCWrapper::_multiwrite_arr(MultiOpEntry *entries, int entries_length){
-  MultiWriteObject request[entries_length];
-  MultiWriteObject *request_pointer[entries_length];
-
-  for(int i = 0; i < entries_length; i++){
-    uint64_t *table_id_p;
-    Entry *entry_p;
-    tie(table_id_p, entry_p) = entries[i];
-
-    _multiwrite_request((void *)&request[i], table_id_p, entry_p);
-    request_pointer[i] = &request[i];
-  }
-
-  this->_client->multiWrite(request_pointer, entries_length);
-  return _multiwrite_count_success(request, entries_length);
-}
-
-void RCWrapper::_multiwrite_request(void *memory_address, uint64_t *table_id, Entry *e){
-  string key;
-  char *value;
-  uint32_t value_length;
-
-  tie(key, value, value_length) = *e;
-  new(memory_address) MultiWriteObject(*table_id, key.data(), key.length(), value, value_length, NULL);
-}
-
-int RCWrapper::_multiwrite_count_success(MultiWriteObject *request, int request_count){
-  int succes_count = 0;
-  for(int i = 0; i < request_count; i++)
-    succes_count += (request[i].status == STATUS_OK) ? 1 : 0;
-
-  return succes_count;
-}
 
 /**********/
 // READ
@@ -187,131 +152,6 @@ Entry RCWrapper::read(uint64_t table_id, string key){
   result = make_tuple(key, data, data_length);
   return result;
 }
-
-Relation *RCWrapper::read(Relation &data, int steps = 1){
-  int total_entries = _count_entries(data);
-  int step_size = total_entries / steps;
-  int data_start_index = data_end_index = 0;
-
-  Relation *result = new Relation();
-  for(int i = 1; i <= steps; i++){
-    data_end_index = (i == steps) ? total_entries : i * step_size;
-
-    MultiOpEntry *arr = _slice_relation_from(data, data_start_index, data_end_index -1);
-    int arr_length = data_end_index - data_start_index;
-
-    Relation *multiread_result = _multiread_arr(arr, arr_length);
-    _multiread_append_relation(result, multiread_result);
-    data_start_index = data_end_index;
-
-    delete[] arr;
-  }
-
-  return result;
-}
-
-void RCWrapper::_multiread_append_relation(Relation *dest, Relation *source){
-  for(RelationIterator it = source->begin(); it != source->end(); ++it){
-    uint64_t *it_key = &(*it).first;
-    vector<Entry> *it_entries = &(*it).second;
-
-    if(dest->find(*it_key) == dest->end())
-      dest->insert(make_pair(*it_key, *it_entries));
-    else{
-      vector<Entry> *current_entries = dest->at(*it_key);
-      current_entries->insert(current_entries->end(),
-          make_move_iterator(it_entries->begin()),
-          make_move_iterator(it_entries->end()));
-    }
-  }
-}
-
-Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
-  MultiReadObject request[arr_length];
-  MultiReadObject *request_pointer[arr_length];
-  Tub<ObjectBuffer> request_buffer[arr_length];
-  int request_index = 0;
-  
-  for(int i = 0; i < arr_length; i++){
-    uint64_t *table_id_p;
-    Entry *entry_p;
-    tie(table_id_p, entry_p) = arr[i];
-
-    _multi_read_request((void *)&request[request_index], &request_buffer[request_index], table_id_p, entry_p);
-    request_pointer[request_index] = &request[request_index];
-    request_index++;
-  }
-
-  this->_client->multiRead(request_pointer, total_entries);
-  Relation *result = _multiread_read_buffer(request, request_buffer, arr_length);
-
-  return result;
-}
-
-
-void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, uint64_t *table_id, Entry *e){ 
-  string key;
-  tie(key, ignore, ignore) = *e;
-  new(memory_address) MultiReadObject(table_id, key.data(), key.length(), buffer);
-}
-
-
-Relation *RCWrapper::_multiread_read_buffer(MultiReadObject *request, Tub<ObjectBuffer> *buffer, int buffer_count){
-  ObjectBuffer *buffer_reader;
-  uint64_t table_id = request[0].tableId;
-  vector<Entry>* entries = new vector<Entry>();
-  Relation *result = new Relation();
-  uint32_t data_length;
-
-  result = new Relation();
-  for(int i = 0; i < buffer_count; i++){
-    if(table_id != request[i].tableId){
-      result->insert(make_pair(table_id, *entries));
-      entries = new vector<Entry>();
-      table_id = request[i].tableId;
-    }
-
-    buffer_reader = buffer[i].get();
-    const char *buffer_key = reinterpret_cast<const char *>(buffer_reader->getKey(0));
-    const char *buffer_data = reinterpret_cast<const char *>(buffer_reader->getValue(&data_length));
-    int buffer_key_length = buffer_reader->getKeyLength(0);
-
-    char *data_key = (char *) malloc(sizeof(char) * buffer_key_length);
-    char *data = (char *)malloc(sizeof(char) * data_length);
-    memcpy(data_key, buffer_key, buffer_key_length);
-    memcpy(data, buffer_data, data_length);
-
-    string data_key_str (buffer_key);
-    entries->push_back(make_tuple(data_key_str, data, data_length));
-  }
-
-  result->insert(make_pair(table_id, *entries));
-  return result;
-}
-
-/*
-Relation *RCWrapper::read(MultiOpEntry *entries, int entries_length){
-  MultiReadObject request[entries_length];
-  MultiReadObject *request_pointer[entries_length];
-  Tub<ObjectBuffer> request_buffer[entries_length];
-  int request_index = 0;
-  
-  for(int i = 0; i < entries_length; i++){
-    uint64_t *table_id_p;
-    Entry *entry_p;
-    tie(table_id_p, entry_p) = entries[i];
-
-    _multi_read_request(*table_id_p, *entry_p, (void *)&request[request_index], &request_buffer[request_index]);
-    request_pointer[request_index] = &request[request_index];
-    request_index++;
-  }
-
-  this->_client->multiRead(request_pointer, total_entries);
-  Relation *result = _multi_read_read_buffer(request, request_buffer, entries_length);
-
-  return result;
-}
-
 
 Relation *RCWrapper::read(Relation &data, int steps = 1){
   int total_entries = _count_entries(data);
@@ -338,5 +178,74 @@ Relation *RCWrapper::read(Relation &data, int steps = 1){
 }
 
 
+void RCWrapper::_multiread_request(uint64_t table_id, vector<Entry> &data, void *memory_address, Tub<ObjectBuffer> *request_buffer){
 
-*/
+  for(vector<Entry>::iterator it = data.begin(); it != data.end(); ++it){
+    string key = get<0>(*it);
+    char *key_value = (char *) malloc(sizeof(char) * key.length());
+    memcpy(key_value, key.data(), key.length());
+
+    new(memory_address) MultiReadObject(table_id, key_value, key.length(), request_buffer);
+  }
+}
+
+
+Relation *RCWrapper::_multiread_read_buffer(MultiReadObject *request, Tub<ObjectBuffer> *buffer, int buffer_count){
+  ObjectBuffer *buffer_reader;
+  uint64_t table_id = request[0].tableId;
+  vector<Entry>* entries = new vector<Entry>();
+  Relation *result = new Relation();
+  uint32_t data_length;
+
+  result = new Relation();
+  for(int i = 0; i < buffer_count; i++){
+    if(table_id != request[i].tableId){
+      result->insert(pair<uint64_t, vector<Entry>>(table_id, *entries));
+      entries = new vector<Entry>();
+      table_id = request[i].tableId;
+    }
+
+    buffer_reader = buffer[i].get();
+    const char *buffer_key = reinterpret_cast<const char *>(buffer_reader->getKey(0));
+    const char *buffer_data = reinterpret_cast<const char *>(buffer_reader->getValue(&data_length));
+    int buffer_key_length = buffer_reader->getKeyLength(0);
+
+    char *data_key = (char *) malloc(sizeof(char) * buffer_key_length);
+    char *data = (char *)malloc(sizeof(char) * data_length);
+    memcpy(data_key, buffer_key, buffer_key_length);
+    memcpy(data, buffer_data, data_length);
+
+    string data_key_str (buffer_key);
+    entries->push_back(make_tuple(data_key_str, data, data_length));
+  }
+
+  result->insert(pair<uint64_t, vector<Entry>>(table_id, *entries));
+  return result;
+}
+
+Relation *RCWrapper::read(MultiOpEntry *entries, int entries_length){
+  MultiReadObject request[entries_length];
+  MultiReadObject *request_pointer[entries_length];
+  Tub<ObjectBuffer> request_buffer[entries_length];
+  int request_index = 0;
+  
+  for(int i = 0; i < entries_length; i++){
+    uint64_t *table_id_p;
+    Entry *entry_p;
+    tie(table_id_p, entry_p) = entries[i];
+
+    _multi_read_request(*table_id_p, *entry_p, (void *)&request[request_index], &request_buffer[request_index]);
+    request_pointer[request_index] = &request[request_index];
+    request_index++;
+  }
+
+  this->_client->multiRead(request_pointer, total_entries);
+  Relation *result = _multi_read_read_buffer(request, request_buffer, entries_length);
+
+  return result;
+}
+
+
+
+
+
