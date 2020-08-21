@@ -56,7 +56,7 @@ $(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
 	${CC} ${CC_FLAGS} -o ${BIN}/$@ ${LIB}/$@.o ${RC_PROXY_OBJS_FILE} ${RAMCLOUD_FLAGS} -I${SRC} -I${LIB}
 
 RCWrapper.o:
-	g++ -w -std=c++11 -c -o src-11/RCWrapper.o ./src-11/RCWrapper.cpp \
+	g++ -g -w -std=c++11 -c -o src-11/RCWrapper.o ./src-11/RCWrapper.cpp \
 		-I/users/dl544/RAMCloud/src \
 		-I/users/dl544/RAMCloud/obj.master \
 		-I/users/dl544/RAMCloud/install/include/ramcloud \
@@ -68,7 +68,7 @@ RCWrapper.o:
 		-lramcloud
 
 RCWrapperTest.o: RCWrapper.o
-	g++ -w -std=c++11 -c -o ./src-11/RCWrapperTest.o ./src-11/RCWrapperTest.cpp \
+	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapperTest.o ./src-11/RCWrapperTest.cpp \
 		-I/users/dl544/RAMCloud/src \
 		-I/users/dl544/RAMCloud/obj.master \
 		-I/users/dl544/RAMCloud/install/include/ramcloud \
