@@ -111,10 +111,10 @@ void test_single_write_multi_read(RCWrapper &wrapper){
   cout << " PASSED\n";
 
   cout << "## TEST SINGLE READ\n";
-  do_single_read_and_print(table_id, "test_key1");
-  do_single_read_and_print(table_id, "test_key2");
-  do_single_read_and_print(table_id, "test_key3");
-  do_single_read_and_print(table_id, "test_key4");
+  do_single_read_and_print(wrapper, table_id, "test_key1");
+  do_single_read_and_print(wrapper, table_id, "test_key2");
+  do_single_read_and_print(wrapper, table_id, "test_key3");
+  do_single_read_and_print(wrapper, table_id, "test_key4");
 
 /*
   cout << "## MULTI READ TEST \n";
