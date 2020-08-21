@@ -239,7 +239,7 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
     Entry *entry_p;
     tie(table_id_p, entry_p) = arr[i];
 
-    _multi_read_request((void *)&request[request_index], &request_buffer[request_index], table_id_p, entry_p);
+    _multiread_request((void *)&request[request_index], &request_buffer[request_index], table_id_p, entry_p);
     request_pointer[request_index] = &request[request_index];
     request_index++;
   }
