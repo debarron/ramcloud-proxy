@@ -100,7 +100,7 @@ Entry RCWrapper::read(uint64_t table_id, string key){
   return result;
 }
 
-void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data, void *memory_address, Tub<ObjectBuffer> *request_buffer)
+void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data, void *memory_address, Tub<ObjectBuffer> *request_buffer){
 
   for(vector<Entry>::iterator it = data.begin(); it != data.end(); ++it){
     string key = get<0>(*it);
