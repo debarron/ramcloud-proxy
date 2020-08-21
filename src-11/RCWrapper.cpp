@@ -49,7 +49,7 @@ int RCWrapper::close(){
   return 1;
 }
 
-intt RCWrapper::count_entries(Relation &data){
+int RCWrapper::count_entries(Relation &data){
   return _count_entries(data);
 }
 
@@ -117,7 +117,7 @@ void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data,
 
 
 
-Result *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<ObjectBuffer> *buffer, int buffer_count){
+Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<ObjectBuffer> *buffer, int buffer_count){
   ObjectBuffer *buffer_reader;
   uint64_t table_id = request[0].table_id;
   vector<Entry>* entries = new vector<Entry>();
