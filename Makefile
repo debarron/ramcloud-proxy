@@ -80,7 +80,7 @@ RCWrapperTest.o: RCWrapper.o
 		-lramcloud
 
 RCWrapperTest: RCWrapperTest.o RCWrapper.o
-	g++ -w -std=c++11 -o ./src-11/RCWrapperTest ./src-11/RCWrapperTest.o ./src-11/RCWrapper.o \
+	g++ -g -w -std=c++11 -o ./src-11/RCWrapperTest ./src-11/RCWrapperTest.o ./src-11/RCWrapper.o \
 		-I/users/dl544/RAMCloud/src \
 		-I/users/dl544/RAMCloud/obj.master \
 		-I/users/dl544/RAMCloud/install/include/ramcloud \
