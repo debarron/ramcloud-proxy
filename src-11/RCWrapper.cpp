@@ -214,8 +214,8 @@ Relation *RCWrapper::read(Relation &data, int steps = 1){
 
 void RCWrapper::_multiread_append_relation(Relation *dest, Relation *source){
   for(RelationIterator it = source->begin(); it != source->end(); ++it){
-    uint64_t &it_key = &(it->first);
-    vector<Entry> &entries = &(it->secon);
+    uint64_t it_key = it->first;
+    vector<Entry> entries = it->secon;
 
     if(dest->find(it_key) == dest->end())
       dest->insert(make_pair(it_key, entries));
