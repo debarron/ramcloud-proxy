@@ -214,11 +214,11 @@ Relation *RCWrapper::read(Relation &data, int steps = 1){
 
 void RCWrapper::_multiread_append_relation(Relation *dest, Relation *source){
   for(RelationIterator it = source->begin(); it != source->end(); ++it){
-    uint64_t *it_key = &it->first;
-    vector<Entry> entries = it->second;
+    const int64_t *it_key = &it->first;
+    const vector<Entry> *entries = &it->second;
 
-    if(dest->find(it_key) == dest->end())
-      dest->insert(make_pair(it_key, entries));
+    if(dest->find(*it_key) == dest->end())
+      dest->insert(make_pair(*it_key, *entries));
     else{
       vector<Entry> *current_entries = dest->at(it_key);
       current_entries->insert(current_entries->end(),
