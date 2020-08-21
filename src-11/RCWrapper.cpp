@@ -120,8 +120,6 @@ Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<Objec
   Relation *result = new Relation();
   uint32_t data_length;
 
-  cout << "** got into the function\n";
-
   result = new Relation();
   for(int i = 0; i < buffer_count; i++){
     if(table_id != request[i].tableId){
@@ -130,32 +128,21 @@ Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<Objec
       table_id = request[i].tableId;
     }
 
-    cout << "** processing table_id " << table_id << " and entry no. " << i << endl;
-
     buffer_reader = buffer[i].get();
-    cout << "** got the buffer\n";
     const char *buffer_key = reinterpret_cast<const char *>(buffer_reader->getKey(0));
-    cout << "** got the key " << buffer_key << "\n";
-    int buffer_key_length = buffer_reader->getKeyLength(0);
-    cout << "** got the key len " << buffer_key_length << "\n";
     const char *buffer_data = reinterpret_cast<const char *>(buffer_reader->getValue(&data_length));
-    cout << "** got the buffer data " << buffer_data << "\n";
+    int buffer_key_length = buffer_reader->getKeyLength(0);
 
     char *data_key = (char *) malloc(sizeof(char) * buffer_key_length);
-    memcpy(data_key, buffer_key, buffer_key_length);
-    string data_key_str (buffer_key);
-
     char *data = (char *)malloc(sizeof(char) * data_length);
+    memcpy(data_key, buffer_key, buffer_key_length);
     memcpy(data, buffer_data, data_length);
-    entries->push_back(make_tuple(data_key_str, data, data_length));
 
-    cout << "** got key " << data_key << endl;
+    string data_key_str (buffer_key);
+    entries->push_back(make_tuple(data_key_str, data, data_length));
   }
 
   result->insert(pair<uint64_t, vector<Entry>>(table_id, *entries));
-
-  cout << "** inserted in the last table_id " << table_id << endl;
-
   return result;
 }
 
