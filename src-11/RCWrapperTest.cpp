@@ -75,7 +75,7 @@ bool _compare_vectors_keys(vector<Entry> v1, vector<Entry> v2){
 }
 
 void test_single_write_multi_read(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_single_write_multi_read_3", 2);
+  uint64_t table_id = wrapper.create_table("test_single_write_multi_read_4", 2);
 
   cout << "## WRITE TEST ";
   string key = "test_key";
