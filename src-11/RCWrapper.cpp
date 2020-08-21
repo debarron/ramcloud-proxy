@@ -107,7 +107,7 @@ void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data, void
     char *key_value = (char *) malloc(sizeof(char) * key.length());
     memcpy(key_value, key.data(), key.length());
 
-    new(memory_address) MultiReadObject(table_id, key_value, key_length, request_buffer);
+    new(memory_address) MultiReadObject(table_id, key_value, key.length(), request_buffer);
   }
 }
 
