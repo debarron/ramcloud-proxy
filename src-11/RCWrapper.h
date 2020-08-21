@@ -22,7 +22,7 @@ using namespace std;
 using namespace RAMCloud;
 
 typedef tuple<string, char*, uint32_t> Entry;
-typedef tuple<uint64_t*, Entry*> MultiOpEntry;
+typedef tuple<const uint64_t*, const Entry*> MultiOpEntry;
 typedef map<uint64_t, vector<Entry>> Relation;
 typedef map<uint64_t, vector<Entry>>::iterator RelationIterator;
 

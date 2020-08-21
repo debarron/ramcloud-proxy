@@ -118,7 +118,8 @@ void RCWrapper::write(uint64_t table_id, string entry_key, const char *entry_val
 int RCWrapper::write(Relation &data, int steps = 1){
   int total_entries = _count_entries(data);
   int step_size = total_entries / steps;
-  int data_start_index = data_end_index = 0;
+  int data_start_index = 0;
+  int data_end_index = 0;
   int data_write_count = 0;
 
   for(int i = 1; i <= steps; i++){
@@ -212,10 +213,10 @@ Relation *RCWrapper::read(Relation &data, int steps = 1){
 
 void RCWrapper::_multiread_append_relation(Relation *dest, Relation *source){
   for(RelationIterator it = source->begin(); it != source->end(); ++it){
-    uint64_t *it_key = &(*it).first;
-    vector<Entry> *it_entries = &(*it).second;
+    uint64_t it_key = (*it).first;
+    vector<Entry> it_entries = (*it).second;
 
-    if(dest->find(*it_key) == dest->end())
+    if(dest->find(it_key) == dest->end())
       dest->insert(make_pair(*it_key, *it_entries));
     else{
       vector<Entry> *current_entries = dest->at(*it_key);
