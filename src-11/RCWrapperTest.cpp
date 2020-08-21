@@ -104,9 +104,9 @@ void test_single_write_multi_read(RCWrapper &wrapper){
   data_read[table_id] = keys;
   Relation *output = wrapper.read(data_read);
 
-  bool same_entry_count = wrapper.count_entries(output) == wrapper.count_entries(data_read);
+  bool same_entry_count = wrapper.count_entries(*output) == wrapper.count_entries(data_read);
   bool same_vector_keys = true;
-  for(RelationIterator it = read_data.begin(); it != read_data.end(); ++it){
+  for(RelationIterator it = data_read.begin(); it != data_read.end(); ++it){
     vector<Entry> entries = (*it).second;
     vector<Entry> entries_from_ramcloud = (*output)[(*it).first];
 
