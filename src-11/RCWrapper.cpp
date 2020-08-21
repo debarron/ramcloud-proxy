@@ -124,6 +124,8 @@ Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<Objec
   Relation *result = new Relation();
   uint32_t data_length;
 
+  cout << "** got into the function\n";
+
   result = new Relation();
   for(int i = 0; i < buffer_count; i++){
     if(table_id != request[i].tableId){
@@ -131,6 +133,8 @@ Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<Objec
       entries = new vector<Entry>();
       table_id = request[i].tableId;
     }
+
+    cout << "** processing table_id " << table_id << " and entry no. " << i << endl;
 
     buffer_reader = buffer[i].get();
     const char *buffer_key = reinterpret_cast<const char *>(buffer_reader->getKey(0));
@@ -140,9 +144,14 @@ Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<Objec
     char *data = (char *)malloc(sizeof(char) * data_length);
     memcpy(data, buffer_data, data_length);
     entries->push_back(make_tuple(data_key, data, data_length));
+
+    cout << "** got key " << data_key << endl;
   }
 
   result->insert(pair<uint64_t, vector<Entry>>(table_id, *entries));
+
+  cout << "** inserted in the last table_id " << table_id << endl;
+
   return result;
 }
 
