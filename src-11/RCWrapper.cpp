@@ -172,7 +172,7 @@ Relation *RCWrapper::read(Relation &data){
   int request_index = 0;
   
   for(RelationIterator it = data.begin(); it != data.end(); ++it){
-    _multi_read_request((*it).first, (*it).second, &request, &request_buffer, &request_pointer, request_index);
+    _multi_read_request((*it).first, (*it).second, request, request_buffer, request_pointer, request_index);
     request_index += ((*it).second).size();
   }
 
