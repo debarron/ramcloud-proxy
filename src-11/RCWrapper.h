@@ -35,10 +35,12 @@ class RCWrapper{
     void _time_end();
     int _count_entries(Relation&);
     void _multi_read_request(uint64_t, vector<Entry>&, MultiReadObject*, Tub<ObjectBuffer>*, MultiReadObject**);
+    Relation *_multi_read_read_buffer(MultiReadObject*, Tub<ObjectBuffer>*, int);
 
   public:
     RCWrapper(string, string);
     int close();
+    int count_entries(Relation&);
     double elapsed_time();
     uint64_t create_table(string, int);
     uint64_t get_table_id(string);

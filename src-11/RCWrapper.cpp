@@ -49,6 +49,10 @@ int RCWrapper::close(){
   return 1;
 }
 
+intt RCWrapper::count_entries(Relation &data){
+  return _count_entries(data);
+}
+
 // ****************************
 // TABLE OPERATIONS
 // ****************************
@@ -111,6 +115,37 @@ void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data,
   }
 }
 
+
+
+Result *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<ObjectBuffer> *buffer, int buffer_count){
+  ObjectBuffer *buffer_reader;
+  uint64_t table_id = request[0].table_id;
+  vector<Entry>* entries = new vector<Entry>();
+  Relation *result = new Relation();
+  uint32_t data_length;
+
+  result = new Relation();
+  for(int i = 0; i < buffer_count; i++){
+    if(table_id != request[i].table_id){
+      result->insert(pair<uint64_t, vector<Entry>>(table_id, *entries));
+      entries = new vector<Entry>();
+      table_id = request[i].table_id;
+    }
+
+    buffer_reader = buffer[i].get();
+    const char *buffer_key = reinterpret_cast<const char *>(buffer_reader->getKey(0));
+    const char *buffer_data = reinterpret_cast<const char *>(buffer_reader->getValue(&data_length));
+
+    string data_key (buffer_key);
+    char *data = (char *)malloc(sizeof(char) * data_length);
+    memcpy(data, buffer_data, data_length);
+    entries->push_back(make_tuple(data_key, data, data_length));
+  }
+
+  result->insert(pair<uint64_t, vector<Entry>>(table_id, *entries));
+  return result;
+}
+
 Relation *RCWrapper::read(Relation &data){
   int total_entries = _count_entries(data);
 
@@ -125,6 +160,9 @@ Relation *RCWrapper::read(Relation &data){
   }
 
   this->_client->multiRead(request_pointer, total_entries);
+  Relation *result = _multi_read_read_buffer(request, request_buffer, total_entries);
+
+  return result;
 }
 
 /*
