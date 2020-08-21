@@ -152,7 +152,7 @@ int RCWrapper::_multiwrite_arr(MultiOpEntry *entries, int entries_length){
   return _multiwrite_count_success(request, entries_length);
 }
 
-void RCWrapper::_multiwrite_request(void *memory_address, uint64_t *table_id, Entry *e){
+void RCWrapper::_multiwrite_request(void *memory_address, const uint64_t *table_id, const Entry *e){
   string key;
   char *value;
   uint32_t value_length;
