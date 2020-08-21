@@ -22,9 +22,8 @@ using namespace std;
 using namespace RAMCloud;
 
 typedef tuple<string, char*, uint32_t> Entry;
-typedef tuple<const uint64_t*, const Entry*> MultiOpEntry;
+typedef tuple<uint64_t*, Entry*> MultiOpEntry;
 typedef map<uint64_t, vector<Entry>> Relation;
-typedef map<uint64_t, vector<Entry>>::iterator RelationIterator;
 
 class RCWrapper{
   private:
@@ -37,12 +36,11 @@ class RCWrapper{
     int _count_entries(Relation&);
     MultiOpEntry *_slice_relation_from(Relation&, int, int);
     int _multiwrite_arr(MultiOpEntry*,int);
-    void _multiwrite_request(void*, const uint64_t*, const Entry*);
+    void _multiwrite_request(void*, uint64_t*, Entry*);
     int _multiwrite_count_success(MultiWriteObject*,int);
-    void _multiread_append_relation(Relation*, Relation*);
-    Relation *_multiread_arr(MultiOpEntry*, int);
-    void _multiread_request(void*, Tub<ObjectBuffer>*, const uint64_t*, const Entry*);
-    Relation *_multiread_read_buffer(MultiReadObject*, Tub<ObjectBuffer>*, int);
+    void _multi_read_request(uint64_t, vector<Entry>&, void*, Tub<ObjectBuffer>*);
+    Relation *_multi_read_read_buffer(MultiReadObject*, Tub<ObjectBuffer>*, int);
+    
 
   public:
     RCWrapper(string, string);
@@ -52,9 +50,8 @@ class RCWrapper{
     uint64_t create_table(string, int);
     uint64_t get_table_id(string);
     void write(uint64_t, string, const char*, uint32_t);
-    int write(Relation&, int);
+    int write(Relation&, int=1);
     Entry read(uint64_t, string);
-    Relation *read(Relation&, int);
-    //int write(Relation&, int);
+    Relation *read(Relation&, int=1);
 };
 #endif
