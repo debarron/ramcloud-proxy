@@ -192,7 +192,8 @@ Entry RCWrapper::read(uint64_t table_id, string key){
 Relation *RCWrapper::read(Relation &data, int steps = 1){
   int total_entries = _count_entries(data);
   int step_size = total_entries / steps;
-  int data_start_index = data_end_index = 0;
+  int data_start_index = 0;
+  int data_end_index = 0;
 
   Relation *result = new Relation();
   for(int i = 1; i <= steps; i++){
@@ -213,13 +214,13 @@ Relation *RCWrapper::read(Relation &data, int steps = 1){
 
 void RCWrapper::_multiread_append_relation(Relation *dest, Relation *source){
   for(RelationIterator it = source->begin(); it != source->end(); ++it){
-    uint64_t it_key = (*it).first;
-    vector<Entry> it_entries = (*it).second;
+    uint64_t &it_key = *it->first;
+    vector<Entry> &entries = *it->secon;
 
     if(dest->find(it_key) == dest->end())
-      dest->insert(make_pair(*it_key, *it_entries));
+      dest->insert(make_pair(it_key, entries));
     else{
-      vector<Entry> *current_entries = dest->at(*it_key);
+      vector<Entry> *current_entries = dest->at(it_key);
       current_entries->insert(current_entries->end(),
           make_move_iterator(it_entries->begin()),
           make_move_iterator(it_entries->end()));
