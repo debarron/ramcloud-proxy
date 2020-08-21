@@ -119,17 +119,17 @@ void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data,
 
 Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<ObjectBuffer> *buffer, int buffer_count){
   ObjectBuffer *buffer_reader;
-  uint64_t table_id = request[0].table_id;
+  uint64_t table_id = request[0].tableId;
   vector<Entry>* entries = new vector<Entry>();
   Relation *result = new Relation();
   uint32_t data_length;
 
   result = new Relation();
   for(int i = 0; i < buffer_count; i++){
-    if(table_id != request[i].table_id){
+    if(table_id != request[i].tableId){
       result->insert(pair<uint64_t, vector<Entry>>(table_id, *entries));
       entries = new vector<Entry>();
-      table_id = request[i].table_id;
+      table_id = request[i].tableId;
     }
 
     buffer_reader = buffer[i].get();
