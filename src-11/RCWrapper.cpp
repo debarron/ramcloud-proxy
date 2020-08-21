@@ -138,12 +138,16 @@ Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<Objec
 
     buffer_reader = buffer[i].get();
     const char *buffer_key = reinterpret_cast<const char *>(buffer_reader->getKey(0));
+    int buffer_key_length = buffer_reader->getKeyLength(0);
     const char *buffer_data = reinterpret_cast<const char *>(buffer_reader->getValue(&data_length));
 
-    string data_key (buffer_key);
+    char *data_key = (char *) malloc(sizeof(char) * buffer_key_length);
+    memcpy(data_key, buffer_key, buffer_key_length);
+    string data_key_str (buffer_key);
+
     char *data = (char *)malloc(sizeof(char) * data_length);
     memcpy(data, buffer_data, data_length);
-    entries->push_back(make_tuple(data_key, data, data_length));
+    entries->push_back(make_tuple(data_key_str, data, data_length));
 
     cout << "** got key " << data_key << endl;
   }
