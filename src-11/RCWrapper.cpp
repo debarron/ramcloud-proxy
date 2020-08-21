@@ -141,9 +141,8 @@ int RCWrapper::_multiwrite_arr(MultiOpEntry *entries, int entries_length){
   MultiWriteObject *request_pointer[entries_length];
 
   for(int i = 0; i < entries_length; i++){
-    uint64_t *table_id_p;
-    Entry *entry_p;
-    tie(table_id_p, entry_p) = entries[i];
+    const uint64_t *table_id_p = get<0>(entries[i]);
+    const Entry *entry_p = get<1>(entries[i]);
 
     _multiwrite_request((void *)&request[i], table_id_p, entry_p);
     request_pointer[i] = &request[i];
