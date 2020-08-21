@@ -34,7 +34,7 @@ class RCWrapper{
     void _time_start();
     void _time_end();
     int _count_entries(Relation&);
-    void _multi_read_request(uint64_t, vector<Entry>&, MultiReadObject*, Tub<ObjectBuffer>*, MultiReadObject**, int);
+    void _multi_read_request(uint64_t, vector<Entry>&, void*, Tub<ObjectBuffer>*);
     Relation *_multi_read_read_buffer(MultiReadObject*, Tub<ObjectBuffer>*, int);
 
   public:

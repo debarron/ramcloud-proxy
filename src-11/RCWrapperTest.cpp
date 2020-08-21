@@ -91,7 +91,7 @@ void do_single_read_and_print(RCWrapper &wrapper, uint64_t table_id, string key)
 }
 
 void test_single_write_multi_read(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_single_write_multi_read_14", 2);
+  uint64_t table_id = wrapper.create_table("test_single_write_multi_read_15", 2);
 
   cout << "## WRITE TEST ";
   string key = "test_key";
@@ -116,21 +116,15 @@ void test_single_write_multi_read(RCWrapper &wrapper){
   do_single_read_and_print(wrapper, table_id, "test_key3");
   do_single_read_and_print(wrapper, table_id, "test_key4");
 
-/*
   cout << "## MULTI READ TEST \n";
-  char *value_read;
-  int value_length;
-  string value_read_str;
-
   Relation data_read;
   data_read[table_id] = keys;
 
   Relation *output = wrapper.read(data_read);
-  cout << "\t >> READ FROM CLOUDLAB OK\n";
+  int output_entries = wrapper.count_entries(*output);
+  cout << "\t >> OUTPUT COUNT " << output_entries << endl;
 
-  bool same_entry_count = wrapper.count_entries(*output) == wrapper.count_entries(data_read);
-  cout << "\t >> SAME ENTRIES AS MOCK DATA " << same_entry_count << endl;
-
+  /*
   bool same_vector_keys = true;
   for(RelationIterator it = data_read.begin(); it != data_read.end(); ++it){
     vector<Entry> entries = (*it).second;
@@ -139,7 +133,7 @@ void test_single_write_multi_read(RCWrapper &wrapper){
     same_vector_keys = same_vector_keys && _compare_vectors_keys(entries, entries_from_ramcloud);
   }
   cout << "\t >> SAME KEYS IN BOTH VECTORS " << same_vector_keys << endl;
-*/
+  */
 }
 
 
