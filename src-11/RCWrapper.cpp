@@ -244,7 +244,7 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
     request_index++;
   }
 
-  this->_client->multiRead(request_pointer, total_entries);
+  this->_client->multiRead(request_pointer, arr_length);
   Relation *result = _multiread_read_buffer(request, request_buffer, arr_length);
 
   return result;
