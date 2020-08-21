@@ -39,7 +39,6 @@ class RCWrapper{
     int _multiwrite_arr(MultiOpEntry*,int);
     void _multiwrite_request(void*, uint64_t*, Entry*);
     int _multiwrite_count_success(MultiWriteObject*,int);
-    void _multi_read_request(uint64_t, vector<Entry>&, void*, Tub<ObjectBuffer>*);
     void _multiread_append_relation(Relation*, Relation*);
     Relation *_multiread_arr(MultiOpEntry*, int);
     void _multi_read_request(void*, Tub<ObjectBuffer>, uint64_t*, Entry*);
