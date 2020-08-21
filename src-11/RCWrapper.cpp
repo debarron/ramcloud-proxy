@@ -137,9 +137,13 @@ Relation *RCWrapper::_multi_read_read_buffer(MultiReadObject *request, Tub<Objec
     cout << "** processing table_id " << table_id << " and entry no. " << i << endl;
 
     buffer_reader = buffer[i].get();
+    cout << "** got the buffer\n";
     const char *buffer_key = reinterpret_cast<const char *>(buffer_reader->getKey(0));
+    cout << "** got the key " << buffer_key << "\n";
     int buffer_key_length = buffer_reader->getKeyLength(0);
+    cout << "** got the key len " << buffer_key_length << "\n";
     const char *buffer_data = reinterpret_cast<const char *>(buffer_reader->getValue(&data_length));
+    cout << "** got the buffer data " << buffer_data << "\n";
 
     char *data_key = (char *) malloc(sizeof(char) * buffer_key_length);
     memcpy(data_key, buffer_key, buffer_key_length);
