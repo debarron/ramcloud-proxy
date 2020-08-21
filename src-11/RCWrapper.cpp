@@ -101,17 +101,17 @@ Entry RCWrapper::read(uint64_t table_id, string key){
 }
 
 void RCWrapper::_multi_read_request(uint64_t table_id, vector<Entry> &data, 
-    MultiReadObject *memory_block, Tub<ObjectBuffer> *request_buffer, MultiReadObject **request_pointer){
+    MultiReadObject *memory_block, Tub<ObjectBuffer> *request_buffer, 
+    MultiReadObject **request_pointer, int offset){
+
   for(vector<Entry>::iterator it = data.begin(); it != data.end(); ++it){
     string key = get<0>(*it);
     const char *key_value = key.data();
     uint32_t key_length = key.length();
 
-    new((void*)memory_block) MultiReadObject(table_id, key_value, key_length, request_buffer);
-    *request_pointer = memory_block;
-    memory_block++;
-    request_pointer++;
-    request_buffer++;
+    new((void*)&memory_block[offset]) MultiReadObject(table_id, key_value, key_length, request_buffer);
+    request_pointer[offset] = &memory_block[offset];
+    offset++;
   }
 }
 
@@ -172,7 +172,8 @@ Relation *RCWrapper::read(Relation &data){
   int request_index = 0;
   
   for(RelationIterator it = data.begin(); it != data.end(); ++it){
-    _multi_read_request((*it).first, (*it).second, &request[request_index], &request_buffer[request_index], &request_pointer[request_index]);
+    _multi_read_request((*it).first, (*it).second, &request[request_index], 
+        &request_buffer[request_index], &request_pointer[request_index], request_index);
     request_index += ((*it).second).size();
   }
 
