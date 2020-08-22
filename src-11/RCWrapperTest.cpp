@@ -140,7 +140,7 @@ void test_single_write_multi_read(RCWrapper &wrapper, string table_name){
 int main(int argc, char **argv){
   RCWrapper wrapper("tcp:host=10.10.1.1,port=1110", "main");
 
-  int offset = 7;
+  int offset = 9;
   test_table(wrapper, "test_table_" + to_string(offset++));
   test_single_write_single_read(wrapper, "test_table_" + to_string(offset++));
   test_single_write_multi_read(wrapper, "test_table_" + to_string(offset++));
