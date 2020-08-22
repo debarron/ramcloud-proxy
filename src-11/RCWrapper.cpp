@@ -234,7 +234,7 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
     const uint64_t *table_id_p = get<0>(arr[i]);
     const Entry *entry_p = get<1>(arr[i]);
 
-    _multiread_request((void *)&request[i], &request_buffer[i], table_id_p, entry_p);
+    _multiread_request(&request[i], &request_buffer[i], table_id_p, entry_p);
     request_pointer[i] = &request[i];
   }
 
@@ -246,10 +246,12 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
 
 
 void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
-  string key;
-  char *value;
-  tie(key, value, ignore) = *e;
-  new(memory_address) MultiReadObject(*table_id, key.data(), key.length(), buffer);
+  const string key = get<0>(*e);
+  const int key_length = key.length();
+  const char *key_data = (const char *) malloc(key_length);
+  memcpy(key_data, key.data(), key_length);
+  
+  new(memory_address) MultiReadObject(*table_id, key_data, key_length, buffer);
 }
 
 
