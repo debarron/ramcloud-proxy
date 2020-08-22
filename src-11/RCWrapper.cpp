@@ -247,10 +247,11 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
 
 void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
   string key;
-  tie(key, ignore, ignore) = *e;
+  char *value;
+  tie(key, value, ignore) = *e;
   new(memory_address) MultiReadObject(*table_id, key.data(), key.length(), buffer);
   cout << "*** multiread request" << endl
-    << " add " << memory_address << " " << key << " " << *table_id << " " << *e << endl;
+    << " add " << memory_address << " " << key << " " << *table_id << " " << value << endl;
 
 }
 
