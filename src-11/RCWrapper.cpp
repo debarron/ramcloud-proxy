@@ -102,8 +102,9 @@ MultiOpEntry* RCWrapper::_slice_relation_from(Relation &data, int start_index, i
 
   cout << "** validating entries\n";
   for (int i = 0; i < multi_write_count; i++){
-    const string key = get<0>(get<1>(*entries[i]));
-    const char *value = get<1>(get<1>(*entries[i]));
+    const Entry *e = get<1>(entries[i]);
+    const string key = get<0>(e);
+    const char *value = get<1>(e);
 
     cout << " VALUES: " << key << " " << value << endl;
   }
