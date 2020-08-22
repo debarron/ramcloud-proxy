@@ -220,9 +220,7 @@ void RCWrapper::_multiread_append_relation(Relation *dest, Relation *source){
       dest->insert(make_pair(*it_key, *entries));
     else{
       vector<Entry> *current_entries = &dest->at(*it_key);
-      current_entries->insert(current_entries->end(),
-          make_move_iterator(entries->begin()),
-          make_move_iterator(entries->end()));
+      current_entries->insert(current_entries->end(), entries->begin(), entries->end());
     }
   }
 }
