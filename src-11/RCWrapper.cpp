@@ -97,7 +97,15 @@ MultiOpEntry* RCWrapper::_slice_relation_from(Relation &data, int start_index, i
       ++entry_it;
       ++current_index;
     }
+  }
 
+
+  cout << "** validating entries\n";
+  for (int i = 0; i < multi_write_count; i++){
+    string key;
+    char *value;
+    tie(key, value, ignore) = entries[i];
+    cout << " VALUES: " << key << " " << value << endl;
   }
 
   return entries;
@@ -230,15 +238,13 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
   MultiReadObject request[arr_length];
   MultiReadObject *request_pointer[arr_length];
   Tub<ObjectBuffer> request_buffer[arr_length];
-  int request_index = 0;
   
   for(int i = 0; i < arr_length; i++){
     const uint64_t *table_id_p = get<0>(arr[i]);
     const Entry *entry_p = get<1>(arr[i]);
 
-    _multiread_request((void *)&request[request_index], &request_buffer[request_index], table_id_p, entry_p);
-    request_pointer[request_index] = &request[request_index];
-    request_index++;
+    _multiread_request((void *)&request[i], &request_buffer[i], table_id_p, entry_p);
+    request_pointer[i] = &request[i];
   }
 
   this->_client->multiRead(request_pointer, arr_length);
@@ -262,7 +268,6 @@ Relation *RCWrapper::_multiread_read_buffer(MultiReadObject *request, Tub<Object
   Relation *result = new Relation();
   uint32_t data_length;
 
-  result = new Relation();
   for(int i = 0; i < buffer_count; i++){
     if(table_id != request[i].tableId){
       result->insert(make_pair(table_id, *entries));
