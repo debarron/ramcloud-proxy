@@ -250,7 +250,7 @@ void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buff
   tie(key, ignore, ignore) = *e;
   new(memory_address) MultiReadObject(*table_id, key.data(), key.length(), buffer);
   cout << "*** multiread request" << endl
-    << " add " << memory_address << " " << key << " " << *table_id_p << " " << *e << endl;
+    << " add " << memory_address << " " << key << " " << *table_id << " " << *e << endl;
 
 }
 
