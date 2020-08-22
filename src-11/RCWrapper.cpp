@@ -115,7 +115,7 @@ void RCWrapper::write(uint64_t table_id, string entry_key, const char *entry_val
       NULL, &version, false);
 }
 
-int RCWrapper::write(Relation &data, int steps = 1){
+int RCWrapper::write(Relation &data, int steps){
   int total_entries = _count_entries(data);
   int step_size = total_entries / steps;
   int data_start_index = 0;
@@ -188,7 +188,7 @@ Entry RCWrapper::read(uint64_t table_id, string key){
   return result;
 }
 
-Relation *RCWrapper::read(Relation &data, int steps = 1){
+Relation *RCWrapper::read(Relation &data, int steps){
   int total_entries = _count_entries(data);
   int step_size = total_entries / steps;
   int data_start_index = 0;
