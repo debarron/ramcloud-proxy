@@ -81,7 +81,7 @@ MultiOpEntry* RCWrapper::_slice_relation_from(Relation &data, int start_index, i
   int entries_index = -1;
   int current_index = 0;
   
-  for (RelationIterator it = data.begin(); it != data.end() || current_index > end_index; it++){
+  for (RelationIterator it = data.begin(); it != data.end() && current_index > end_index; it++){
     vector<Entry> *entries_pointer = &(*it).second;
 
     if(start_index > (current_index + entries_pointer->size() - 1)){
