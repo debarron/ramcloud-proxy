@@ -82,21 +82,22 @@ MultiOpEntry* RCWrapper::_slice_relation_from(Relation &data, int start_index, i
   int current_index = 0;
   
   for (RelationIterator it = data.begin(); it != data.end() && current_index <= end_index; it++){
-    vector<Entry> *entries_pointer = &(*it).second;
+    vector<Entry> *entry_p = &(*it).second;
 
-    if(start_index > (current_index + entries_pointer->size() - 1)){
-      current_index += entries_pointer->size() -1;
+    if(start_index > (current_index + entry_p->size() - 1)){
+      current_index += entry_p->size() -1;
       continue;
     }
 
+    //for(entry_it = entry_p->begin() + offset; entry_it != entry_p->end() && current_index <= end_index; ++entry_it)
     int offset = start_index - current_index;
-    vector<Entry>::iterator entry_it;
-    for(entry_it = entries_pointer->begin() + offset; 
-        entry_it != entries_pointer->end() && current_index <= end_index; 
-        entry_it++, current_index++){
-
+    vector<Entry>::iterator entry_it = entry_p->begin() + offset;
+    while (entry_it != entry_p->end() && current_index < multi_write_count){ 
       entries[++entries_index] = make_pair(&(*it).first, &(*entry_it));
-    } 
+      ++entry_it;
+      ++current_index;
+    }
+
   }
 
   return entries;
