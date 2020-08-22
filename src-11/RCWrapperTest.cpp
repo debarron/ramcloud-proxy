@@ -6,9 +6,8 @@
 using namespace std;
 using namespace RAMCloud;
 
-
-void test_table(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_table", 2);
+void test_table(RCWrapper &wrapper, string table_name){
+  uint64_t table_id = wrapper.create_table(table_name, 2);
   uint64_t table_id_test = wrapper.get_table_id("test_table");
   string test_result = (table_id == table_id_test) ? "PASSED" : "FAILED";
 
@@ -17,8 +16,8 @@ void test_table(RCWrapper &wrapper){
     << "TEST " << test_result << endl << endl;
 }
 
-void test_single_write_single_read(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_single_write_4", 2);
+void test_single_write_single_read(RCWrapper &wrapper, string table_name){
+  uint64_t table_id = wrapper.create_table(table_name, 2);
 
   cout << "## SINGLE WRITE TEST ";
   string key = "test_key";
@@ -90,8 +89,8 @@ void do_single_read_and_print(RCWrapper &wrapper, uint64_t table_id, string key)
     " value: " << value_print << endl;
 }
 
-void test_single_write_multi_read(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_single_write_multi_read_15", 2);
+void test_single_write_multi_read(RCWrapper &wrapper, string table_name){
+  uint64_t table_id = wrapper.create_table(table_name, 2);
 
   cout << "## WRITE TEST ";
   string key = "test_key";
@@ -124,7 +123,6 @@ void test_single_write_multi_read(RCWrapper &wrapper){
   int output_entries = wrapper.count_entries(*output);
   cout << "\t >> OUTPUT COUNT " << output_entries << endl;
 
-  /*
   bool same_vector_keys = true;
   for(RelationIterator it = data_read.begin(); it != data_read.end(); ++it){
     vector<Entry> entries = (*it).second;
@@ -133,7 +131,6 @@ void test_single_write_multi_read(RCWrapper &wrapper){
     same_vector_keys = same_vector_keys && _compare_vectors_keys(entries, entries_from_ramcloud);
   }
   cout << "\t >> SAME KEYS IN BOTH VECTORS " << same_vector_keys << endl;
-  */
 }
 
 
@@ -141,9 +138,9 @@ void test_single_write_multi_read(RCWrapper &wrapper){
 int main(int argc, char **argv){
   RCWrapper wrapper("tcp:host=10.10.1.1,port=1110", "main");
 
-  //test_table(wrapper);
-  //test_single_write_single_read(wrapper);
-  test_single_write_multi_read(wrapper);
+  test_table(wrapper, "test_table_1");
+  test_single_write_single_read(wrapper, "test_table_2");
+  test_single_write_multi_read(wrapper, "test_table_3");
 
   return 0;
 }
