@@ -205,7 +205,7 @@ Relation *RCWrapper::read(Relation &data, int steps){
     _multiread_append_relation(result, multiread_result);
     data_start_index = data_end_index;
 
-    //delete[] arr;
+    delete[] arr;
   }
 
   return result;
@@ -244,8 +244,13 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length){
   return result;
 }
 
-
 void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
+  string *key = &(get<0>(*e));
+  new(memory_address) MultiReadObject(*table_id, key->data(), key->length(), buffer);
+}
+
+
+void RCWrapper::_multiread_request_v1(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
   const string key = get<0>(*e);
   const int key_length = key.length();
   char *key_data = (char *) malloc(key_length);
@@ -253,6 +258,7 @@ void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buff
   
   new(memory_address) MultiReadObject(*table_id, key_data, key_length, buffer);
 }
+
 
 
 Relation *RCWrapper::_multiread_read_buffer(MultiReadObject *request, Tub<ObjectBuffer> *buffer, int buffer_count){
