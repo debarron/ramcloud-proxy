@@ -120,7 +120,9 @@ void test_single_write_multi_read(RCWrapper &wrapper, string table_name){
   data_read[table_id] = keys;
 
   Relation *output = wrapper.read(data_read);
+  cout << "** data read from wrapper";
   int output_entries = wrapper.count_entries(*output);
+  cout << "** data counted wrapper";
   cout << "\t >> OUTPUT COUNT " << output_entries << endl;
 
   bool same_vector_keys = true;
@@ -138,7 +140,7 @@ void test_single_write_multi_read(RCWrapper &wrapper, string table_name){
 int main(int argc, char **argv){
   RCWrapper wrapper("tcp:host=10.10.1.1,port=1110", "main");
 
-  int offset = 4;
+  int offset = 7;
   test_table(wrapper, "test_table_" + to_string(offset++));
   test_single_write_single_read(wrapper, "test_table_" + to_string(offset++));
   test_single_write_multi_read(wrapper, "test_table_" + to_string(offset++));
