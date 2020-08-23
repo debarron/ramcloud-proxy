@@ -89,6 +89,10 @@ void do_single_read_and_print(RCWrapper &wrapper, uint64_t table_id, string key)
     " value: " << value_print << endl;
 }
 
+void do_single_write_and_print(RCWrapper &wrapper, uint64_t table_id, Relation &relation){
+
+}
+
 void test_single_write_multi_read(RCWrapper &wrapper, string table_name){
   uint64_t table_id = wrapper.create_table(table_name, 2);
 
