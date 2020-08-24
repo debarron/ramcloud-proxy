@@ -209,7 +209,7 @@ Relation *RCWrapper::read(Relation &data, int steps, int *success_count){
     MultiOpEntry *arr = _slice_relation_from(data, data_start_index, data_end_index -1);
     int arr_length = data_end_index - data_start_index;
 
-    Relation *multiread_result = _multiread_arr(arr, arr_length, data_read_success);
+    Relation *multiread_result = _multiread_arr(arr, arr_length, &data_read_success);
     _multiread_append_relation(result, multiread_result);
 
     data_start_index = data_end_index;
