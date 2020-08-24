@@ -6,9 +6,9 @@
 using namespace std;
 using namespace RAMCloud;
 
-void TEST_create_table(RCWrapper &wrapper){
-  uint64_t table_id = wrapper.create_table("test_table", 2);
-  uint64_t table_id_test = wrapper.get_table_id("test_table");
+void TEST_create_table(RCWrapper &wrapper, string table_name){
+  uint64_t table_id = wrapper.create_table(table_name, 2);
+  uint64_t table_id_test = wrapper.get_table_id(table_name);
   string test_result = (table_id == table_id_test) ? "PASSED" : "FAILED";
 
   cout << "## CREATE TABLE TEST "
