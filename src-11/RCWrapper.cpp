@@ -194,12 +194,14 @@ Entry RCWrapper::read(uint64_t table_id, string key){
   return result;
 }
 
-Relation *RCWrapper::read(Relation &data, int steps){
+Relation *RCWrapper::read(Relation &data, int steps, int *success_count){
   int total_entries = _count_entries(data);
   int step_size = total_entries / steps;
   int data_start_index = 0;
   int data_end_index = 0;
+  int data_read_success;
 
+  *success_count = 0;
   Relation *result = new Relation();
   for(int i = 1; i <= steps; i++){
     data_end_index = (i == steps) ? total_entries : i * step_size;
@@ -207,9 +209,11 @@ Relation *RCWrapper::read(Relation &data, int steps){
     MultiOpEntry *arr = _slice_relation_from(data, data_start_index, data_end_index -1);
     int arr_length = data_end_index - data_start_index;
 
-    Relation *multiread_result = _multiread_arr(arr, arr_length);
+    Relation *multiread_result = _multiread_arr(arr, arr_length, data_read_success);
     _multiread_append_relation(result, multiread_result);
+
     data_start_index = data_end_index;
+    *success_count += data_read_success;
 
     delete[] arr;
   }
