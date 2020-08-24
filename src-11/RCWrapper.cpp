@@ -251,7 +251,7 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length, int *succ
   return result;
 }
 
-void _multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
+void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
   const string key = get<0>(*e);
   const int key_length = key.length();
   char *key_data = (char *) malloc(key_length);
