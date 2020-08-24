@@ -54,7 +54,7 @@ void TEST_multi_write(RCWrapper &wrapper, string table_name){
   
   table_id = wrapper.create_table(table_name, 2);
   key = "the_key_";
-  value = "value_example_"
+  value = "value_example_";
   for (int i = 1; i < 5; i++){
     string new_key = key + to_string(i);
     string new_value = value + to_string(i);
