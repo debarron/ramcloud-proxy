@@ -68,7 +68,7 @@ void TEST_multi_write(RCWrapper &wrapper, string table_name){
   result = wrapper.write(input_data);
 
   bool same_key_count_test = result == keys.size();
-  cout "## TEST MULTI-WRITE SAME KEY COUNT " << same_key_count_test << endl;
+  cout << "## TEST MULTI-WRITE SAME KEY COUNT " << same_key_count_test << endl;
 }
 
 void TEST_multi_read(RCWrapper &wrapper, string table_name){
