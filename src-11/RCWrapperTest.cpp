@@ -123,7 +123,7 @@ void TEST_multi_write_multi_table(RCWrapper &wrapper, string table_name){
   }
 
   result = wrapper.write(input_data);
-  bool same_key_count_test = result == keys.size();
+  bool same_key_count_test = result == wrapper._count_entries(input_data);
   cout << "## TEST MULTI-WRITE MULTI-TABLE SAME KEY COUNT " << same_key_count_test << endl;
 }
 
