@@ -171,8 +171,8 @@ int main(int argc, char **argv){
   TEST_multi_write(wrapper, "test_table_" + to_string(offset++));
   TEST_multi_read(wrapper, "test_table_" + to_string(offset++));
 
-  TEST_multi_write_multi_table(wrapper, "test_table_" + to_string(offset++));
-  TEST_multi_read_multi_table(wrapper, "test_table_" + to_string(offset++));
+//  TEST_multi_write_multi_table(wrapper, "test_table_" + to_string(offset++));
+//  TEST_multi_read_multi_table(wrapper, "test_table_" + to_string(offset++));
 
   return 0;
 }
