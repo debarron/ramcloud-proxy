@@ -93,7 +93,7 @@ void TEST_multi_read(RCWrapper &wrapper, string table_name){
   successful_reads = 0;
   output_data = wrapper.read(input_data, 1, &successful_reads);
   bool same_key_count_test = wrapper.count_entries(input_data) == wrapper.count_entries(*output_data);
-  cout << "## TEST MULTI-WRITE SUCCESSFUL READS " << successful_reads 
+  cout << "## TEST MULTI-READ SUCCESSFUL READS " << successful_reads 
     << " SAME KEY COUNT " << same_key_count_test << endl;
 }
 
