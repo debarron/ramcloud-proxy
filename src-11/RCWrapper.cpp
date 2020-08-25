@@ -144,7 +144,7 @@ int RCWrapper::write(Relation &data, int steps){
 
     data_write_count += _multiwrite_arr(arr, arr_length);
     data_start_index = data_end_index;
-    delete[] arr;
+    //delete[] arr;
   }
 
   return data_write_count;
