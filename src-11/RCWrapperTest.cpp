@@ -163,7 +163,7 @@ void TEST_multi_read_multi_table(RCWrapper &wrapper, string table_name){
 int main(int argc, char **argv){
   RCWrapper wrapper("tcp:host=10.10.1.1,port=1110", "main");
 
-  int offset = 10;
+  int offset = 100;
 
   TEST_create_table(wrapper, "test_table_" + to_string(offset++));
   TEST_single_write(wrapper, "test_table_" + to_string(offset++));
