@@ -97,17 +97,82 @@ void TEST_multi_read(RCWrapper &wrapper, string table_name){
     << " SAME KEY COUNT " << same_key_count_test << endl;
 }
 
+void TEST_multi_write_multi_table(RCWrapper &wrapper, string table_name){
+  uint64_t table_id;
+  string key, value;
+  Relation input_data;
+  int result;
+
+  key = "the_key_";
+  value = "value_example_";
+  for (int j = 1; j < 3; j++){
+    string new_table_name = table_name + "_" + to_string(j);
+    table_id = wrapper.create_table(new_table_name, 2);
+
+    vector<Entry> keys;
+    for (int i = 1; i < 5; i++){
+      string new_key = key  + to_string(j) + "_" + to_string(i) ;
+      string new_value = value + to_string(j) + "_" + to_string(i);
+      char *new_value_cstr = (char *)malloc(sizeof(char) * new_value.length());
+      memcpy(new_value_cstr, new_value.data(), new_value.length());
+
+      keys.push_back(make_tuple(new_key, new_value_cstr, new_value.length()));
+    }
+    
+    input_data[table_id] = keys;
+  }
+
+  result = wrapper.write(input_data);
+  bool same_key_count_test = result == keys.size();
+  cout << "## TEST MULTI-WRITE MULTI-TABLE SAME KEY COUNT " << same_key_count_test << endl;
+}
+
+void TEST_multi_read_multi_table(RCWrapper &wrapper, string table_name){
+  uint64_t table_id;
+  int successful_reads;
+  Relation *output_data;
+  Relation input_data;
+
+  for (int j = 0; j < 5; j++){
+    string new_table_name = table_name + "_" + to_string(j);
+    table_id = wrapper.create_table(new_table_name, 2);
+
+    vector<Entry> keys;
+    for (int i = 1; i < 5; i++){
+      string new_key = "the_key_" + to_string(j) + "_" + to_string(i);
+      string new_value = "a_value_sample_" + to_string(j) + "_" + to_string(i);
+      char *new_value_cstr = (char *)malloc(sizeof(char) * new_value.length());
+      memcpy(new_value_cstr, new_value.data(), new_value.length());
+
+      wrapper.write(table_id, new_key, new_value_cstr, new_value.length());
+      keys.push_back(make_tuple(new_key, new_value_cstr, new_value.length()));
+    }
+
+    input_data[table_id] = keys;
+  }
+
+  successful_reads = 0;
+  output_data = wrapper.read(input_data, 1, &successful_reads);
+  bool same_key_count_test = wrapper.count_entries(input_data) == wrapper.count_entries(*output_data);
+  cout << "## TEST MULTI-READ - MULTI-TABLE SUCCESSFUL READS " << successful_reads 
+    << " SAME KEY COUNT " << same_key_count_test << endl;
+}
+
+
 
 int main(int argc, char **argv){
   RCWrapper wrapper("tcp:host=10.10.1.1,port=1110", "main");
 
-  int offset = 0;
+  int offset = 10;
 
   TEST_create_table(wrapper, "test_table_" + to_string(offset++));
   TEST_single_write(wrapper, "test_table_" + to_string(offset++));
   TEST_single_read(wrapper, "test_table_" + to_string(offset++));
   TEST_multi_write(wrapper, "test_table_" + to_string(offset++));
   TEST_multi_read(wrapper, "test_table_" + to_string(offset++));
+
+  TEST_multi_write_multi_table(wrapper, "test_table_" + to_string(offset++));
+  TEST_multi_read_multi_table(wrapper, "test_table_" + to_string(offset++));
 
   return 0;
 }
