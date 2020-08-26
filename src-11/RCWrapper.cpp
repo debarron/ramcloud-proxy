@@ -237,7 +237,7 @@ void RCWrapper::_multiread_append_relation(Relation *dest, Relation *source){
 
 Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length, int *success_count){
   MultiReadObject *request = new MultiReadObject[arr_length]();
-  MultiReadObject **request_pointe = new MultiReadObject*[arr_length]();
+  MultiReadObject **request_pointer = new MultiReadObject*[arr_length]();
   Tub<ObjectBuffer> *request_buffer = new Tub<ObjectBuffer>[arr_length]();
   
   for(int i = 0; i < arr_length; i++){
