@@ -89,33 +89,19 @@ uint64_t RCWrapper::get_table_id(string table_name){
 // TABLE OPERATIONS
 // ****************************
 
-MultiOpEntry* RCWrapper::_slice_relation_from(Relation &data, int start_index, int end_index){
-  int multi_write_count = (end_index - start_index) + 1;
-  MultiOpEntry *entries = new MultiOpEntry[multi_write_count]();
-  int entries_index = -1;
-  int current_index = 0;
-  
-  for (RelationIterator it = data.begin(); it != data.end() && current_index <= end_index; it++){
+MultiOpEntry* _relation_to_multiop_entry(Relation &data){
+  int data_length = _count_entries(data);
+  int entries_index = 0;
+  MultiOpEntry *entries = new MultiOpEntry[data_length]();
+
+  for (RelationIterator it = data.begin(); it != data.end() ; it++){
     vector<Entry> *entry_p = &(*it).second;
-
-    if(start_index > (current_index + entry_p->size() - 1)){
-      current_index += entry_p->size() -1;
-      continue;
-    }
-
-    //for(entry_it = entry_p->begin() + offset; entry_it != entry_p->end() && current_index <= end_index; ++entry_it)
-    int offset = start_index - current_index;
-    vector<Entry>::iterator entry_it = entry_p->begin() + offset;
-    while (entry_it != entry_p->end() && current_index < multi_write_count){ 
-      entries[++entries_index] = make_pair(&(*it).first, &(*entry_it));
-      ++entry_it;
-      ++current_index;
-    }
+    for(vector<Entry>::iterator entry_it = entry_p->begin(); entry_it != entry_p->end(); ++entry_it)
+      entries[entries_index++] = make_pair(&(*it).first, &(*entry_it));
   }
 
   return entries;
 }
-
 
 /***********/
 // WRITE
@@ -136,17 +122,19 @@ int RCWrapper::write(Relation &data, int steps){
   int data_end_index = 0;
   int data_write_count = 0;
 
+  MultiOpEntry *arr_data = _relation_to_multiop_entry(data);
+
   for(int i = 1; i <= steps; i++){
     data_end_index = (i == steps) ? total_entries : i * step_size;
 
-    MultiOpEntry *arr = _slice_relation_from(data, data_start_index, data_end_index -1);
+    MultiOpEntry *arr = &arr_data[data_start_index];
     int arr_length = data_end_index - data_start_index;
 
     data_write_count += _multiwrite_arr(arr, arr_length);
     data_start_index = data_end_index;
-    delete[] arr;
   }
 
+  delete[] arr_data;
   return data_write_count;
 }
 
@@ -202,11 +190,12 @@ Relation *RCWrapper::read(Relation &data, int steps, int *success_count){
   int data_read_success;
 
   *success_count = 0;
+  MultiOpEntry *entries = _relation_to_multiop_entry(data);
   Relation *result = new Relation();
   for(int i = 1; i <= steps; i++){
     data_end_index = (i == steps) ? total_entries : i * step_size;
 
-    MultiOpEntry *arr = _slice_relation_from(data, data_start_index, data_end_index -1);
+    MultiOpEntry *arr = &entries[data_start_index];
     int arr_length = data_end_index - data_start_index;
 
     Relation *multiread_result = _multiread_arr(arr, arr_length, &data_read_success);
@@ -214,10 +203,9 @@ Relation *RCWrapper::read(Relation &data, int steps, int *success_count){
 
     data_start_index = data_end_index;
     *success_count += data_read_success;
-
-    delete[] arr;
   }
 
+  delete[] entries;
   return result;
 }
 
