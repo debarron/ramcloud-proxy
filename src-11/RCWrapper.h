@@ -35,7 +35,6 @@ class RCWrapper{
     void _time_start();
     void _time_end();
     int _count_entries(Relation&);
-    MultiOpEntry *_slice_relation_from(Relation&, int, int);
     int _multiwrite_arr(MultiOpEntry*,int);
     void _multiwrite_request(void*, const uint64_t*, const Entry*);
     int _multiopt_count_success(void*,int,bool);
@@ -43,6 +42,7 @@ class RCWrapper{
     Relation *_multiread_arr(MultiOpEntry*, int, int*);
     void _multiread_request(void*, Tub<ObjectBuffer>*, const uint64_t*, const Entry*);
     Relation *_multiread_read_buffer(MultiReadObject*, Tub<ObjectBuffer>*, int);
+    MultiOpEntry* RCWrapper::_relation_to_multiop_entry(Relation &data);
 
   public:
     RCWrapper(string, string);

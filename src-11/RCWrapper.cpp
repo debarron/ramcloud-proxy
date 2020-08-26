@@ -89,7 +89,7 @@ uint64_t RCWrapper::get_table_id(string table_name){
 // TABLE OPERATIONS
 // ****************************
 
-MultiOpEntry* _relation_to_multiop_entry(Relation &data){
+MultiOpEntry* RCWrapper::_relation_to_multiop_entry(Relation &data){
   int data_length = _count_entries(data);
   int entries_index = 0;
   MultiOpEntry *entries = new MultiOpEntry[data_length]();
