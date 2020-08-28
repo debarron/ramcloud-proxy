@@ -11,7 +11,7 @@ void RCW_free_relation(Relation *r){
   delete r;
 }
 
-Relation *RCW_rcrecord_to_relation(RCRecord *records, int records_length){
+Relation *RCW_record_to_relation(RCRecord *records, int records_length){
   Relation *relation = new Relation();
   vector<Entry> *entries = new vector<Entry>();
   uint64_t previous_table_id = records[0].table_id;
@@ -106,7 +106,7 @@ char *RCWrapper_C_single_read(uint64_t table_id, const char *key, uint32_t *valu
 RCRecord *RCWrapper_C_multi_read(RCRecord *records, int records_length, int steps){
   int success_reads = 0;
 
-  Relation *r = RCW_rcrecord_to_relation(records, records_length);
+  Relation *r = RCW_record_to_relation(records, records_length);
   Relation *data_read = wrapper->read(*r, steps, &success_reads);
   return RCW_relation_to_record(data_read); 
 }
