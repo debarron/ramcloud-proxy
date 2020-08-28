@@ -28,11 +28,11 @@ void RCWrapper_C_init(const char *service_locator, const char *cluster_name);
 uint64_t RCWrapper_C_create_table(const char *table_name, int server_span);
 uint64_t RCWrapper_C_get_table_id(const char *table_name);
 
-void RCWrapper_C_write(uint64_t table_id, const char *key, const char *value, uint32_t value_length);
-int RCWrapper_C_write(RCRecord *records, int records_length, int steps);
+void RCWrapper_C_single_write(uint64_t table_id, const char *key, const char *value, uint32_t value_length);
+int RCWrapper_C_multi_write(RCRecord *records, int records_length, int steps);
 
-char *RCWrapper_C_read(uint64_t table_id, const char *key, uint32_t *value_length);
-RCRecord *RCWrapper_C_read(RCRecord *records, int records_length, int steps);
+char *RCWrapper_C_single_read(uint64_t table_id, const char *key, uint32_t *value_length);
+RCRecord *RCWrapper_C_multi_read(RCRecord *records, int records_length, int steps);
 
 
 

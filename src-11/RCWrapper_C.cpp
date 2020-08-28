@@ -22,12 +22,12 @@ uint64_t RCWrapper_C_get_table_id(const char *table_name){
   return wrapper->get_table_id(_table_name);
 }
 
-void RCWrapper_C_write(uint64_t table_id, const char *key, const char *value, uint32_t value_length){
+void RCWrapper_C_single_write(uint64_t table_id, const char *key, const char *value, uint32_t value_length){
   string _key = string(key);
   wrapper->write(table_id, _key, value, value_length);
 }
 
-void RCWrapper_C_write(RCRecord *records, int records_length, int steps){
+void RCWrapper_C_multi_write(RCRecord *records, int records_length, int steps){
   Relation *r = RCW_record_to_relation(records, records_length);
   wrapper->write(r, steps);
   RCW_free_relation(r);
@@ -87,7 +87,7 @@ RCRecord *RCW_relation_to_record(Relation *r){
   return result;
 }
 
-char *RCWrapper_C_read(uint64_t table_id, const char *key, uint32_t *value_length){
+char *RCWrapper_C_single_read(uint64_t table_id, const char *key, uint32_t *value_length){
   char *_value;
   string _key;
 
@@ -96,7 +96,7 @@ char *RCWrapper_C_read(uint64_t table_id, const char *key, uint32_t *value_lengt
   return _value;
 }
 
-RCRecord *RCWrapper_C_read(RCRecord *records, int records_length, int steps){
+RCRecord *RCWrapper_C_multi_read(RCRecord *records, int records_length, int steps){
   int success_reads = 0;
 
   Relation *r = RCW_rcrecord_to_relation(records, records_length);
