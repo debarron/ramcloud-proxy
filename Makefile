@@ -104,7 +104,7 @@ RCWrapper_C.o: RCWrapper.o
 		-lramcloud
 
 RCWrapper_CTest.o: RCWrapper.o RCWrapper_C.o
-	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapper_CTest.o ./src-11/RCWrapper_CTest.cpp \
+	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapper_CTest.o ./src-11/RCWrapper_CTest.c \
 		-I/users/dl544/RAMCloud/src \
 		-I/users/dl544/RAMCloud/obj.master \
 		-I/users/dl544/RAMCloud/install/include/ramcloud \
