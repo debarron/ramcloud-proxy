@@ -91,6 +91,45 @@ RCWrapperTest: RCWrapperTest.o RCWrapper.o
 		-L/users/dl544/RAMCloud/install/lib/ramcloud \
 		-lramcloud
 
+RCWrapper_C.o: RCWrapper.o
+	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapper_C.o ./src-11/RCWrapper_C.cpp \
+		-I/users/dl544/RAMCloud/src \
+		-I/users/dl544/RAMCloud/obj.master \
+		-I/users/dl544/RAMCloud/install/include/ramcloud \
+		-I/users/dl544/RAMCloud/install/lib/ramcloud \
+		-I./src-11 \
+		-L/users/dl544/RAMCloud/obj.master \
+		-L/users/dl544/RAMCloud/install/include/ramcloud \
+		-L/users/dl544/RAMCloud/install/lib/ramcloud \
+		-lramcloud
+
+RCWrapper_CTest.o: RCWrapper.o RCWrapper_C.o
+	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapper_CTest.o ./src-11/RCWrapper_CTest.cpp \
+		-I/users/dl544/RAMCloud/src \
+		-I/users/dl544/RAMCloud/obj.master \
+		-I/users/dl544/RAMCloud/install/include/ramcloud \
+		-I/users/dl544/RAMCloud/install/lib/ramcloud \
+		-I./src-11 \
+		-L/users/dl544/RAMCloud/obj.master \
+		-L/users/dl544/RAMCloud/install/include/ramcloud \
+		-L/users/dl544/RAMCloud/install/lib/ramcloud \
+		-lramcloud
+
+RCWrapper_CTest: RCWrapper.o RCWrapper_C.o RCWrapper_CTest.o
+	g++ -g -w -std=c++11 -o ./src-11/RCWrapper_CTest ./src-11/RCWrapper_CTest.o \
+		./src-11/RCWrapper_C.o ./src-11/RCWrapper.o \
+		-I/users/dl544/RAMCloud/src \
+		-I/users/dl544/RAMCloud/obj.master \
+		-I/users/dl544/RAMCloud/install/include/ramcloud \
+		-I/users/dl544/RAMCloud/install/lib/ramcloud \
+		-I./src-11 \
+		-L/users/dl544/RAMCloud/obj.master \
+		-L/users/dl544/RAMCloud/install/include/ramcloud \
+		-L/users/dl544/RAMCloud/install/lib/ramcloud \
+		-lramcloud
+
+
+
 
 #g++ -w -std=c++11 -c -o lib/C_RCProxy_test.o ./src/C_RCProxy_test.c -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./lib -I./src -Imodules/ramcloud-proxy/src -Imodules/ramcloud-proxy/lib
 #
