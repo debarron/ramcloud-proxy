@@ -32,8 +32,8 @@ int TEST_write_and_read(const char *table_name){
 
   table_id = RCWrapper_C_create_table(table_name, 2);
 
-  RCWrapper_C_write(table_id, "simple_key", "a_simple_value", 14);
-  value_test = RCWrapper_C_read(table_id, "simple_key", &value_length);
+  RCWrapper_C_single_write(table_id, "simple_key", "a_simple_value", 14);
+  value_test = RCWrapper_C_single_read(table_id, "simple_key", &value_length);
   result = (value_length == 14 && (strcmp("a_simple_value", value_test) == 0)) ? 1 : 0;
 
   if(result)
