@@ -27,10 +27,15 @@ void RCWrapper_C_single_write(uint64_t table_id, const char *key, const char *va
   wrapper->write(table_id, _key, value, value_length);
 }
 
-void RCWrapper_C_multi_write(RCRecord *records, int records_length, int steps){
+int RCWrapper_C_multi_write(RCRecord *records, int records_length, int steps){
+  int success_writes = 0;
+
   Relation *r = RCW_record_to_relation(records, records_length);
   wrapper->write(r, steps);
+  success_writes = wrapper->count_entries(r);
+
   RCW_free_relation(r);
+  return success_writes;
 }
 
 void RCW_free_relation(Relation *r){
