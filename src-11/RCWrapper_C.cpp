@@ -4,6 +4,13 @@
 using namespace std;
 RCWrapper *wrapper = NULL;
 
+void RCW_free_relation(Relation *r){
+  for(RelationIterator it = r->begin(); it != r->end(); ++it)
+    (it->second).clear();
+  r->clear();
+  delete r;
+}
+
 Relation *RCW_rcrecord_to_relation(RCRecord *records, int records_length){
   Relation *relation = new Relation();
   vector<Entry> *entries = new vector<Entry>();
@@ -30,11 +37,11 @@ Relation *RCW_rcrecord_to_relation(RCRecord *records, int records_length){
 RCRecord *RCW_relation_to_record(Relation *r){
   RCRecord *result;
   int result_index = 0;
-  int total_entries = wrapper->count_entries(r);
+  int total_entries = wrapper->count_entries(*r);
 
   result = new RCRecord[total_entries]();
   for(RelationIterator it = r->begin(); it != r->end(); ++it){
-    vector<Entry> *e = it->second;
+    vector<Entry> *e = &(it->second);
     for(vector<Entry>::iterator vit = e->begin(); vit != e->end(); ++vit){
       string _key;
       char *_value;
@@ -44,7 +51,7 @@ RCRecord *RCW_relation_to_record(Relation *r){
       char *_cstr_key = new char[_key.length() + 1]();
       memcpy(_cstr_key, _key.data(), _key.length());
       _cstr_key[_key.length()] = '\0';
-      result[result_index++] = {*it->first, _key.length()+1, _value_length, _cstr_key, _value};
+      result[result_index++] = {it->first, _key.length()+1, _value_length, _cstr_key, _value};
     }
   }
 
@@ -86,12 +93,7 @@ int RCWrapper_C_multi_write(RCRecord *records, int records_length, int steps){
   return success_writes;
 }
 
-void RCW_free_relation(Relation *r){
-  for(RelationIterator it = r->begin(); it != r->end(); ++it)
-    it->second->clear();
-  r->clear();
-  delete r;
-}
+
 char *RCWrapper_C_single_read(uint64_t table_id, const char *key, uint32_t *value_length){
   char *_value;
   string _key;
