@@ -19,7 +19,7 @@ int TEST_create_and_get_table(const char *table_name){
   if(result)
     fprintf(stdout, "## CREATE AND GET TABLE TEST PASSED\n");
   else
-    fprintf(stdout, "## FAILED: CREATE AND GET TABLE TEST");
+    fprintf(stdout, "## FAILED: CREATE AND GET TABLE TEST table_id:%d table_id_t:%d\n", table_id_1, table_id_1_t);
 
   return result;
 }
