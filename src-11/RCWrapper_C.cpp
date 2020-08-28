@@ -46,9 +46,8 @@ Relation *RCW_rcrecord_to_relation(RCRecord *records, int records_length){
   uint64_t previous_table_id = records[0].table_id;
 
   for (int i = 0; i < records_length; i++){
-    if (previous_table_id != records[i]){
-      relation[previous_table_id] = *entries;
-
+    if (previous_table_id != records[i].table_id){
+      relation->insert(make_pair(previous_table_id, *entries));
       previous_table_id = records[i].table_id;
       entries = new vector<Entry>();
     }
@@ -59,7 +58,7 @@ Relation *RCW_rcrecord_to_relation(RCRecord *records, int records_length){
     entries->push_back(make_tuple(_key, _value, _value_length));
   }
 
-  relation[previous_table_id] = *entries;
+  relation->insert(make_pair(previous_table_id, *entries));
   return relation;
 }
 
