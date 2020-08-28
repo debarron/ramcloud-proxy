@@ -30,7 +30,7 @@ int TEST_write_and_read(const char *table_name){
   uint32_t value_length = 0;
   uint64_t table_id;
 
-  table_id = RCWrapper_C_get_table_id(table_name, 2);
+  table_id = RCWrapper_C_create_table(table_name, 2);
 
   RCWrapper_C_write(table_id, "simple_key", "a_simple_value", 14);
   value_test = RCWrapper_C_read(table_id, "simple_key", &value_length);
