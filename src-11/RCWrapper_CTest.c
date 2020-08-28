@@ -12,7 +12,7 @@
 int TEST_create_and_get_table(const char *table_name){
   int result = 0;
   uint64_t table_id_1 = RCWrapper_C_create_table(table_name, 2);
-  uint64_t table_id_1_t = RCWrapper_C_get_table_id("table_1");
+  uint64_t table_id_1_t = RCWrapper_C_get_table_id(table_name);
 
   result = (table_id_1 == table_id_1_t) ? 1 : 0;
 
