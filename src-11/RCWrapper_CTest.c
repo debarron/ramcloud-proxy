@@ -48,7 +48,7 @@ int TEST_multiwrite_multiread(const char *table_name){
   int result_writes = 0;
   int result_reads = 0;
 
-  uint64_t table_id = RCWrapper_C_create_table(table_name);
+  uint64_t table_id = RCWrapper_C_create_table(table_name, 2);
   const char *a_key = "a_sample_key";
   const char *a_value = "a_sample_value";
   char buffer[100];
@@ -68,7 +68,7 @@ int TEST_multiwrite_multiread(const char *table_name){
     sprintf(key, "%s_%d", a_key, i+1);
     sprintf(value, "%s_%d", a_value, i+1);
 
-    records[i] = {table_id, strlen(key), strlen(value), key, value}
+    records[i] = {table_id, strlen(key), strlen(value), key, value};
   }
 
   result_writes = (RCWrapper_C_multi_write(record, 4, 1) == 4) ? 1: 0;
