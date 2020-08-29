@@ -44,6 +44,48 @@ int TEST_write_and_read(const char *table_name){
   return result;
 }
 
+int TEST_multiwrite_multiread(const char *table_name){
+  int result_writes = 0;
+  int result_reads = 0;
+
+  uint64_t table_id = RCWrapper_C_create_table(table_name);
+  const char *a_key = "a_sample_key";
+  const char *a_value = "a_sample_value";
+  char buffer[100];
+
+  RCRecord records[4];
+  RCRecord *records_read;
+
+  for (int i = 0; i < 4; i++){
+    memset(buffer, '\0', 100);
+    sprintf(buffer, "%s_%d", a_key, i+1);
+    char *key = (char *) calloc('\0', strlen(buffer));
+    
+    memset(buffer, '\0', 100);
+    sprintf(buffer, "%s_%d", a_value, i+1);
+    char *value = (char *) calloc('\0', strlen(buffer));
+
+    sprintf(key, "%s_%d", a_key, i+1);
+    sprintf(value, "%s_%d", a_value, i+1);
+
+    records[i] = {table_id, strlen(key), strlen(value), key, value}
+  }
+
+  result_writes = (RCWrapper_C_multi_write(record, 4, 1) == 4) ? 1: 0;
+
+  result_read = 0;
+  records_read = RCWrapper_C_multi_read(record, 4, 1);
+  for(int i = 0; i < 4; i++)
+    result_read += (strcmp(records[i].value, records_read[i].value) == 0) ? 1 : 0;
+  
+  if(result_writes) fprintf(stdout, "## MULTI-WRITE TEST PASSED\n");
+  else fprintf(stdout, "## FAILED: MULTI-WRITE TEST\n");
+
+  if(result_reads) fprintf(stdout, "## MULTI-READ TEST PASSED\n");
+  else fprintf(stdout, "## FAILED: MULTI-READ TEST\n");
+  
+  return ((result_writes + result_read) == 2) ? 1 : 0;
+}
 
 
 int main(int argc, char **argv){
@@ -52,6 +94,8 @@ int main(int argc, char **argv){
   if(!TEST_create_and_get_table("test_table_1"))
     exit(1);
   else if(!TEST_write_and_read("test_table_2"))
+    exit(1);
+  else if(!TEST_multiwrite_multiread("test_table_3"))
     exit(1);
   
   // multi-write
