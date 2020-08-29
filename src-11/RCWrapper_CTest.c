@@ -71,12 +71,12 @@ int TEST_multiwrite_multiread(const char *table_name){
     records[i] = {table_id, strlen(key), strlen(value), key, value};
   }
 
-  result_writes = (RCWrapper_C_multi_write(record, 4, 1) == 4) ? 1: 0;
+  result_writes = (RCWrapper_C_multi_write(records, 4, 1) == 4) ? 1: 0;
 
-  result_read = 0;
-  records_read = RCWrapper_C_multi_read(record, 4, 1);
+  result_reads = 0;
+  records_read = RCWrapper_C_multi_read(records, 4, 1);
   for(int i = 0; i < 4; i++)
-    result_read += (strcmp(records[i].value, records_read[i].value) == 0) ? 1 : 0;
+    result_reads += (strcmp(records[i].value, records_read[i].value) == 0) ? 1 : 0;
   
   if(result_writes) fprintf(stdout, "## MULTI-WRITE TEST PASSED\n");
   else fprintf(stdout, "## FAILED: MULTI-WRITE TEST\n");
@@ -84,7 +84,7 @@ int TEST_multiwrite_multiread(const char *table_name){
   if(result_reads) fprintf(stdout, "## MULTI-READ TEST PASSED\n");
   else fprintf(stdout, "## FAILED: MULTI-READ TEST\n");
   
-  return ((result_writes + result_read) == 2) ? 1 : 0;
+  return ((result_writes + result_reads) == 2) ? 1 : 0;
 }
 
 
