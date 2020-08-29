@@ -103,6 +103,7 @@ char *RCWrapper_C_single_read(uint64_t table_id, const char *key, uint32_t *valu
   return _value;
 }
 
+// THIS ONE!!
 RCRecord *RCWrapper_C_multi_read(RCRecord *records, int records_length, int steps){
   int success_reads = 0;
 
