@@ -251,8 +251,9 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length, int *succ
 void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
   const string key = get<0>(*e);
   const int key_length = key.length();
-  char *key_data = (char *) malloc(key_length);
+  char *key_data = (char *) malloc(key_length+1);
   memcpy(key_data, key.data(), key_length);
+  key_data[key_length] = '\0';
   
   new(memory_address) MultiReadObject(*table_id, key_data, key_length, buffer);
 }
@@ -278,12 +279,13 @@ Relation *RCWrapper::_multiread_read_buffer(MultiReadObject *request, Tub<Object
     const char *buffer_data = reinterpret_cast<const char *>(buffer_reader->getValue(&data_length));
     int buffer_key_length = buffer_reader->getKeyLength(0);
 
-    char *data_key = (char *) malloc(sizeof(char) * buffer_key_length);
+    char *data_key = (char *) malloc(sizeof(char) * buffer_key_length+1);
     char *data = (char *)malloc(sizeof(char) * data_length);
     memcpy(data_key, buffer_key, buffer_key_length);
     memcpy(data, buffer_data, data_length);
+    data_key[buffer_key_length] = '\0';
 
-    string data_key_str (buffer_key);
+    string data_key_str (data_key);
     entries->push_back(make_tuple(data_key_str, data, data_length));
   }
 

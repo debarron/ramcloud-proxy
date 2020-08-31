@@ -24,8 +24,9 @@ Relation *RCW_record_to_relation(RCRecord *records, int records_length){
       entries = new vector<Entry>();
     }
 
-    char *c_str = (char *) malloc(sizeof(char) * records[i].key_length);
+    char *c_str = (char *) malloc(sizeof(char) * records[i].key_length+1);
     memcpy(c_str, records[i].key, records[i].key_length);
+    c_str[records[i].key_length] = '\0';
     string _key = string(c_str);
 
     uint32_t _value_length = records[i].value_length;
