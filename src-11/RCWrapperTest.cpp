@@ -106,13 +106,13 @@ void TEST_multi_write_multi_table(RCWrapper &wrapper, string table_name){
   key = "the_key_";
   value = "value_example_";
   for (int j = 1; j < 3; j++){
-    string new_table_name = table_name + "_" + to_string(j);
+    string new_table_name = table_name + string("_") + to_string(j);
     table_id = wrapper.create_table(new_table_name, 2);
 
     vector<Entry> keys;
     for (int i = 1; i < 5; i++){
-      string new_key = key  + to_string(j) + "_" + to_string(i) ;
-      string new_value = value + to_string(j) + "_" + to_string(i);
+      string new_key = key  + to_string(j) + string("_") + to_string(i) ;
+      string new_value = value + to_string(j) + string("_") + to_string(i);
       char *new_value_cstr = (char *)malloc(sizeof(char) * new_value.length());
       memcpy(new_value_cstr, new_value.data(), new_value.length());
 
@@ -139,8 +139,8 @@ void TEST_multi_read_multi_table(RCWrapper &wrapper, string table_name){
 
     vector<Entry> keys;
     for (int i = 1; i < 5; i++){
-      string new_key = "the_key_" + to_string(j) + "_" + to_string(i);
-      string new_value = "a_value_sample_" + to_string(j) + "_" + to_string(i);
+      string new_key = string("the_key_") + to_string(j) + string("_") + to_string(i);
+      string new_value = string("a_value_sample_") + to_string(j) + string("_") + to_string(i);
       char *new_value_cstr = (char *)malloc(sizeof(char) * new_value.length());
       memcpy(new_value_cstr, new_value.data(), new_value.length());
 
