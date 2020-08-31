@@ -95,7 +95,7 @@ int RCWrapper_C_multi_write(RCRecord *records, int records_length, int steps){
   Relation *r = RCW_record_to_relation(records, records_length);
   success_writes = wrapper->write(*r, steps);
 
-  RCW_free_relation(r);
+ // RCW_free_relation(r);
   return success_writes;
 }
 
