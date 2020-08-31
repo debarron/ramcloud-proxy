@@ -11,6 +11,7 @@ void RCW_free_relation(Relation *r){
   delete r;
 }
 
+// HERE!
 Relation *RCW_record_to_relation(RCRecord *records, int records_length){
   Relation *relation = new Relation();
   vector<Entry> *entries = new vector<Entry>();
@@ -23,10 +24,15 @@ Relation *RCW_record_to_relation(RCRecord *records, int records_length){
       entries = new vector<Entry>();
     }
 
-    string _key = string(records[i].key);
-    char *_value = records[i].value;
+    char *c_str = (char *) malloc(sizeof(char) * records[i].key_length);
+    memcpy(c_str, records[i].key, records[i].key_length);
+    string _key = string(c_str);
+
     uint32_t _value_length = records[i].value_length;
-    entries->push_back(make_tuple(_key, _value, _value_length));
+    char *value_c_str = (char *) malloc(sizeof(char) * records[i].value_length);
+    memcpy(value_c_str, records[i].value, records[i].value_length);
+
+    entries->push_back(make_tuple(_key, value_c_str, _value_length));
   }
 
   relation->insert(make_pair(previous_table_id, *entries));
