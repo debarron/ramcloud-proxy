@@ -128,5 +128,15 @@ RCWrapper_CTest: RCWrapper.o RCWrapper_C.o RCWrapper_CTest.o
 		-L/users/dl544/RAMCloud/install/lib/ramcloud \
 		-lramcloud
 
-
+ramcloud-select:
+	g++ -g -w -std=c++11 ./apps/ramcloud_select.cpp -o ./bin/ramcloud-select \
+		-I${RAMCLOUD_HOME}/src \
+		-I${RAMCLOUD_HOME}/obj.master \
+		-I${RAMCLOUD_HOME}/install/include/ramcloud \
+		-I${RAMCLOUD_HOME}/install/lib/ramcloud \
+		-I./src-11 \
+		-L${RAMCLOUD_HOME}/obj.master \
+		-L${RAMCLOUD_HOME}/install/include/ramcloud \
+		-L${RAMCLOUD_HOME}/install/lib/ramcloud \
+		-lramcloud \
 
