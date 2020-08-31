@@ -130,12 +130,3 @@ RCWrapper_CTest: RCWrapper.o RCWrapper_C.o RCWrapper_CTest.o
 
 
 
-
-#g++ -w -std=c++11 -c -o lib/C_RCProxy_test.o ./src/C_RCProxy_test.c -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./lib -I./src -Imodules/ramcloud-proxy/src -Imodules/ramcloud-proxy/lib
-#
-#g++ -w -std=c++11 -c -o lib/RCProxyTest.o ./src/RCProxyTest.cc -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./lib -I./src -Imodules/ramcloud-proxy/src -Imodules/ramcloud-proxy/lib
-#
-#g++ -w -std=c++11 -o lib/RCProxyTest ./lib/RCProxyTest.o ./lib/RCEntry.o ./lib/RCTable.o ./lib/RCRelation.o ./lib/RCProxy.o -I/users/dl544/RAMCloud/src -I/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/obj.master -L/users/dl544/RAMCloud/install/include/ramcloud -lramcloud -I./lib -I./src -Imodules/ramcloud-proxy/src -Imodules/ramcloud-proxy/lib
-#
-
-
