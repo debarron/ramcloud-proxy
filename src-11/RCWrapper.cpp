@@ -247,29 +247,6 @@ Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length, int *succ
   return result;
 }
 
-/*
-Relation *RCWrapper::_multiread_arr(MultiOpEntry *arr, int arr_length, int *success_count){
-  MultiReadObject request[arr_length];
-  MultiReadObject *request_pointer[arr_length];
-  Tub<ObjectBuffer> request_buffer[arr_length];
-  
-  for(int i = 0; i < arr_length; i++){
-    const uint64_t *table_id_p = get<0>(arr[i]);
-    const Entry *entry_p = get<1>(arr[i]);
-
-    _multiread_request(&request[i], &request_buffer[i], table_id_p, entry_p);
-    request_pointer[i] = &request[i];
-  }
-
-  this->_client->multiRead(request_pointer, arr_length);
-  *success_count = _multiopt_count_success(request, arr_length, false);
-  Relation *result = _multiread_read_buffer(request, request_buffer, arr_length);
-
-  return result;
-}
-*/
-
-
 
 void RCWrapper::_multiread_request(void *memory_address, Tub<ObjectBuffer> *buffer, const uint64_t *table_id, const Entry *e){ 
   const string key = get<0>(*e);

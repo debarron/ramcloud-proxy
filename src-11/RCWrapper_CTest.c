@@ -53,20 +53,23 @@ int TEST_multiwrite_multiread(const char *table_name){
   const char *a_value = "a_sample_value";
   char buffer[100];
 
+  //9 + 6 => key
+  //9 + 8 => value
+
   RCRecord records[4];
   RCRecord *records_read;
 
   for (int i = 0; i < 4; i++){
     memset(buffer, '\0', 100);
-    sprintf(buffer, "%s_%d", a_key, i+1);
+    sprintf(buffer, "%s_%d\0", a_key, i+1);
     char *key = (char *) calloc('\0', strlen(buffer));
     
     memset(buffer, '\0', 100);
-    sprintf(buffer, "%s_%d", a_value, i+1);
+    sprintf(buffer, "%s_%d\0", a_value, i+1);
     char *value = (char *) calloc('\0', strlen(buffer));
 
-    sprintf(key, "%s_%d", a_key, i+1);
-    sprintf(value, "%s_%d", a_value, i+1);
+    sprintf(key, "%s_%d\0", a_key, i+1);
+    sprintf(value, "%s_%d\0", a_value, i+1);
 
     records[i] = {table_id, strlen(key), strlen(value), key, value};
   }
