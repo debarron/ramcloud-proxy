@@ -128,7 +128,7 @@ RCWrapper_CTest: RCWrapper.o RCWrapper_C.o RCWrapper_CTest.o
 		-L/users/dl544/RAMCloud/install/lib/ramcloud \
 		-lramcloud
 
-ramcloud-select:
+ramcloud-select: create-dirs
 	g++ -g -w -std=c++11 ./apps/ramcloud_select.cpp -o ./bin/ramcloud-select \
 		-I${RAMCLOUD_HOME}/src \
 		-I${RAMCLOUD_HOME}/obj.master \
