@@ -68,11 +68,15 @@ int TEST_multiwrite_multiread(const char *table_name){
 
     records[i] = {table_id, strlen(key), strlen(value), key, value};
   }
-
-  for(int i = 0; i < 4; i++)
-    fprintf(stdout, " >>> key:'%s' value:'%s'\n", records[i].key, records[i].value);
-
   result_writes = (RCWrapper_C_multi_write(records, 4, 1) == 4) ? 1: 0;
+
+  uint32_t vl0, vl1, vl2, vl3;
+  char *v0 = RCWrapper_C_single_read(table_id, "simple_key_1", &vl0);
+  char *v1 = RCWrapper_C_single_read(table_id, "simple_key_2", &vl1);
+  char *v2 = RCWrapper_C_single_read(table_id, "simple_key_3", &vl2);
+  char *v3 = RCWrapper_C_single_read(table_id, "simple_key_4", &vl3);
+  fprintf(stdout, "v0:'%s' v1:'%s' v2:'%s' v3:'%s'\n", v0, v1, v2, v3);
+
 
   result_reads = 0;
   records_read = RCWrapper_C_multi_read(records, 4, 1);
