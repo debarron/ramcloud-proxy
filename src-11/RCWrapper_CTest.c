@@ -69,7 +69,6 @@ int TEST_multiwrite_multiread(const char *table_name){
     records[i] = {table_id, strlen(key), strlen(value), key, value};
   }
   result_writes = (RCWrapper_C_multi_write(records, 4, 1) == 4) ? 1: 0;
-  for(int i = )
 
   uint32_t vl0, vl1, vl2, vl3;
   char *v0 = RCWrapper_C_single_read(table_id, records[0].key, &vl0);
