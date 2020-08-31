@@ -103,8 +103,8 @@ void TEST_multi_write_multi_table(RCWrapper &wrapper, string table_name){
   Relation input_data;
   int result;
 
-  key = "the_key_";
-  value = "value_example_";
+  key = string("the_key_");
+  value = string("value_example_");
   for (int j = 1; j < 3; j++){
     string new_table_name = table_name + string("_") + to_string(j);
     table_id = wrapper.create_table(new_table_name, 2);
