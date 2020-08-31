@@ -71,10 +71,10 @@ int TEST_multiwrite_multiread(const char *table_name){
   result_writes = (RCWrapper_C_multi_write(records, 4, 1) == 4) ? 1: 0;
 
   uint32_t vl0, vl1, vl2, vl3;
-  char *v0 = RCWrapper_C_single_read(table_id, "a_simple_key_1", &vl0);
-  char *v1 = RCWrapper_C_single_read(table_id, "a_simple_key_2", &vl1);
-  char *v2 = RCWrapper_C_single_read(table_id, "a_simple_key_3", &vl2);
-  char *v3 = RCWrapper_C_single_read(table_id, "a_simple_key_4", &vl3);
+  char *v0 = RCWrapper_C_single_read(table_id, records[0].key, &vl0);
+  char *v1 = RCWrapper_C_single_read(table_id, records[1].key, &vl1);
+  char *v2 = RCWrapper_C_single_read(table_id, records[2].key, &vl2);
+  char *v3 = RCWrapper_C_single_read(table_id, records[3].key, &vl3);
   fprintf(stdout, "v0:'%s' v1:'%s' v2:'%s' v3:'%s'\n", v0, v1, v2, v3);
 
 
