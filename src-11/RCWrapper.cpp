@@ -96,8 +96,9 @@ MultiOpEntry* RCWrapper::_relation_to_multiop_entry(Relation &data){
 
   for (RelationIterator it = data.begin(); it != data.end() ; it++){
     vector<Entry> *entry_p = &(*it).second;
-    for(vector<Entry>::iterator entry_it = entry_p->begin(); entry_it != entry_p->end(); ++entry_it)
+    for(vector<Entry>::iterator entry_it = entry_p->begin(); entry_it != entry_p->end(); ++entry_it){
       entries[entries_index++] = make_pair(&(*it).first, &(*entry_it));
+    }
   }
 
   return entries;
@@ -156,11 +157,16 @@ int RCWrapper::_multiwrite_arr(MultiOpEntry *entries, int entries_length){
 
 void RCWrapper::_multiwrite_request(void *memory_address, const uint64_t *table_id, const Entry *e){
   string key;
+  char *key_cstr;
   char *value;
   uint32_t value_length;
 
   tie(key, value, value_length) = *e;
-  new(memory_address) MultiWriteObject(*table_id, key.data(), key.length(), value, value_length, NULL);
+  key_cstr = new char[key.length()+1]();
+  memcpy(key_cstr, key.data(), key.length());
+  key_cstr[key.length()] = '\0';
+
+  new(memory_address) MultiWriteObject(*table_id, key_cstr, key.length(), value, value_length, NULL);
 }
 
 /**********/
