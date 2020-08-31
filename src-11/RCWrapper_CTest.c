@@ -74,6 +74,9 @@ int TEST_multiwrite_multiread(const char *table_name){
     records[i] = {table_id, strlen(key), strlen(value), key, value};
   }
 
+  for(int i = 0; i < 4; i++)
+    fprintf(stdout, " >>> key:'%s' value:'%s'\n", records[i].key, records[i].value);
+
   result_writes = (RCWrapper_C_multi_write(records, 4, 1) == 4) ? 1: 0;
 
   result_reads = 0;
