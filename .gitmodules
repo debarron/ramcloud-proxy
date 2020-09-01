@@ -1,3 +1,0 @@
-[submodule "modules/c-str-functions"]
-	path = modules/c-str-functions
-	url = git@github.com:debarron/c-str-functions.git

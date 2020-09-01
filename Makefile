@@ -18,11 +18,11 @@ OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
 APP_CC = ${CC} ${CC_FLAGS} -I${SRC} -I${LIB} ${RAMCLOUD_FLAGS} -g
 
 RC_PROXY_OBJS_FILE = $(shell find ${LIB} | grep '\.o' --colour=never | xargs)
-RC_PROXY_OBJS = RCEntry RCTable RCRelation
+RC_PROXY_OBJS = RCEntry RCTable RCRelation RCWrapper
 RC_PROXY_LIB = RCProxy
 RC_PROXY_TESTS = RCProxyTest
 
-all: create-dirs $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS)
+all: create-dirs $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS) RCWrapper.o RCWrapper_C.o
 .PHONY: all
 
 create-dirs:
