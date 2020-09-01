@@ -10,7 +10,7 @@ RAMCLOUD_FLAGS = ${RAMCLOUD_INCLUDE} ${RAMCLOUD_LIB}
 RAMCLOUD_PROXY_OBJS = RCWrapper RCWrapper_C
 RAMCLOUD_PROXY_TESTS = RCWrapperTest RCWrapper_CTest
 
-all: create-dirs $(RAMCLOUD_PROXY_OBJS) $(RAMCLOUD_PROXY_TESTS)
+all: create-dirs $(RAMCLOUD_PROXY_OBJS) $(RAMCLOUD_PROXY_TESTS) ramcloud-select
 .PHONY: 
 
 create-dirs:
@@ -28,11 +28,16 @@ $(RAMCLOUD_PROXY_OBJS):
 	@echo ">> ramcloud-proxy Building $@.o"
 	g++ -g -w -std=c++11 -c -o ${LIB}/$@.o ${SRC}/$@.cpp -I${SRC} ${RAMCLOUD_FLAGS}
 
+
+# This repo includes two tests, one in C and another in C++
+# So we compile thinking that C++ would be first and if an error
+# occurs we'll use C compilation (=____=)
 $(RAMCLOUD_PROXY_TESTS): $(RAMCLOUD_PROXY_OBJS)
 	@echo ">> ramcloud-proxy Building $@"
 	g++ -g -w -std=c++11 -c -o ${LIB}/$@.o ${SRC}/$@.cpp -I${SRC} ${RAMCLOUD_FLAGS} || \
 	g++ -g -w -std=c++11 -c -o ${LIB}/$@.o ${SRC}/$@.c -I${SRC} ${RAMCLOUD_FLAGS}
-	g++ -g -w -std=c++11 -o ${BIN}/$@ ${LIB}/$@.o ${LIB}/RCWrapper.o ${LIB}/RCWrapper_C.o \
-		-I${SRC} ${RAMCLOUD_FLAGS}
+	g++ -g -w -std=c++11 -o ${BIN}/$@ ${LIB}/$@.o ${LIB}/RCWrapper.o ${LIB}/RCWrapper_C.o -I${SRC} ${RAMCLOUD_FLAGS}
 
+ramcloud-select: create-dirs
+	g++ -g -w -std=c++11 ${APPS}/ramcloud_select.cpp -o ${BIN}/ramcloud-select ${RAMCLOUD_FLAGS}
 
