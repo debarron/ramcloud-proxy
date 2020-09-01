@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
 #include "RCWrapper.h"
 
-#ifdef __cplusplus
 #include <string>
 #include <ctime>
 #include <vector>
