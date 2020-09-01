@@ -30,7 +30,7 @@ $(RAMCLOUD_PROXY_OBJS):
 
 $(RAMCLOUD_PROXY_TESTS): $(RAMCLOUD_PROXY_OBJS)
 	@echo ">> ramcloud-proxy Building $@"
-	g++ -g -w -std=c++11 -c -o ${LIB}/$@ ${SRC}/$@.cpp -I${SRC} ${RAMCLOUD_FLAGS}
+	g++ -g -w -std=c++11 -c -o ${LIB}/$@.o ${SRC}/$@.cpp -I${SRC} ${RAMCLOUD_FLAGS}
 	g++ -g -w -std=c++11 -o ${BIN}/$@ ${LIB}/$@.o ${LIB}/RCWrapper.o ${LIB}/RCWrapper_C.o \
 		-I${SRC} ${RAMCLOUD_FLAGS}
 
