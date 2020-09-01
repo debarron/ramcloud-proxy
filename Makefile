@@ -39,5 +39,6 @@ $(RAMCLOUD_PROXY_TESTS): $(RAMCLOUD_PROXY_OBJS)
 	g++ -g -w -std=c++11 -o ${BIN}/$@ ${LIB}/$@.o ${LIB}/RCWrapper.o ${LIB}/RCWrapper_C.o -I${SRC} ${RAMCLOUD_FLAGS}
 
 ramcloud-select: create-dirs
+	@echo ">> ramcloud-proxy Building the ramcloud-select app"
 	g++ -g -w -std=c++11 ${APPS}/ramcloud_select.cpp -o ${BIN}/ramcloud-select ${RAMCLOUD_FLAGS}
 
