@@ -7,7 +7,7 @@ RAMCLOUD_INCLUDE = -I${RAMCLOUD_HOME}/src -I${RAMCLOUD_HOME}/obj.master -I${RAMC
 RAMCLOUD_LIB = -L${RAMCLOUD_HOME}/obj.master -L${RAMCLOUD_HOME}/install/lib/ramcloud -lramcloud
 RAMCLOUD_FLAGS = ${RAMCLOUD_INCLUDE} ${RAMCLOUD_LIB}
 
-RAMCLOUD_PROXY_OBJS = RCWrapper RCWrapper_C RCWrapperTest RCWrapper_CTest
+RAMCLOUD_PROXY_OBJS = RCWrapper RCWrapper_C
 RAMCLOUD_PROXY_TESTS = RCWrapperTest RCWrapper_CTest
 
 all: create-dirs $(RAMCLOUD_PROXY_OBJS) $(RAMCLOUD_PROXY_TESTS)
@@ -30,6 +30,7 @@ $(RAMCLOUD_PROXY_OBJS):
 
 $(RAMCLOUD_PROXY_TESTS): $(RAMCLOUD_PROXY_OBJS)
 	@echo ">> ramcloud-proxy Building $@"
+	g++ -g -w -std=c++11 -c -o ${LIB}/$@ ${SRC}/$@.cpp -I${SRC} ${RAMCLOUD_FLAGS}
 	g++ -g -w -std=c++11 -o ${BIN}/$@ ${LIB}/$@.o ${LIB}/RCWrapper.o ${LIB}/RCWrapper_C.o \
 		-I${SRC} ${RAMCLOUD_FLAGS}
 
