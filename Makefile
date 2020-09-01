@@ -1,39 +1,22 @@
-GIT_ADD="git add --all"
-GIT_COMMIT="git commit -m 'Automatic commit by debarron'"
-GIT_PUSH="git push origin master"
-
-SRC = ./src
+SRC = ./src-11
 LIB = ./lib
 BIN = ./bin
-RC_HOME = ${RAMCLOUD_HOME}
+APPS = ./apps
 
-CC = g++
-CC_FLAGS = -Wall -std=c++11 -Wextra -O3
-
-RAMCLOUD_INCLUDE = -I${RC_HOME}/src -I${RC_HOME}/obj.master -I${RC_HOME}/install/include/ramcloud 
-RAMCLOUD_LIB = -L${RC_HOME}/obj.master -L${RC_HOME}/install/lib -lramcloud
+RAMCLOUD_INCLUDE = -I${RAMCLOUD_HOME}/src -I${RAMCLOUD_HOME}/obj.master -I${RAMCLOUD_HOME}/install/include/ramcloud 
+RAMCLOUD_LIB = -L${RAMCLOUD_HOME}/obj.master -L${RAMCLOUD_HOME}/install/lib/ramcloud -lramcloud
 RAMCLOUD_FLAGS = ${RAMCLOUD_INCLUDE} ${RAMCLOUD_LIB}
 
-OBJ_CC = ${CC} ${CC_FLAGS} -I${SRC} -g -c
-APP_CC = ${CC} ${CC_FLAGS} -I${SRC} -I${LIB} ${RAMCLOUD_FLAGS} -g
+RAMCLOUD_PROXY_OBJS = RCWrapper RCWrapper_C RCWrapperTest RCWrapper_CTest
+RAMCLOUD_PROXY_TESTS = RCWrapperTest RCWrapper_CTest
 
-RC_PROXY_OBJS_FILE = $(shell find ${LIB} | grep '\.o' --colour=never | xargs)
-RC_PROXY_OBJS = RCEntry RCTable RCRelation
-RC_PROXY_LIB = RCProxy
-RC_PROXY_TESTS = RCProxyTest
-
-all: create-dirs $(RC_PROXY_OBJS) $(RC_PROXY_LIB) $(RC_PROXY_TESTS) RCWrapper.o RCWrapper_C.o
-.PHONY: all
+all: create-dirs $(RAMCLOUD_PROXY_OBJS) $(RAMCLOUD_PROXY_TESTS)
+.PHONY: 
 
 create-dirs:
 	[ -d ${LIB} ] || mkdir ${LIB}
 	[ -d ${BIN} ] || mkdir ${BIN}
-
-push: 
-	@echo ">> ramcloud-multiwrite, Saving project on github"
-	eval ${GIT_ADD}
-	eval ${GIT_COMMIT}
-	eval ${GIT_PUSH}
+	[ -d ${APPS} ] || mkdir ${APPS}
 
 clean: 
 	@echo ">> ramcloud-multiwrite, Cleaning ./lib"
@@ -41,102 +24,13 @@ clean:
 	@echo ">> ramcloud-multiwrite, Cleaning ./bin"
 	@rm ${BIN}/* 2< /dev/null || echo "Nothing to remove"
 
-
-$(RC_PROXY_OBJS): 
+$(RAMCLOUD_PROXY_OBJS): 
 	@echo ">> ramcloud-proxy Building $@.o"
-	${OBJ_CC} ${SRC}/$@.cc -o ${LIB}/$@.o
+	g++ -g -w -std=c++11 -c -o ${LIB}/$@.o ${SRC}/$@.cpp -I${SRC} ${RAMCLOUD_FLAGS}
 
-$(RC_PROXY_LIB): $(RC_PROXY_OBJS)
+$(RAMCLOUD_PROXY_TESTS): $(RAMCLOUD_PROXY_OBJS)
 	@echo ">> ramcloud-proxy Building $@"
-	${APP_CC} ${SRC}/$@.cc -c -o ${LIB}/$@.o
+	g++ -g -w -std=c++11 -o ${BIN}/$@ ${LIB}/$@.o ${LIB}/RCWrapper.o ${LIB}/RCWrapper_C.o \
+		-I${SRC} ${RAMCLOUD_FLAGS}
 
-$(RC_PROXY_TESTS): $(RC_PROXY_OBJS) $(RC_PROXY_LIB)
-	@echo ">> ramcloud-proxy Building $@"
-	${APP_CC} -I${LIB} ${SRC}/$@.cc -c -o ${LIB}/$@.o
-	${CC} ${CC_FLAGS} -o ${BIN}/$@ ${LIB}/$@.o ${RC_PROXY_OBJS_FILE} ${RAMCLOUD_FLAGS} -I${SRC} -I${LIB}
-
-RCWrapper.o:
-	g++ -g -w -std=c++11 -c -o src-11/RCWrapper.o ./src-11/RCWrapper.cpp \
-		-I/users/dl544/RAMCloud/src \
-		-I/users/dl544/RAMCloud/obj.master \
-		-I/users/dl544/RAMCloud/install/include/ramcloud \
-		-I/users/dl544/RAMCloud/install/lib/ramcloud \
-		-I./src-11 \
-		-L/users/dl544/RAMCloud/obj.master \
-		-L/users/dl544/RAMCloud/install/include/ramcloud \
-		-L/users/dl544/RAMCloud/install/lib/ramcloud \
-		-lramcloud
-
-RCWrapperTest.o: RCWrapper.o
-	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapperTest.o ./src-11/RCWrapperTest.cpp \
-		-I/users/dl544/RAMCloud/src \
-		-I/users/dl544/RAMCloud/obj.master \
-		-I/users/dl544/RAMCloud/install/include/ramcloud \
-		-I/users/dl544/RAMCloud/install/lib/ramcloud \
-		-I./src-11 \
-		-L/users/dl544/RAMCloud/obj.master \
-		-L/users/dl544/RAMCloud/install/include/ramcloud \
-		-L/users/dl544/RAMCloud/install/lib/ramcloud \
-		-lramcloud
-
-RCWrapperTest: RCWrapperTest.o RCWrapper.o
-	g++ -g -w -std=c++11 -o ./src-11/RCWrapperTest ./src-11/RCWrapperTest.o ./src-11/RCWrapper.o \
-		-I/users/dl544/RAMCloud/src \
-		-I/users/dl544/RAMCloud/obj.master \
-		-I/users/dl544/RAMCloud/install/include/ramcloud \
-		-I/users/dl544/RAMCloud/install/lib/ramcloud \
-		-I./src-11 \
-		-L/users/dl544/RAMCloud/obj.master \
-		-L/users/dl544/RAMCloud/install/include/ramcloud \
-		-L/users/dl544/RAMCloud/install/lib/ramcloud \
-		-lramcloud
-
-RCWrapper_C.o: RCWrapper.o
-	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapper_C.o ./src-11/RCWrapper_C.cpp \
-		-I/users/dl544/RAMCloud/src \
-		-I/users/dl544/RAMCloud/obj.master \
-		-I/users/dl544/RAMCloud/install/include/ramcloud \
-		-I/users/dl544/RAMCloud/install/lib/ramcloud \
-		-I./src-11 \
-		-L/users/dl544/RAMCloud/obj.master \
-		-L/users/dl544/RAMCloud/install/include/ramcloud \
-		-L/users/dl544/RAMCloud/install/lib/ramcloud \
-		-lramcloud
-
-RCWrapper_CTest.o: RCWrapper.o RCWrapper_C.o
-	g++ -g -w -std=c++11 -c -o ./src-11/RCWrapper_CTest.o ./src-11/RCWrapper_CTest.c \
-		-I/users/dl544/RAMCloud/src \
-		-I/users/dl544/RAMCloud/obj.master \
-		-I/users/dl544/RAMCloud/install/include/ramcloud \
-		-I/users/dl544/RAMCloud/install/lib/ramcloud \
-		-I./src-11 \
-		-L/users/dl544/RAMCloud/obj.master \
-		-L/users/dl544/RAMCloud/install/include/ramcloud \
-		-L/users/dl544/RAMCloud/install/lib/ramcloud \
-		-lramcloud
-
-RCWrapper_CTest: RCWrapper.o RCWrapper_C.o RCWrapper_CTest.o
-	g++ -g -w -std=c++11 -o ./src-11/RCWrapper_CTest ./src-11/RCWrapper_CTest.o \
-		./src-11/RCWrapper_C.o ./src-11/RCWrapper.o \
-		-I/users/dl544/RAMCloud/src \
-		-I/users/dl544/RAMCloud/obj.master \
-		-I/users/dl544/RAMCloud/install/include/ramcloud \
-		-I/users/dl544/RAMCloud/install/lib/ramcloud \
-		-I./src-11 \
-		-L/users/dl544/RAMCloud/obj.master \
-		-L/users/dl544/RAMCloud/install/include/ramcloud \
-		-L/users/dl544/RAMCloud/install/lib/ramcloud \
-		-lramcloud
-
-ramcloud-select: create-dirs
-	g++ -g -w -std=c++11 ./apps/ramcloud_select.cpp -o ./bin/ramcloud-select \
-		-I${RAMCLOUD_HOME}/src \
-		-I${RAMCLOUD_HOME}/obj.master \
-		-I${RAMCLOUD_HOME}/install/include/ramcloud \
-		-I${RAMCLOUD_HOME}/install/lib/ramcloud \
-		-I./src-11 \
-		-L${RAMCLOUD_HOME}/obj.master \
-		-L${RAMCLOUD_HOME}/install/include/ramcloud \
-		-L${RAMCLOUD_HOME}/install/lib/ramcloud \
-		-lramcloud \
 
