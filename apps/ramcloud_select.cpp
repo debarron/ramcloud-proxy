@@ -63,22 +63,27 @@ int main(int argc, char **argv){
 
 
   vector<string> *keys;
-  uint32_t bufferLength, keyLength;
+  vector<string> *values;
+  uint32_t bufferLength, keyLength, valueLength;
   const void *buffer;
-  TableEnumerator enumerator (*client, table_id, true);
+  TableEnumerator enumerator (*client, table_id, false);
   keys = new vector<string>();
+  values = new vector<string>();
   while(enumerator.hasNext()){
     keyLength = bufferLength = 0;
     enumerator.next(&bufferLength, &buffer);
     Object enumObject (buffer, bufferLength);
 
     keyLength = enumObject.getKeyLength();
+    valueLength = enumObject.getValueLength();
     string key = string(reinterpret_cast<const char *>(enumObject.getKey()), keyLength);
+    string value = string(reinterpret_cast<const char*>(enumObject.getValue()), valueLength);
     keys->push_back(key);
+    values->push_back(value);
   }
 
-  for(vector<string>::iterator it = keys->begin(); it != keys->end(); ++it) 
-    cout << *it << endl;
-  
+  for(int i = 0; i < keys->size(); i++)
+    cout << "\t+ key:'" << keys->at(i) << "' value:'" << values->at(i) << "'\n";
+
   return 0;
 }
